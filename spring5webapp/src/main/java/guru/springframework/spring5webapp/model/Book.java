@@ -21,8 +21,7 @@ public class Book {
     
     private String isbn;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "publisher_id", referencedColumnName = "id")
+    @OneToOne
     private Publisher publisher;
 
     @ManyToMany
