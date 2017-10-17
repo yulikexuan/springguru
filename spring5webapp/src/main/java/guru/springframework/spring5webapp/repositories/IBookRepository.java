@@ -10,4 +10,5 @@ import guru.springframework.spring5webapp.model.Book;
 
 
 public interface IBookRepository extends JpaRepository<Book, Long> {
+
 }///:~

@@ -7,13 +7,7 @@ package guru.springframework.spring5webapp.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 
 
 @Entity
@@ -22,12 +16,14 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     private String title;
     
     private String isbn;
-    
-    private String publisher;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "publisher_id", referencedColumnName = "id")
+    private Publisher publisher;
 
     @ManyToMany
     @JoinTable(name = "author_book", 
@@ -38,13 +34,13 @@ public class Book {
     public Book() {
     }
 
-    public Book(String title, String isbn, String publisher) {
+    public Book(String title, String isbn, Publisher publisher) {
         this.title = title;
         this.isbn = isbn;
         this.publisher = publisher;
     }
 
-    public Book(String title, String isbn, String publisher, 
+    public Book(String title, String isbn, Publisher publisher,
             Set<Author> authors) {
         
         this.title = title;
@@ -77,11 +73,11 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public String getPublisher() {
+    public Publisher getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(String publisher) {
+    public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
     }
 
@@ -121,7 +117,8 @@ public class Book {
     @Override
     public String toString() {
         return "Book [id=" + id + ", title=" + title + ", isbn=" + isbn
-                + ", publisher=" + publisher + ", authors=" + authors + "]";
+                + ", publisher=" + publisher.getName() + ", authors=" +
+                authors + "]";
     }
     
 }///:~
