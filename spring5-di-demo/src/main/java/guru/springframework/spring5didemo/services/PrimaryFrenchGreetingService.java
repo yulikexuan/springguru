@@ -1,4 +1,4 @@
-//: guru.springframework.spring5didemo.services.PrimaryGreetingService.java
+//: guru.springframework.spring5didemo.services.PrimaryFrenchGreetingService.java
 
 package guru.springframework.spring5didemo.services;
 
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Primary
-@Profile({"en", "default"})
-public class PrimaryGreetingService implements IGreetingService {
+@Profile("fr")
+public class PrimaryFrenchGreetingService implements IGreetingService {
 
     @Override
     public String sayGreeting() {
-        return "Hello - Primary Greeting Service";
+        return "Bonjour - Service d'accueil primaire";
     }
 
 }///~

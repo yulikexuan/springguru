@@ -12,8 +12,8 @@ public class MyController {
 
     private IGreetingService greetingService;
 
-    public MyController(IGreetingService greetingService) {
-        this.greetingService = greetingService;
+    public MyController(IGreetingService primaryGreetingService) {
+        this.greetingService = primaryGreetingService;
     }
 
     public String greeting() {
