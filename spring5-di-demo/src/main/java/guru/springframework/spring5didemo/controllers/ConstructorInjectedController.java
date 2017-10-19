@@ -2,8 +2,12 @@
 
 package guru.springframework.spring5didemo.controllers;
 
-import guru.springframework.spring5didemo.services.IGreetingService;
 
+import guru.springframework.spring5didemo.services.IGreetingService;
+import org.springframework.stereotype.Controller;
+
+
+@Controller
 public class ConstructorInjectedController {
 
     private final IGreetingService greetingService;
