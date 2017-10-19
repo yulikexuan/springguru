@@ -21,10 +21,9 @@ public class Spring5DiDemoApplication {
 		MyController controller = (MyController) actx.getBean(
                 "myController");
 
-		controller.greeting();
-
 		// Test DI
-		System.out.println(actx.getBean(PropertyInjectedController.class)
+        System.out.println(controller.greeting());
+        System.out.println(actx.getBean(PropertyInjectedController.class)
 				.sayHello());
 		System.out.println(actx.getBean(SetterInjectedController.class)
 				.sayHello());

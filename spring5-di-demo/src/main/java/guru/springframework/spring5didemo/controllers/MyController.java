@@ -3,14 +3,21 @@
 package guru.springframework.spring5didemo.controllers;
 
 
+import guru.springframework.spring5didemo.services.IGreetingService;
 import org.springframework.stereotype.Controller;
 
 
 @Controller
 public class MyController {
 
-    public void greeting() {
-        System.out.println("Hello Spring 5 !!!");
+    private IGreetingService greetingService;
+
+    public MyController(IGreetingService greetingService) {
+        this.greetingService = greetingService;
+    }
+
+    public String greeting() {
+        return this.greetingService.sayGreeting();
     }
 
 }///~
