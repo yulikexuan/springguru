@@ -12,8 +12,8 @@ public class JokeService implements IJokeService {
 
     private final ChuckNorrisQuotes chuckNorrisQuotes;
 
-    public JokeService() {
-        this.chuckNorrisQuotes = new ChuckNorrisQuotes();
+    public JokeService(ChuckNorrisQuotes chuckNorrisQuotes) {
+        this.chuckNorrisQuotes = chuckNorrisQuotes;
     }
 
     @Override
