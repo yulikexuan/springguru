@@ -3,18 +3,25 @@
 package guru.springframework.spring5didemo.services;
 
 
-import org.springframework.context.annotation.Primary;
-import org.springframework.context.annotation.Profile;
+import guru.springframework.spring5didemo.repositories.IGreetingRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
-@Primary
-@Profile("zh")
 public class PrimaryChineseGreetingService implements IGreetingService {
+
+    private IGreetingRepository greetingRepository;
+
+    @Autowired
+    public PrimaryChineseGreetingService(
+            IGreetingRepository greetingRepository) {
+        this.greetingRepository = greetingRepository;
+    }
 
     @Override
     public String sayGreeting() {
-        return "您好 - 主問候服務";
+        return this.greetingRepository.getChineseGreeting();
     }
 
 }///~
