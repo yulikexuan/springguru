@@ -1,11 +1,7 @@
 package guru.springframework.spring5didemo;
 
 
-import guru.externals.services.JokeService;
-import guru.springframework.spring5didemo.controllers.ConstructorInjectedController;
-import guru.springframework.spring5didemo.controllers.MyController;
-import guru.springframework.spring5didemo.controllers.PropertyInjectedController;
-import guru.springframework.spring5didemo.controllers.SetterInjectedController;
+import guru.springframework.spring5didemo.examplebeans.FakeDataSource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -22,20 +18,9 @@ public class Spring5DiDemoApplication {
         ApplicationContext actx = SpringApplication.run(
                 Spring5DiDemoApplication.class, args);
 
-        MyController controller = (MyController) actx.getBean(
-                "myController");
-
-        // Test DI
-        System.out.println(controller.greeting());
-        System.out.println(actx.getBean(PropertyInjectedController.class)
-                .sayHello());
-        System.out.println(actx.getBean(SetterInjectedController.class)
-                .sayHello());
-        System.out.println(actx.getBean(ConstructorInjectedController.class)
-                .sayHello());
-
-        JokeService jokeService = (JokeService) actx.getBean("jokeService");
-        System.out.println(jokeService.getJoke());
+        FakeDataSource fakeDataSource = actx.getBean(FakeDataSource.class);
+        System.out.println(fakeDataSource.getUser());
+        System.out.println(fakeDataSource.getPassword());
     }
 
 }///:~
