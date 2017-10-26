@@ -2,7 +2,6 @@
 
 package guru.springframework.spring5didemo.examplebeans;
 
-
 public class FakeDataSource {
 
     private String user;
