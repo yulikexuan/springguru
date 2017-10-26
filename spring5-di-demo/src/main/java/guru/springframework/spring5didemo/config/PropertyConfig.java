@@ -5,12 +5,18 @@ package guru.springframework.spring5didemo.config;
 
 import guru.springframework.spring5didemo.examplebeans.FakeDataSource;
 import guru.springframework.spring5didemo.examplebeans.FakeJmsBroker;
+import guru.springframework.spring5didemo.examplebeans.YamlBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+
+import java.util.List;
 
 
 @Configuration
+@PropertySource("classpath:example.yml")
 public class PropertyConfig {
 
     @Value("${guru.username}")
@@ -31,6 +37,20 @@ public class PropertyConfig {
     @Value("${guru.jms.url}")
     String jmsUrl;
 
+    /*
+     * YAML files can’t be loaded via the @PropertySource annotation. So in the
+     * case that you need to load values that way, you need to use a properties
+     * file.
+     */
+    @Value("${names}")
+    List<String> names;
+
+    @Bean
+    public static PropertySourcesPlaceholderConfigurer
+            propertySourcesPlaceholderConfigurer() {
+        return new PropertySourcesPlaceholderConfigurer();
+    }
+
     @Bean
     public FakeDataSource fakeDataSource() {
         FakeDataSource fakeDataSource = new FakeDataSource();
@@ -42,9 +62,13 @@ public class PropertyConfig {
 
     @Bean
     public FakeJmsBroker fakeJmsBroker() {
-        FakeJmsBroker fakeJmsBroker = new FakeJmsBroker(this.jmsUsername,
+        return new FakeJmsBroker(this.jmsUsername,
                 this.jmsPassword, this.jmsUrl);
-        return fakeJmsBroker;
+    }
+
+    @Bean
+    public YamlBean yamlBean() {
+        return new YamlBean(this.names);
     }
 
 }///~

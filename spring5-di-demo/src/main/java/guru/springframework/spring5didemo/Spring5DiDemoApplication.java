@@ -3,6 +3,7 @@ package guru.springframework.spring5didemo;
 
 import guru.springframework.spring5didemo.examplebeans.FakeDataSource;
 import guru.springframework.spring5didemo.examplebeans.FakeJmsBroker;
+import guru.springframework.spring5didemo.examplebeans.YamlBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -25,6 +26,9 @@ public class Spring5DiDemoApplication {
 
         FakeJmsBroker fakeJmsBroker = actx.getBean(FakeJmsBroker.class);
         System.out.println(fakeJmsBroker.getUsername());
+
+        YamlBean yamlBean = actx.getBean(YamlBean.class);
+        System.out.println(yamlBean.getNames());
     }
 
 }///:~

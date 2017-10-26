@@ -1,0 +1,41 @@
+# this is a comment
+
+name: John
+
+names: #Comment
+    - John
+    - Paul
+    - Ringo
+
+pound_sign: "#"
+
+book:
+    author: Joe Buck
+    publisher: random house
+
+truth: yes
+
+another_truth: True
+
+more_true: true
+
+false: no #No, false, FALSE
+
+string_val: "This is it's quote"
+
+colon_string: "my coureses: one two three"
+
+# | Literal style turns newlines within the string into literal newlines,
+#   and adds one at the end:
+# asdf asdf asdf\n asdf adfewf asdf\n asdf ae adfre\n
+include_new_lines: |
+  asdf asdf asdf
+  asdf adfewf asdf
+  asdf ae adfre
+
+# > Folded style removes the newlines within the string (but adds one at the end):
+# this is just one long string\n
+ignore_new_lines: >
+  this is
+  just one long
+  string
