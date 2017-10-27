@@ -39,4 +39,12 @@ public class FakeJmsBroker {
         this.url = url;
     }
 
+    @Override
+    public String toString() {
+        return "FakeJmsBroker{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", url='" + url + '\'' +
+                '}';
+    }
 }///~

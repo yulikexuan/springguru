@@ -3,7 +3,6 @@ package guru.springframework.spring5didemo;
 
 import guru.springframework.spring5didemo.examplebeans.FakeDataSource;
 import guru.springframework.spring5didemo.examplebeans.FakeJmsBroker;
-import guru.springframework.spring5didemo.examplebeans.YamlBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -11,8 +10,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"guru.externals.services",
-        "guru.springframework.spring5didemo"})
 public class Spring5DiDemoApplication {
 
     public static void main(String[] args) {
@@ -25,10 +22,8 @@ public class Spring5DiDemoApplication {
         System.out.println(fakeDataSource.getPassword());
 
         FakeJmsBroker fakeJmsBroker = actx.getBean(FakeJmsBroker.class);
-        System.out.println(fakeJmsBroker.getUsername());
+        System.out.println(fakeJmsBroker);
 
-        YamlBean yamlBean = actx.getBean(YamlBean.class);
-        System.out.println(yamlBean.getNames());
     }
 
 }///:~

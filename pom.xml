@@ -21,6 +21,7 @@
                 <module>spring5webapp</module>
                 <module>spring5-di-demo</module>
                 <module>spring5-jokes-app</module>
+                <module>spring5-recipe-app</module>
             </modules>
         </profile>
         

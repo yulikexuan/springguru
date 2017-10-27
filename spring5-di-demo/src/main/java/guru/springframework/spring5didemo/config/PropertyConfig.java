@@ -5,7 +5,6 @@ package guru.springframework.spring5didemo.config;
 
 import guru.springframework.spring5didemo.examplebeans.FakeDataSource;
 import guru.springframework.spring5didemo.examplebeans.FakeJmsBroker;
-import guru.springframework.spring5didemo.examplebeans.YamlBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -64,11 +63,6 @@ public class PropertyConfig {
     public FakeJmsBroker fakeJmsBroker() {
         return new FakeJmsBroker(this.jmsUsername,
                 this.jmsPassword, this.jmsUrl);
-    }
-
-    @Bean
-    public YamlBean yamlBean() {
-        return new YamlBean(this.names);
     }
 
 }///~
