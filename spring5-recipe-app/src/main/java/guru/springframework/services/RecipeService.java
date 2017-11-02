@@ -1,10 +1,9 @@
-//: guru.springframework.RecipeService.java
+//: guru.springframework.services.RecipeService.java
 
 
-package guru.springframework;
+package guru.springframework.services;
 
 
-import com.sun.org.apache.regexp.internal.RE;
 import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.IRecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;

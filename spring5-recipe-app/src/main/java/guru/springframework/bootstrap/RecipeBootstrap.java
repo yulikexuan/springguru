@@ -26,7 +26,6 @@ public class RecipeBootstrap implements
 
     private final IRecipeRepository recipeRepository;
     private final ICategoryRepository categoryRepository;
-    private final IIngredientRepository ingredientRepository;
     private final IUnitOfMeasureRepository unitOfMeasureRepository;
 
     private final RecipeBuilder recipeBuilder;
@@ -35,13 +34,11 @@ public class RecipeBootstrap implements
     @Autowired
     public RecipeBootstrap(IRecipeRepository recipeRepository,
             ICategoryRepository categoryRepository,
-            IIngredientRepository ingredientRepository,
             IUnitOfMeasureRepository unitOfMeasureRepository,
             RecipeBuilder recipeBuilder, IngredientBuilder ingredientBuilder) {
 
         this.recipeRepository = recipeRepository;
         this.categoryRepository = categoryRepository;
-        this.ingredientRepository = ingredientRepository;
         this.unitOfMeasureRepository = unitOfMeasureRepository;
         this.recipeBuilder = recipeBuilder;
         this.ingredientBuilder = ingredientBuilder;
@@ -125,7 +122,6 @@ public class RecipeBootstrap implements
                 "Purists may be horrified, but so what? It tastes great." +
                 "\n\n\nRead more: http://www.simplyrecipes.com/recipes/" +
                 "perfect_guacamole/#ixzz4jvoun5ws");
-        guacNotes.setRecipe(perfectGuacamole);
         perfectGuacamole.setNotes(guacNotes);
 
         this.recipeRepository.save(perfectGuacamole);
@@ -211,7 +207,6 @@ public class RecipeBootstrap implements
                 "and dig in. The whole meal comes together in about 30 " +
                 "minutes!\n\n\nRead more: http://www.simplyrecipes.com/" +
                 "recipes/spicy_grilled_chicken_tacos/#ixzz4jvu7Q0MJ");
-        tacoNotes.setRecipe(chickenTacos);
         chickenTacos.setNotes(tacoNotes);
 
         this.recipeRepository.save(chickenTacos);

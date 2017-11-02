@@ -1,7 +1,7 @@
-//: guru.springframework.IRecipeService.java
+//: guru.springframework.services.IRecipeService.java
 
 
-package guru.springframework;
+package guru.springframework.services;
 
 
 import guru.springframework.domain.Recipe;

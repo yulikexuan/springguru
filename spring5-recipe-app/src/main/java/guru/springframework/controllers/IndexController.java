@@ -3,20 +3,11 @@
 package guru.springframework.controllers;
 
 
-import guru.springframework.IRecipeService;
-import guru.springframework.domain.Category;
-import guru.springframework.domain.Recipe;
-import guru.springframework.domain.UnitOfMeasure;
-import guru.springframework.repositories.ICategoryRepository;
-import guru.springframework.repositories.IRecipeRepository;
-import guru.springframework.repositories.IUnitOfMeasureRepository;
+import guru.springframework.services.IRecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
-import java.util.Optional;
 
 
 @Controller
