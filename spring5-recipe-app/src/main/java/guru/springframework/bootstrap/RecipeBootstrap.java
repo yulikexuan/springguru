@@ -8,18 +8,20 @@ import guru.springframework.domain.*;
 import guru.springframework.domain.builders.IngredientBuilder;
 import guru.springframework.domain.builders.RecipeBuilder;
 import guru.springframework.repositories.ICategoryRepository;
-import guru.springframework.repositories.IIngredientRepository;
 import guru.springframework.repositories.IRecipeRepository;
 import guru.springframework.repositories.IUnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 
+@Slf4j
 @Component
 public class RecipeBootstrap implements
         ApplicationListener<ContextRefreshedEvent> {
@@ -45,6 +47,7 @@ public class RecipeBootstrap implements
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
 
         List<Category> allCategories = this.categoryRepository.findAll();
@@ -124,6 +127,7 @@ public class RecipeBootstrap implements
                 "perfect_guacamole/#ixzz4jvoun5ws");
         perfectGuacamole.setNotes(guacNotes);
 
+        this.log.info(">>>>> Saving perfect guacamole recipe ... ...");
         this.recipeRepository.save(perfectGuacamole);
 
         this.recipeBuilder.clear();
@@ -209,6 +213,7 @@ public class RecipeBootstrap implements
                 "recipes/spicy_grilled_chicken_tacos/#ixzz4jvu7Q0MJ");
         chickenTacos.setNotes(tacoNotes);
 
+        this.log.info(">>>>> Saving chicken tacos recipe ... ...");
         this.recipeRepository.save(chickenTacos);
 
     }// End of onApplicationEvent(...)

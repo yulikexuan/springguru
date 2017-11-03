@@ -16,7 +16,6 @@
             <th>Cooking Time</th>
             <th>Servings</th>
             <th>Difficulty</th>
-            <th>Directions</th>
         </tr>
 
         <tr th:each="recipy: ${allRecipes}">
@@ -25,7 +24,6 @@
             <td th:Text="${recipy.cookTime}">10</td>
             <td th:Text="${recipy.servings}">4</td>
             <td th:Text="${recipy.difficulty}">Medium</td>
-            <td th:Text="${recipy.directions}"
         </tr>
 
     </table>
