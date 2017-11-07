@@ -8,12 +8,15 @@ import guru.springframework.domain.Recipe;
 import guru.springframework.services.IRecipeService;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.ui.Model;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.times;
@@ -37,20 +40,31 @@ public class IndexControllerTest {
     @Test
     public void able_To_Inject_All_Recipes_Into_Index_Page() {
 
-        // Arrange
-
         // Given
-        Set<Recipe> recipes = Mockito.mock(Set.class);
+        Set<Recipe> recipes = new HashSet<>();
+        Recipe r1 = new Recipe();
+        r1.setDescription(UUID.randomUUID().toString());
+        Recipe r2 = new Recipe();
+        r2.setDescription(UUID.randomUUID().toString());
+
+        recipes.add(r1);
+        recipes.add(r2);
 
         when(this.recipeService.getAllRecipes()).thenReturn(recipes);
 
-        // Action
+        ArgumentCaptor<Set<Recipe>> recipesCaptor = ArgumentCaptor.forClass(
+                Set.class);
+
+        // When
         String pageName = this.indexController.getIndexPage(this.model);
 
-        // Assert
+        // Then
         assertEquals("index", pageName);
         verify(this.model, times(1)).addAttribute(
-                "allRecipes", recipes);
+                "allRecipes", recipesCaptor.capture());
+
+        Set<Recipe> actualRecipes = recipesCaptor.getValue();
+        assertEquals(actualRecipes.size(), 2);
     }
 
 }///:~
