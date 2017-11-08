@@ -24,6 +24,7 @@ public class RecipeServiceTest {
 
     @Mock
     private IRecipeRepository recipeRepository;
+
     private IRecipeService recipeService;
 
     @Before

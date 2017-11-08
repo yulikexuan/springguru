@@ -26,6 +26,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -73,7 +74,7 @@ public class IndexControllerTest {
         // Then
         assertEquals("index", pageName);
         verify(this.model, times(1)).addAttribute(
-                "allRecipes", recipesCaptor.capture());
+                eq("allRecipes"), recipesCaptor.capture());
 
         Set<Recipe> actualRecipes = recipesCaptor.getValue();
         assertEquals(actualRecipes.size(), 2);
