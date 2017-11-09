@@ -11,11 +11,21 @@
     <name>modules</name>
     
     <profiles>
+
+        <profile>
+            <id>current</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <modules>
+                <module>spring5-recipe-app</module>
+            </modules>
+        </profile>
         
         <profile>
             <id>all</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <modules>
                 <module>spring5webapp</module>
