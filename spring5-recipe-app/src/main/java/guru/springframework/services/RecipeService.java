@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -35,6 +36,11 @@ public class RecipeService implements IRecipeService {
                 allRecipes::add);
 
         return allRecipes;
+    }
+
+    @Override
+    public Optional<Recipe> findById(Long id) {
+        return this.recipeRepository.findById(id);
     }
 
 }///~

@@ -11,13 +11,11 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 
 public class RecipeServiceTest {
@@ -25,12 +23,39 @@ public class RecipeServiceTest {
     @Mock
     private IRecipeRepository recipeRepository;
 
+    private Random random;
     private IRecipeService recipeService;
 
     @Before
     public void setUp() throws Exception {
+        this.random = new Random(System.currentTimeMillis());
         MockitoAnnotations.initMocks(this);
         this.recipeService = new RecipeService(this.recipeRepository);
+    }
+
+    @Test
+    public void able_To_Get_A_Recipe_By_Its_ID() {
+
+        // Given
+        Long id = this.random.nextLong();
+        Recipe recipe = new Recipe();
+        recipe.setId(id);
+
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
+
+        when(this.recipeRepository.findById(id)).thenReturn(recipeOptional);
+
+        // When
+        Optional<Recipe> recipeReturned = this.recipeService.findById(id);
+
+        // Then
+        assertNotNull("Null recipe returned!", recipeReturned);
+
+        assertThat(recipeReturned.get(), is(recipe));
+
+        verify(this.recipeRepository, times(1))
+                .findById(id);
+        verify(this.recipeRepository, never()).findAll();
     }
 
     @Test
