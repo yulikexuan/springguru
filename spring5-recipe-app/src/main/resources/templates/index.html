@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="panel-body">
-
+                    <!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
                     <div class="table-responsive" th:if="${not #lists.isEmpty(allRecipes)}">
 
                         <table class="table table-hover ">
@@ -57,7 +57,6 @@
                                 <td><a href="#"></a></td>
                             </tr>
                             <tr th:each="recipe: ${allRecipes}">
-                                <!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
                                 <td th:Text="${recipe.id}">123</td>
                                 <td th:Text="${recipe.description}">Perfect Guacamole</td>
                                 <td>

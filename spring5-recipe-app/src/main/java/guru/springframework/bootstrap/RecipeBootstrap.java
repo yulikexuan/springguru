@@ -73,6 +73,7 @@ public class RecipeBootstrap implements
 
         Set<Category> categories = new HashSet<>();
         categories.add(categoryMap.get("Mexican"));
+        categories.add(categoryMap.get("American"));
         this.recipeBuilder.setCategories(categories);
 
         Recipe perfectGuacamole = this.recipeBuilder.build();
@@ -144,6 +145,7 @@ public class RecipeBootstrap implements
                 .setDifficulty(Difficulty.HARD);
 
         categories = new HashSet<>();
+        categories.add(categoryMap.get("American"));
         categories.add(categoryMap.get("Mexican"));
         this.recipeBuilder.setCategories(categories);
 
