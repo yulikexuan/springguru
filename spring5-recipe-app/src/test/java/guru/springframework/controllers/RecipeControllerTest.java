@@ -50,12 +50,15 @@ public class RecipeControllerTest {
         MockMvc mockMvc = MockMvcBuilders
                 .standaloneSetup(this.recipeController).build();
 
+        String url = "/recipe/show/" + id;
+
         // When
         when(this.recipeService.findById(id)).thenReturn(recipeOptional);
 
         // Then
-        mockMvc.perform(get("/recipe/show/1"))
+        mockMvc.perform(get(url))
                 .andExpect(status().isOk())
+                .andExpect(model().attributeExists("recipe"))
                 .andExpect(view().name("recipe/show"));
     }
 

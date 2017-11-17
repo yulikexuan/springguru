@@ -40,8 +40,11 @@
                             </div>
                             <div class="col-md-9">
                                 <!--/*@thymesVar id="category" type="guru.springframework.domain.Category"*/-->
-                                <ul th:each="category: ${recipe.categories}">
-                                    <li th:text="${category.getDescription()}">cat one</li>
+                                <ul>
+                                    <li th:remove="all">cat one</li>
+                                    <li th:remove="all">cat three</li>
+                                    <li th:each="category: ${recipe.categories}"
+                                        th:text="${category.getDescription()}">cat three</li>
                                 </ul>
                             </div>
                         </div>

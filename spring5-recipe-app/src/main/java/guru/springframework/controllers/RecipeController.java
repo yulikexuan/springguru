@@ -31,10 +31,11 @@ public class RecipeController {
         Optional<Recipe> recipeOptional =
                 this.recipeService.findById(Long.valueOf(id));
 
-        recipeOptional.ifPresent(r -> model.addAttribute(
-                "recipe", recipeOptional.get()));
+        if (recipeOptional.isPresent()) {
+            model.addAttribute("recipe", recipeOptional.get());
+        }
 
         return "recipe/show";
-    }
+     }
 
 }///~
