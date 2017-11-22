@@ -4,6 +4,10 @@
 package guru.springframework.services;
 
 
+import com.sun.org.apache.regexp.internal.RE;
+import guru.springframework.commands.RecipeCommand;
+import guru.springframework.converters.RecipeCommandToRecipe;
+import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.IRecipeRepository;
 import org.junit.Before;
@@ -26,11 +30,18 @@ public class RecipeServiceTest {
     private Random random;
     private IRecipeService recipeService;
 
+    @Mock
+    private RecipeCommandToRecipe recipeCommandToRecipe;
+
+    @Mock
+    private RecipeToRecipeCommand recipeToRecipeCommand;
+
     @Before
     public void setUp() throws Exception {
         this.random = new Random(System.currentTimeMillis());
         MockitoAnnotations.initMocks(this);
-        this.recipeService = new RecipeService(this.recipeRepository);
+        this.recipeService = new RecipeService(this.recipeRepository,
+                this.recipeCommandToRecipe, this.recipeToRecipeCommand);
     }
 
     @Test
@@ -73,6 +84,31 @@ public class RecipeServiceTest {
 
         // Assert
         assertEquals(recipes.size(), 1);
+    }
+
+    @Test
+    public void saveRecipeCommand() throws Exception {
+
+        // Given
+        Recipe recipe = mock(Recipe.class);
+        Recipe savedRecipe = mock(Recipe.class);
+        RecipeCommand originalCommand = mock(RecipeCommand.class);
+        RecipeCommand returnedCommand = mock(RecipeCommand.class);
+
+        when(this.recipeCommandToRecipe.convert(originalCommand))
+                .thenReturn(recipe);
+
+        when(this.recipeRepository.save(recipe)).thenReturn(savedRecipe);
+
+        when(this.recipeToRecipeCommand.convert(savedRecipe))
+                .thenReturn(returnedCommand);
+
+        // When
+        RecipeCommand result = this.recipeService.saveRecipeCommand(
+                originalCommand);
+
+        // Then
+        assertThat(result, is(returnedCommand));
     }
 
 }///:~

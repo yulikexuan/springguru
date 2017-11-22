@@ -15,6 +15,7 @@ import java.util.Set;
 @Scope("prototype")
 public class RecipeBuilder implements IModelBuilder<Recipe> {
 
+    private Long id;
     private String description;
     private Integer prepTime;
     private Integer cookTime;
@@ -29,6 +30,11 @@ public class RecipeBuilder implements IModelBuilder<Recipe> {
     private Byte[] image;
 
     public RecipeBuilder() {}
+
+    public RecipeBuilder setId(Long id) {
+        this.id = id;
+        return this;
+    }
 
     public RecipeBuilder setDescription(String description) {
         this.description = description;
@@ -95,6 +101,7 @@ public class RecipeBuilder implements IModelBuilder<Recipe> {
 
         Recipe recipe = new Recipe();
 
+        recipe.setId(this.id);
         recipe.setDescription(this.description);
         recipe.setPrepTime(this.prepTime);
         recipe.setCookTime(this.cookTime);

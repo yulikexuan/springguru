@@ -4,11 +4,15 @@
 package guru.springframework.services;
 
 
+import guru.springframework.commands.RecipeCommand;
+import guru.springframework.converters.RecipeCommandToRecipe;
+import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.IRecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -21,9 +25,16 @@ public class RecipeService implements IRecipeService {
 
     private final IRecipeRepository recipeRepository;
 
+    private final RecipeCommandToRecipe recipeCommandToRecipe;
+    private final RecipeToRecipeCommand recipeToRecipeCommand;
+
     @Autowired
-    public RecipeService(IRecipeRepository recipeRepository) {
+    public RecipeService(IRecipeRepository recipeRepository,
+                         RecipeCommandToRecipe recipeCommandToRecipe,
+                         RecipeToRecipeCommand recipeToRecipeCommand) {
         this.recipeRepository = recipeRepository;
+        this.recipeCommandToRecipe = recipeCommandToRecipe;
+        this.recipeToRecipeCommand = recipeToRecipeCommand;
     }
 
     @Override
@@ -41,6 +52,19 @@ public class RecipeService implements IRecipeService {
     @Override
     public Optional<Recipe> findById(Long id) {
         return this.recipeRepository.findById(id);
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
+
+        Recipe recipe = this.recipeCommandToRecipe.convert(recipeCommand);
+        Recipe savedRecipe = this.recipeRepository.save(recipe);
+
+        log.info("Saved recipe id is " + savedRecipe.getId());
+
+        return this.recipeToRecipeCommand.convert(savedRecipe);
     }
 
 }///~
