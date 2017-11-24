@@ -12,6 +12,8 @@ import lombok.*;
  *     especially a language
  */
 @Getter
+@Setter
+@NoArgsConstructor
 @EqualsAndHashCode(of = "description")
 @ToString(of = "description")
 public class UnitOfMeasureCommand {

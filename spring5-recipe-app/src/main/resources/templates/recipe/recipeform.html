@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Recipe Form</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
+
+    <script src="/webjars/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<!--/*@thymesVar id="recipe" type="guru.springframework.commands.RecipeCommand"*/-->
+<div class="container-fluid" style="margin-top: 20px">
+
+    <div class="row">
+        <div class="col-md-11"></div>
+        <div class="col-md-1"><a href="#" th:href="@{'/'}">Home</a></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <!--
+                Bootstrap provides three types of form layouts:
+                - Vertical form (this is default)
+                - Horizontal form
+                - Inline form
+                Standard rules for all three form layouts:
+                - Wrap labels and form controls in <div class="form-group">
+                  (needed for optimum spacing)
+                - Add class .form-control to all textual <input>, <textarea>,
+                  and <select> elements
+            -->
+            <form th:object="${recipe}" th:action="@{/recipe}" method="post">
+                <!--
+                     th:object attribute:
+                     - Thymeleaf requires to specify the command object by
+                       using a th:object attribute in <form> tag
+                     th:field attribute:
+                     - Binding input with a property in the form-backing bean
+                     - Values for th:field attributes must be selection
+                       expressions (*{...}), which makes sense given the fact
+                       that they will be evaluated on the form-backing bean and
+                       not on the context variables
+                -->
+                <input type="hidden" th:field="*{id}" />
+                <div class="pannel-group">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Edit Recipe</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label>Recipe Description</label>
+                                    <input type="text" class="form-control"
+                                           th:field="*{description}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 form-group">
+                                    <label>Categories: </label>
+                                </div>
+                                <div class="col-md-10 form-group">
+                                    <div class="checkbox-inline">
+                                        <label><input type="checkbox" value="">Cat 1</label>
+                                    </div>
+                                    <div class="checkbox-inline">
+                                        <label><input type="checkbox" value="">Cat 2</label>
+                                    </div>
+                                    <div class="checkbox-inline">
+                                        <label><input type="checkbox" value="">Cat 3</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <label>Prep Time</label>
+                                    <input type="text" class="form-control" th:field="*{prepTime}" />
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Cooktime Time</label>
+                                    <input type="text" class="form-control" th:field="*{cookTime}" />
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Difficulty</label>
+                                    <select class="form-control">
+                                        <option>Easy</option>
+                                        <option>Moderate</option>
+                                        <option>Kind of Hard</option>
+                                        <option>Hard</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2 form-group">
+                                    <label>Servings</label>
+                                    <input type="text" class="form-control" th:field="*{servings}" />
+                                </div>
+                                <div class="col-md-4 form-group">
+                                    <label>Source</label>
+                                    <input type="text" class="form-control" th:field="*{source}" />
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <label>URL</label>
+                                    <input type="text" class="form-control" th:field="*{url}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <h3 class="panel-title">Ingredients</h3>
+                                </div>
+                                <div class="col-md-2">
+                                    <a class="btn btn-default" href="#" role="button">Edit</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <ul>
+                                        <li th:remove="all">1 Cup of milk</li>
+                                        <li th:remove="all">1 Teaspoon of chocolate</li>
+                                        <li th:each="ingredient : ${recipe.ingredients}"
+                                            th:text="${(ingredient.getAmount() +
+                                            ' ' + ingredient.uomc.description + ' - '
+                                            + ingredient.description)}">1 Teaspoon of Sugar
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Directions</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <textarea class="form-control" rows="3"
+                                              th:field="*{directions}">
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Notes</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <textarea class="form-control" rows="3"
+                                              th:field="*{notes.recipeNotes}">
+                                    </textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

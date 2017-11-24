@@ -15,6 +15,8 @@ import java.math.BigDecimal;
  *     especially a language
  */
 @Getter
+@Setter
+@NoArgsConstructor
 @EqualsAndHashCode(exclude = "id")
 @ToString(exclude = "id")
 public class IngredientCommand {

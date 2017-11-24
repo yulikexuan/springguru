@@ -5,6 +5,8 @@ package guru.springframework.commands;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 /*
@@ -13,6 +15,8 @@ import lombok.ToString;
  *     especially a language
  */
 @Getter
+@Setter
+@NoArgsConstructor
 @ToString(of = "recipeNotes")
 public class NotesCommand {
 

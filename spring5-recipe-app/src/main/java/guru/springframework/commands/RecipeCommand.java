@@ -5,15 +5,15 @@ package guru.springframework.commands;
 
 
 import guru.springframework.domain.Difficulty;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
 
 @Getter
+@Setter
+@NoArgsConstructor
 @EqualsAndHashCode(of = "description")
 @ToString(of = "description")
 public class RecipeCommand {
