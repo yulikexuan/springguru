@@ -68,17 +68,23 @@
                                 <div class="col-md-2 form-group">
                                     <label>Categories: </label>
                                 </div>
-                                <div class="col-md-10 form-group">
-                                    <div class="checkbox-inline">
-                                        <label><input type="checkbox" value="">Cat 1</label>
-                                    </div>
-                                    <div class="checkbox-inline">
-                                        <label><input type="checkbox" value="">Cat 2</label>
-                                    </div>
-                                    <div class="checkbox-inline">
-                                        <label><input type="checkbox" value="">Cat 3</label>
-                                    </div>
-                                </div>
+                                <ul class="col-md-8 form-group">
+                                    <li th:each="category : *{categories}"
+                                        th:text="${category.id + ' - ' + category.description}">
+                                        <input type="hidden" th:field="${category.id}" />
+                                    </li>
+                                </ul>
+                                <!--<div >-->
+                                    <!--<div class="checkbox-inline">-->
+                                        <!--<label><input type="checkbox" value="">Cat 1</label>-->
+                                    <!--</div>-->
+                                    <!--<div class="checkbox-inline">-->
+                                        <!--<label><input type="checkbox" value="">Cat 2</label>-->
+                                    <!--</div>-->
+                                    <!--<div class="checkbox-inline">-->
+                                        <!--<label><input type="checkbox" value="">Cat 3</label>-->
+                                    <!--</div>-->
+                                <!--</div>-->
                             </div>
                             <div class="row">
                                 <div class="col-md-4 form-group">
@@ -162,6 +168,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="row">
+                                <input type="hidden" th:field="*{notes.id}" />
                                 <div class="col-md-12 form-group">
                                     <textarea class="form-control" rows="3"
                                               th:field="*{notes.recipeNotes}">

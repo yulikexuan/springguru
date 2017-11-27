@@ -12,6 +12,7 @@ import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.IRecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -28,7 +29,7 @@ public class RecipeServiceTest {
     private IRecipeRepository recipeRepository;
 
     private Random random;
-    private IRecipeService recipeService;
+    private RecipeService recipeService;
 
     @Mock
     private RecipeCommandToRecipe recipeCommandToRecipe;
@@ -109,6 +110,54 @@ public class RecipeServiceTest {
 
         // Then
         assertThat(result, is(returnedCommand));
+    }
+
+    @Test
+    public void able_To_find_The_RecipeCommand_By_Id() throws Exception {
+
+        // Given
+        Long id = this.random.nextLong();
+
+        Recipe recipe = mock(Recipe.class);
+        RecipeCommand command = mock(RecipeCommand.class);
+        Optional<Recipe> recipeOpt = Optional.of(recipe);
+
+        when(this.recipeRepository.findById(id)).thenReturn(recipeOpt);
+
+        when(this.recipeToRecipeCommand.convert(recipe)).thenReturn(command);
+
+        // When
+        RecipeCommand result = this.recipeService.findCommandById(id);
+
+        // Then
+        assertThat(result, is(command));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void maybe_Not_Able_To_Find_RecipeCommand_By_Id() {
+
+        // Given
+        Long id = this.random.nextLong();
+
+        Optional<Recipe> recipeOpt = Optional.empty();
+        when(this.recipeRepository.findById(id)).thenReturn(recipeOpt);
+
+        // When
+        this.recipeService.findCommandById(id);
+    }
+
+    @Test
+    public void able_To_Delete_A_Recipe_By_Its_Id() {
+
+        // Given
+        Long id = this.random.nextLong();
+
+        // When
+        this.recipeService.deleteById(id);
+
+        // Then
+        verify(this.recipeRepository, times(1))
+                .deleteById(id);
     }
 
 }///:~

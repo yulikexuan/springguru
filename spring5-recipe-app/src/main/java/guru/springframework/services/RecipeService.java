@@ -14,9 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 
 @Slf4j
@@ -37,6 +35,7 @@ public class RecipeService implements IRecipeService {
         this.recipeToRecipeCommand = recipeToRecipeCommand;
     }
 
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
     @Override
     public Set<Recipe> getAllRecipes() {
 
@@ -49,11 +48,29 @@ public class RecipeService implements IRecipeService {
         return allRecipes;
     }
 
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
     @Override
     public Optional<Recipe> findById(Long id) {
         return this.recipeRepository.findById(id);
     }
 
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    @Override
+    public RecipeCommand findCommandById(Long id) {
+
+        Optional<Recipe> recipeOpt = this.findById(id);
+
+        if (!recipeOpt.isPresent()) {
+            throw new RuntimeException("Recipe not found by id: " + id);
+        }
+
+        Recipe recipe = recipeOpt.get();
+
+        log.info(">>>>>>> Categories of " + recipe.getDescription() + ": " +
+                recipe.getCategories());
+
+        return this.recipeToRecipeCommand.convert(recipe);
+    }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -62,9 +79,15 @@ public class RecipeService implements IRecipeService {
         Recipe recipe = this.recipeCommandToRecipe.convert(recipeCommand);
         Recipe savedRecipe = this.recipeRepository.save(recipe);
 
-        log.info("Saved recipe id is " + savedRecipe.getId());
+        log.info(">>>>>>> Saved recipe id is " + savedRecipe.getId());
 
         return this.recipeToRecipeCommand.convert(savedRecipe);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void deleteById(Long id) {
+        this.recipeRepository.deleteById(id);
     }
 
 }///~

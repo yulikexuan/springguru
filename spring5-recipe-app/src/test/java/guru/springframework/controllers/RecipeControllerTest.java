@@ -13,14 +13,15 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -57,7 +58,7 @@ public class RecipeControllerTest {
 
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        String url = "/recipe/show/" + id;
+        String url = "/recipe/" + id + "/show";
 
         // When
         when(this.recipeService.findById(id)).thenReturn(recipeOptional);
@@ -82,7 +83,8 @@ public class RecipeControllerTest {
         when(this.recipeService.findById(id)).thenReturn(recipeOptional);
 
         // Then
-        this.mockMvc.perform(get("/recipe/show/" + Long.toString(id)))
+        this.mockMvc.perform(get(
+                "/recipe/" + Long.toString(id) + "/show"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("recipe",
                         Matchers.nullValue()))
@@ -102,7 +104,7 @@ public class RecipeControllerTest {
     }
 
     @Test
-    public void able_To_Save_Or_Update_RecipeCommand_From_Front_End()
+    public void able_To_Save_New_Recipe_Or_Update_Exist_Recipe()
             throws Exception {
 
         // Given
@@ -117,9 +119,45 @@ public class RecipeControllerTest {
 
         // When
         this.mockMvc.perform(post("/recipe")
-                        .param("description", "sladfjslad"))
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("description",
+                                UUID.randomUUID().toString()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/recipe/show/" + id));
+                .andExpect(redirectedUrl("/recipe/" + id + "/show"));
     }
 
+    @Test
+    public void able_To_Send_An_Exist_Recipe_To_A_Recipe_Form_To_Edit_It()
+            throws Exception {
+
+        // Given
+        Long id = this.random.nextLong();
+
+        RecipeCommand command = Mockito.mock(RecipeCommand.class);
+
+        when(this.recipeService.findCommandById(id)).thenReturn(command);
+
+        // When
+        this.mockMvc.perform(get("/recipe/" + id + "/update"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/recipe/recipeform"))
+                .andExpect(model().attributeExists("recipe"));
+    }
+
+    @Test
+    public void able_To_Handle_Delete_Recipe_By_Id_Request() throws Exception {
+
+        // Given
+        Long id = this.random.nextLong();
+        String idParam = Long.toString(id);
+
+        // When
+        this.mockMvc.perform(get("/recipe/" + idParam + "/delete"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/"));
+
+        // Then
+        verify(this.recipeService, times(1))
+                .deleteById(id);
+    }
 }///~
