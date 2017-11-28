@@ -12,8 +12,8 @@ import javax.persistence.Id;
 
 
 @Data
-@ToString(of = "description")
-@EqualsAndHashCode(of = {"description"})
+@ToString(of = {"id", "description"})
+@EqualsAndHashCode(of = {"id", "description"})
 @Entity
 public class UnitOfMeasure {
 

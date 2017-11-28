@@ -6,6 +6,7 @@ package guru.springframework.controllers;
 
 import guru.springframework.services.IIngredientService;
 import guru.springframework.services.IRecipeService;
+import guru.springframework.services.IUnitOfMeasureService;
 import guru.springframework.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,15 @@ public class IngredientController {
 
     private final IRecipeService recipeService;
     private final IIngredientService ingredientService;
+    private final IUnitOfMeasureService unitOfMeasureService;
 
     @Autowired
     public IngredientController(RecipeService recipeService,
-                                IIngredientService ingredientService) {
+                                IIngredientService ingredientService,
+                                IUnitOfMeasureService unitOfMeasureService) {
         this.recipeService = recipeService;
         this.ingredientService = ingredientService;
+        this.unitOfMeasureService = unitOfMeasureService;
     }
 
     @GetMapping
@@ -44,10 +48,10 @@ public class IngredientController {
 
     @GetMapping
     @RequestMapping("/recipe/{recipeId}/ingredient/{id}/show")
-    public String getIngredientFromRecipe(@PathVariable String recipeId,
-                                 @PathVariable String id, Model model) {
+    public String showIngredientOfRecipe(@PathVariable String recipeId,
+                                         @PathVariable String id, Model model) {
 
-        log.debug(">>>>>>> Getting the ingredient of the recipoe: " + id + "/"
+        log.debug(">>>>>>> Getting the ingredient of the recipe: " + id + "/"
                 + recipeId);
 
         model.addAttribute("ingredient",
@@ -55,6 +59,25 @@ public class IngredientController {
                         Long.valueOf(recipeId), Long.valueOf(id)));
 
         return "/recipe/ingredient/show";
+    }
+
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/{ingredientId}/update")
+    public String updateIngredientOfRecipe(@PathVariable String recipeId,
+                                           @PathVariable String ingredientId,
+                                           Model model) {
+
+        log.debug(">>>>>>> Getting the ingredient of the recipe: "
+                + ingredientId + "/" + recipeId);
+
+        model.addAttribute("ingredient",
+                this.ingredientService.findByRecipeIdAndIngredientId(
+                        Long.valueOf(recipeId), Long.valueOf(ingredientId)));
+
+        model.addAttribute("unitOfMeasures",
+                this.unitOfMeasureService.findAllUnitOfMeasureCommands());
+
+        return "/recipe/ingredient/ingredientform";
     }
 
 }///~

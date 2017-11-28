@@ -6,9 +6,10 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.IngredientCommand;
 import guru.springframework.commands.RecipeCommand;
+import guru.springframework.commands.UnitOfMeasureCommand;
 import guru.springframework.domain.Recipe;
-import guru.springframework.services.IngredientService;
-import guru.springframework.services.RecipeService;
+import guru.springframework.domain.UnitOfMeasure;
+import guru.springframework.services.*;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,9 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.Optional;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -37,18 +36,30 @@ public class IngredientControllerTest {
     private RecipeService recipeService;
 
     @Mock
-    private IngredientService ingredientService;
+    private IIngredientService ingredientService;
+
+    @Mock
+    private IUnitOfMeasureService unitOfMeasureService;
+
+    @Mock
+    private IngredientCommand ingredientCommand;
 
     private IngredientController controller;
 
     private Random random;
+    private Long ingredientId;
+    private Long recipeId;
 
     @Before
     public void setUp() throws Exception {
         this.random = new Random(System.currentTimeMillis());
+        this.ingredientId = this.random.nextLong();
+        this.recipeId = this.random.nextLong();
+
         MockitoAnnotations.initMocks(this);
+
         this.controller = new IngredientController(this.recipeService,
-                this.ingredientService);
+                this.ingredientService, this.unitOfMeasureService);
         this.mockMvc = MockMvcBuilders.standaloneSetup(this.controller).build();
     }
 
@@ -74,23 +85,19 @@ public class IngredientControllerTest {
     }
 
     @Test
-    public void able_To_Handle_Get_Request_To_Get_An_Ingredient_Of_A_Recipe()
+    public void able_To_Handle_Get_Request_To_Show_An_Ingredient_Of_A_Recipe()
             throws Exception {
 
         // Given
-        Long id = 1L;
-        Long recipeId = 2L;
-
-        IngredientCommand command = mock(IngredientCommand.class);
-
-        when(this.ingredientService.findByRecipeIdAndIngredientId(recipeId, id))
-                .thenReturn(command);
+        when(this.ingredientService.findByRecipeIdAndIngredientId(
+                this.recipeId, this.ingredientId)).thenReturn(
+                        this.ingredientCommand);
 
         StringBuilder apiBuilder = new StringBuilder();
         String api = apiBuilder.append("/recipe/")
-                .append(recipeId)
+                .append(this.recipeId)
                 .append("/ingredient/")
-                .append(id)
+                .append(this.ingredientId)
                 .append("/show")
                 .toString();
 
@@ -100,6 +107,38 @@ public class IngredientControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("/recipe/ingredient/show"))
                 .andExpect(model().attributeExists("ingredient"));
+    }
+
+    @Test
+    public void able_To_Handle_Get_Request_To_Show_An_Ingredient_Form()
+            throws Exception {
+
+        // Given
+        when(this.ingredientService.findByRecipeIdAndIngredientId(
+                this.recipeId, this.ingredientId)).thenReturn(
+                this.ingredientCommand);
+
+        Set<UnitOfMeasureCommand> uomcs = new HashSet<>();
+        when(this.unitOfMeasureService.findAllUnitOfMeasureCommands())
+                .thenReturn(uomcs);
+
+        StringBuilder apiBuilder = new StringBuilder();
+        String api = apiBuilder.append("/recipe/")
+                .append(this.recipeId)
+                .append("/ingredient/")
+                .append(this.ingredientId)
+                .append("/update")
+                .toString();
+
+        // When
+        this.mockMvc.perform(
+                get(api))
+                .andExpect(status().isOk())
+                .andExpect(view().name(
+                        "/recipe/ingredient/ingredientform"))
+                .andExpect(model().attributeExists("ingredient"))
+                .andExpect(model().attributeExists("unitOfMeasures"));
+
     }
 
 }///~
