@@ -66,10 +66,9 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
         }
 
         Set<IngredientCommand> ingredientCommands = command.getIngredients();
-        Set<Ingredient> ingredients = recipe.getIngredients();
         if (ingredientCommands != null) {
             ingredientCommands.iterator().forEachRemaining(
-                    i -> ingredients.add(this.ingredientConverter.convert(i)));
+                    i -> recipe.addIngredient(this.ingredientConverter.convert(i)));
         }
 
         return recipe;

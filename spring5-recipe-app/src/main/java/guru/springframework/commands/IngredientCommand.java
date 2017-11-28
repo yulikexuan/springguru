@@ -22,13 +22,15 @@ import java.math.BigDecimal;
 public class IngredientCommand {
 
     private Long id;
+    private Long recipeId;
     private String description;
     private BigDecimal amount;
     private UnitOfMeasureCommand uomc;
 
-    private IngredientCommand(Long id, String description, BigDecimal amount,
-                              UnitOfMeasureCommand uomc) {
+    private IngredientCommand(Long id, Long recipeId, String description,
+                              BigDecimal amount, UnitOfMeasureCommand uomc) {
         this.id = id;
+        this.recipeId = recipeId;
         this.description = description;
         this.amount = amount;
         this.uomc = uomc;
@@ -37,12 +39,18 @@ public class IngredientCommand {
     public static final class Builder {
 
         private Long id;
+        private Long recipeId;
         private String description;
         private BigDecimal amount;
         private UnitOfMeasureCommand uomc;
 
         public Builder setId(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder setRecipeId(Long recipeId) {
+            this.recipeId = recipeId;
             return this;
         }
 
@@ -62,8 +70,8 @@ public class IngredientCommand {
         }
 
         public IngredientCommand createIngredientCommand() {
-            return new IngredientCommand(this.id, this.description, this.amount,
-                    this.uomc);
+            return new IngredientCommand(this.id, this.recipeId,
+                    this.description, this.amount,this.uomc);
         }
 
     }//: End of IngredientCommand

@@ -30,4 +30,8 @@ public class Ingredient {
 
     public Ingredient() {}
 
+    public Long getRecipeId() {
+        return (this.recipe == null) ? null : this.recipe.getId();
+    }
+
 }///~

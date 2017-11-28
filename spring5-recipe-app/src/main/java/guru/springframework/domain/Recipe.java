@@ -54,4 +54,12 @@ public class Recipe {
         }
     }
 
+    public Recipe addIngredient(Ingredient ingredient) {
+        if (ingredient != null) {
+            this.ingredients.add(ingredient);
+            ingredient.setRecipe(this);
+        }
+        return this;
+    }
+
 }///~

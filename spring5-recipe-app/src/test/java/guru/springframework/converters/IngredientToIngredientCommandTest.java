@@ -7,6 +7,7 @@ package guru.springframework.converters;
 import guru.springframework.commands.IngredientCommand;
 import guru.springframework.commands.UnitOfMeasureCommand;
 import guru.springframework.domain.Ingredient;
+import guru.springframework.domain.Recipe;
 import guru.springframework.domain.UnitOfMeasure;
 import guru.springframework.domain.builders.IngredientBuilder;
 import org.junit.Before;
@@ -67,8 +68,12 @@ public class IngredientToIngredientCommandTest {
     }
 
     private Ingredient createIngredient() {
+        Long recipeId = this.random.nextLong();
+        Recipe recipe = new Recipe();
+        recipe.setId(recipeId);
         return new IngredientBuilder()
                 .setId(this.id)
+                .setRecipe(recipe)
                 .setDescription(this.description)
                 .setAmount(this.amount)
                 .setUom(this.uom)

@@ -38,6 +38,7 @@ public class IngredientToIngredientCommand implements
 
         return new IngredientCommand.Builder()
                 .setId(ingredient.getId())
+                .setRecipeId(ingredient.getRecipeId())
                 .setDescription(ingredient.getDescription())
                 .setAmount(ingredient.getAmount())
                 .setUomc(this.uomConverter.convert(ingredient.getUom()))
