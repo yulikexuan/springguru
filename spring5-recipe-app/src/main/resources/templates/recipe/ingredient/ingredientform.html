@@ -29,7 +29,7 @@
 
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            <form th:object="${ingredient}" th:action="@{'/recipe/' + ${ingredient.getRecipeId()} + '/ingredient'} ">
+            <form th:object="${ingredient}" th:action="@{'/recipe/' + ${ingredient.recipeId} + '/ingredient'} ">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="pannel-group">
                     <div class="panel panel-primary">
@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="col-md-3 form-group">
                                     <label>UOM:</label>
-                                    <select class="form-control" name="uom.id">
+                                    <select class="form-control" th:field="*{uomc.id}">
                                         <option th:each="uomc : ${unitOfMeasures}"
                                                 th:value="${uomc.id}"
                                                 th:selected="${uomc.id.equals(ingredient.uomc.id)}"

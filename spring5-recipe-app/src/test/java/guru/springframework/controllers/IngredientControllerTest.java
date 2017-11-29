@@ -7,10 +7,7 @@ package guru.springframework.controllers;
 import guru.springframework.commands.IngredientCommand;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.commands.UnitOfMeasureCommand;
-import guru.springframework.domain.Recipe;
-import guru.springframework.domain.UnitOfMeasure;
 import guru.springframework.services.*;
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -139,6 +136,38 @@ public class IngredientControllerTest {
                 .andExpect(model().attributeExists("ingredient"))
                 .andExpect(model().attributeExists("unitOfMeasures"));
 
+    }
+
+    @Test
+    public void able_To_Handle_Post_Request_To_Save_Or_Update_Ingredient()
+            throws Exception {
+
+        // Given
+        when(this.ingredientService
+                .saveIngredientCommand(Mockito.any(IngredientCommand.class)))
+                .thenReturn(this.ingredientCommand);
+
+        when(this.ingredientCommand.getRecipeId()).thenReturn(this.recipeId);
+        when(this.ingredientCommand.getId()).thenReturn(this.ingredientId);
+
+        String postUrl = "/recipe/" + this.recipeId + "/ingredient";
+
+        StringBuilder redirectedUrlBuilder = new StringBuilder();
+        String redirectedUrl = redirectedUrlBuilder
+                .append("/recipe/")
+                .append(this.recipeId)
+                .append("/ingredient/")
+                .append(this.ingredientId)
+                .append("/show")
+                .toString();
+
+
+        // When
+        this.mockMvc.perform(post(postUrl)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("description", UUID.randomUUID().toString()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(redirectedUrl));
     }
 
 }///~
