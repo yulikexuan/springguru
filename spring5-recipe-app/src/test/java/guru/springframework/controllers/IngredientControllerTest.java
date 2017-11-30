@@ -170,4 +170,30 @@ public class IngredientControllerTest {
                 .andExpect(redirectedUrl(redirectedUrl));
     }
 
+    @Test
+    public void able_To_Show_Ingredient_Form_For_Creating_New_Ingredient()
+            throws Exception {
+
+        // Given
+        String requestUrl = "/recipe/" + this.recipeId + "/ingredient/new";
+        String formUrl = "/recipe/ingredient/ingredientform";
+
+        when(this.recipeService.existById(this.recipeId)).thenReturn(true);
+
+        Set<UnitOfMeasureCommand> unitOfMeasures = new HashSet<>();
+        when(this.unitOfMeasureService.findAllUnitOfMeasureCommands())
+                .thenReturn(unitOfMeasures);
+
+        // When
+        this.mockMvc.perform(get(requestUrl))
+                .andExpect(status().isOk())
+                .andExpect(view().name(formUrl))
+                .andExpect(model().attributeExists("ingredient"))
+                .andExpect(model().attributeExists("unitOfMeasures"));
+
+        // Then
+        verify(this.recipeService, times(1))
+                .existById(this.recipeId);
+    }
+
 }///~

@@ -5,6 +5,7 @@ package guru.springframework.controllers;
 
 
 import guru.springframework.commands.IngredientCommand;
+import guru.springframework.commands.UnitOfMeasureCommand;
 import guru.springframework.services.IIngredientService;
 import guru.springframework.services.IRecipeService;
 import guru.springframework.services.IUnitOfMeasureService;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 
 @Slf4j
@@ -58,6 +61,27 @@ public class IngredientController {
                         Long.valueOf(recipeId), Long.valueOf(id)));
 
         return "/recipe/ingredient/show";
+    }
+
+    @GetMapping
+    @RequestMapping("/recipe/{recipeId}/ingredient/new")
+    public String showIngredientFormForCreatingNew(
+            @PathVariable String recipeId, Model model) {
+
+        Long id = Long.valueOf(recipeId);
+        String viewName = "/";
+        if (this.recipeService.existById(id)) {
+            IngredientCommand ingredient = new IngredientCommand.Builder()
+                    .setRecipeId(id).createIngredientCommand();
+            model.addAttribute("ingredient", ingredient);
+
+            Set<UnitOfMeasureCommand> unitOfMeasures =
+                    this.unitOfMeasureService.findAllUnitOfMeasureCommands();
+            model.addAttribute("unitOfMeasures", unitOfMeasures);
+
+            viewName = "/recipe/ingredient/ingredientform";
+        }
+        return viewName;
     }
 
     @GetMapping

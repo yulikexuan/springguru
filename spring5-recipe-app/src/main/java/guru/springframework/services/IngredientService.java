@@ -75,7 +75,7 @@ public class IngredientService implements IIngredientService {
 
     @Override
     public IngredientCommand saveIngredientCommand(
-            IngredientCommand ingredientCommand) {
+            final IngredientCommand ingredientCommand) {
 
         IngredientCommand savedIngredientCommand = null;
 
@@ -117,15 +117,26 @@ public class IngredientService implements IIngredientService {
                         () -> new RuntimeException("UOM not found!")));
 
             } else {
-                foundRecipe.addIngredient(this.ingredientCommandToIngredient.
-                        convert(ingredientCommand));
+                String newDesc = ingredientCommand.getDescription();
+                if (!foundRecipe.getIngredients().stream()
+                        .filter(i -> i.getDescription().equals(newDesc))
+                        .findFirst()
+                        .isPresent()) {
+                    foundRecipe.addIngredient(this.ingredientCommandToIngredient.
+                            convert(ingredientCommand));
+                } else {
+                    throw new RuntimeException(
+                            "Ingredient already exists in recipe: "
+                                    + foundRecipe.getId());
+                }
             }
 
             Recipe savedRecipe = this.recipeRepository.save(foundRecipe);
 
             Ingredient savedIngredient = savedRecipe.getIngredients()
                     .stream()
-                    .filter(i -> i.getId().equals(ingredientId))
+                    .filter(i -> i.getDescription().equals(
+                            ingredientCommand.getDescription()))
                     .findFirst()
                     .get();
 

@@ -4,7 +4,6 @@
 package guru.springframework.services;
 
 
-import com.sun.org.apache.regexp.internal.RE;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converters.RecipeCommandToRecipe;
 import guru.springframework.converters.RecipeToRecipeCommand;
@@ -12,7 +11,10 @@ import guru.springframework.domain.Recipe;
 import guru.springframework.repositories.IRecipeRepository;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.experimental.theories.DataPoint;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -23,6 +25,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 
+@RunWith(Theories.class)
 public class RecipeServiceTest {
 
     @Mock
@@ -158,6 +161,24 @@ public class RecipeServiceTest {
         // Then
         verify(this.recipeRepository, times(1))
                 .deleteById(id);
+    }
+
+    @DataPoint public static boolean positive = true;
+    @DataPoint public static boolean negative = false;
+    @Theory
+    public void able_To_Know_If_A_Recipe_Id_Exists(boolean exists) throws
+            Exception {
+
+        // Give
+        Long recipeId = this.random.nextLong();
+
+        when(this.recipeRepository.existsById(recipeId)).thenReturn(exists);
+
+        // When
+        boolean actuallyExists = this.recipeService.existById(recipeId);
+
+        // Then
+        assertThat(actuallyExists, is(exists));
     }
 
 }///:~

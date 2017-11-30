@@ -84,6 +84,11 @@ public class RecipeService implements IRecipeService {
         return this.recipeToRecipeCommand.convert(savedRecipe);
     }
 
+    @Override
+    public boolean existById(Long id) {
+        return this.recipeRepository.existsById(id);
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteById(Long id) {

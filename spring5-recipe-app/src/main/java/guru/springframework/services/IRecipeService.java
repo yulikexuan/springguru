@@ -17,5 +17,9 @@ public interface IRecipeService {
     Optional<Recipe> findById(Long id);
     RecipeCommand findCommandById(Long id);
     RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand);
+
+    boolean existById(Long id);
+
     void deleteById(Long id);
+
 }///~
