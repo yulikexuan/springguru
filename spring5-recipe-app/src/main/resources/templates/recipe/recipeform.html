@@ -97,7 +97,15 @@
                                 </div>
                                 <div class="col-md-4 form-group">
                                     <label>Difficulty</label>
-                                    <select class="form-control">
+                                    <!-- The T() operator of the Spring EL can be use to call static method -->
+                                    <select class="form-control" th:field="*{difficulty}">
+                                        <option th:each="difficultyValue : ${T(guru.springframework.domain.Difficulty).values()}"
+                                                th:value="${difficultyValue.name()}"
+                                                th:text="${difficultyValue.name()}">
+                                            Easy
+                                        </option>
+                                    </select>
+                                    <select class="form-control" th:remove="all">
                                         <option>Easy</option>
                                         <option>Moderate</option>
                                         <option>Kind of Hard</option>

@@ -27,8 +27,7 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @GetMapping
-    @RequestMapping("/recipe/{id}/show")
+    @GetMapping("/recipe/{id}/show")
     public String showById(@PathVariable String id, Model model) {
 
         Optional<Recipe> recipeOptional =
@@ -41,8 +40,7 @@ public class RecipeController {
         return "recipe/show";
      }
 
-    @GetMapping
-    @RequestMapping("recipe/new")
+    @GetMapping("recipe/new")
     public String newRecipe(Model model) {
         model.addAttribute("recipe",
                 new RecipeCommand.Builder().createRecipeCommand());
@@ -54,8 +52,7 @@ public class RecipeController {
      * - Specifically, @PostMapping is a composed annotation that acts as a
      *   shortcut for @RequestMapping(method = RequestMethod.POST)
      */
-    @PostMapping
-    @RequestMapping("recipe")
+    @PostMapping("/recipe")
     public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
         RecipeCommand savedCommand = this.recipeService.saveRecipeCommand(
                 command);
@@ -75,8 +72,7 @@ public class RecipeController {
         return "redirect:/recipe/" + savedCommand.getId() + "/show";
     }
 
-    @GetMapping
-    @RequestMapping("/recipe/{id}/update")
+    @GetMapping("/recipe/{id}/update")
     public String showFormToUpdateRecipe(@PathVariable String id, Model model) {
 
         RecipeCommand command = this.recipeService.findCommandById(
@@ -87,8 +83,7 @@ public class RecipeController {
         return "/recipe/recipeform";
     }
 
-    @GetMapping
-    @RequestMapping("/recipe/{id}/delete")
+    @GetMapping("/recipe/{id}/delete")
     public String deleteById(@PathVariable String id) {
         log.debug(">>>>>>> Deleting recipe by id: " + id);
         this.recipeService.deleteById(Long.valueOf(id));
