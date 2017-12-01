@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Data
@@ -60,6 +61,19 @@ public class Recipe {
             ingredient.setRecipe(this);
         }
         return this;
+    }
+
+    public void removeIngredient(Long ingredientId) {
+
+        Set<Ingredient> removed = this.ingredients.stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .collect(Collectors.toSet());
+
+        // Very important: Let Hibernate remove the relationship between
+        // the recipe and the deleted ingredient
+        removed.stream().forEach(i -> i.setRecipe(null));
+
+        this.ingredients.removeAll(removed);
     }
 
 }///~

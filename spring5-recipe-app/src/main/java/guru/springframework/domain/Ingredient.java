@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 
 @Data
-@EqualsAndHashCode(of = {"description", "recipe"})
+@EqualsAndHashCode(of = {"id", "description"})
 @ToString(of = {"id", "description", "recipe"})
 @Entity
 public class Ingredient {

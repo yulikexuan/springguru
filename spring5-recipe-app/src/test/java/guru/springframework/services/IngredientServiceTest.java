@@ -72,25 +72,31 @@ public class IngredientServiceTest {
         Recipe recipe = new Recipe();
         recipe.setId(recipeId);
 
+        String desc_0 = UUID.randomUUID().toString();
+        String desc_2 = UUID.randomUUID().toString();
+
         Ingredient ingredient_0 = new Ingredient();
         ingredient_0.setId(1L);
+        ingredient_0.setDescription(desc_0);
 
         Ingredient ingredient_1 = new Ingredient();
-        ingredient_0.setId(1L);
+        ingredient_1.setId(1L);
+        ingredient_1.setDescription(desc_0);
 
-        Ingredient ingredient_3 = new Ingredient();
-        ingredient_0.setId(3L);
+        Ingredient ingredient_2 = new Ingredient();
+        ingredient_2.setId(3L);
+        ingredient_2.setDescription(desc_2);
 
         recipe.addIngredient(ingredient_0);
         recipe.addIngredient(ingredient_1);
-        recipe.addIngredient(ingredient_3);
+        recipe.addIngredient(ingredient_2);
 
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
         when(this.recipeRepository.findById(recipeId)).thenReturn(
                 recipeOptional);
 
-        when(this.ingredientToIngredientCommand.convert(ingredient_3))
+        when(this.ingredientToIngredientCommand.convert(ingredient_2))
                 .thenReturn(ingredientCommand);
 
         // When
@@ -166,5 +172,35 @@ public class IngredientServiceTest {
                 .setAmount(amount);
 
     }// End of able_To_Update_Existing_Ingredient()
+
+    @Test
+    public void able_To_Delete_An_Ingredient_From_Recipe() throws Exception {
+
+        // Given
+        Long recipeId = this.random.nextLong();
+        Long ingredientId = this.random.nextLong();
+
+        Recipe foundRecipe = new Recipe();
+        Ingredient ingredient = new Ingredient();
+        foundRecipe.setId(recipeId);
+        ingredient.setId(ingredientId);
+        String desc = UUID.randomUUID().toString();
+        ingredient.setDescription(desc);
+        foundRecipe.addIngredient(ingredient);
+
+        Optional<Recipe> recipeOpt = Optional.of(foundRecipe);
+
+        when(this.recipeRepository.findById(recipeId)).thenReturn(recipeOpt);
+
+        when(this.recipeRepository.save(foundRecipe)).thenReturn(foundRecipe);
+
+        // When
+        this.ingredientService.deleteIngredientCommand(recipeId, ingredientId);
+
+        // Then
+        assertThat(foundRecipe.getIngredients().size(), is(0));
+        verify(this.recipeRepository, times(1))
+                .save(foundRecipe);
+    }
 
 }///:~

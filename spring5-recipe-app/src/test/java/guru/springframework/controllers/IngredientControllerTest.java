@@ -196,4 +196,32 @@ public class IngredientControllerTest {
                 .existById(this.recipeId);
     }
 
+    @Test
+    public void able_To_Delete_An_Ingredient_From_A_Recipe() throws Exception {
+
+        // Given
+        String delUrl = new StringBuilder()
+                .append("/recipe/")
+                .append(this.recipeId)
+                .append("/ingredient/")
+                .append(this.ingredientId)
+                .append("/delete")
+                .toString();
+
+        String redirectUrl = new StringBuilder()
+                .append("/recipe/")
+                .append(this.recipeId)
+                .append("/ingredients")
+                .toString();
+
+        // When
+        this.mockMvc.perform(get(delUrl))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(redirectUrl));
+
+        // Then
+        verify(this.ingredientService, times(1))
+                .deleteIngredientCommand(this.recipeId, this.ingredientId);
+    }
+
 }///~

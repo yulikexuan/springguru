@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -58,19 +60,22 @@ public class IngredientService implements IIngredientService {
 
         Recipe recipe = recipeOptional.get();
 
-        Optional<IngredientCommand> ingredientOptioanl = recipe.getIngredients()
+        Set<Ingredient> ingredients = recipe.getIngredients();
+
+        Set<IngredientCommand> ingredientCommands = recipe.getIngredients()
                 .stream()
                 .filter(i -> i.getId().equals(ingredientId))
                 .map(i -> ingredientToIngredientCommand.convert(i))
-                .findFirst();
+                .collect(Collectors.toSet());
 
-        if (!ingredientOptioanl.isPresent()) {
+
+        if (ingredientCommands.size() == 0) {
             String errMsg = ">>>>>>> Ingredient not found by id:" + ingredientId;
             this.log.debug(errMsg);
             throw new RuntimeException(errMsg);
         }
 
-        return ingredientOptioanl.get();
+        return ingredientCommands.iterator().next();
     }
 
     @Override
@@ -146,6 +151,20 @@ public class IngredientService implements IIngredientService {
         }// End of if (!recipoeOpt.isPresent())
 
         return savedIngredientCommand;
+    }
+
+    @Transactional
+    @Override
+    public void deleteIngredientCommand(Long recipeId, Long ingredientId) {
+        Optional<Recipe> recipeOpt = this.recipeRepository.findById(recipeId);
+        Recipe foundRecipe = recipeOpt.orElseThrow(
+                () -> new RuntimeException("Recipe not found!:"));
+        foundRecipe.removeIngredient(ingredientId);
+        Recipe deleted = this.recipeRepository.save(foundRecipe);
+        Set<Ingredient> fi = deleted.getIngredients().stream()
+                .filter(i -> i.getId().equals(ingredientId))
+                .collect(Collectors.toSet());
+        log.info("Deleted ? " + (fi.size() == 0));
     }
 
 }///~
