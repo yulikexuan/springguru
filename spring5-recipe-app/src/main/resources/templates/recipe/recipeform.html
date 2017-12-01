@@ -63,12 +63,21 @@
                                     <input type="text" class="form-control"
                                            th:field="*{description}" />
                                 </div>
+                                <div class="col-md-8">
+                                    <img src="../../static/images/guacamole400x400WithX.jpg"
+                                         th:src="@{/images/guacamole400x400WithX.jpg}"
+                                         width="200" height="200">
+                                    <a class="btn btn-link" href="#"
+                                       th:href="@{'/recipe/' + ${recipe.id} + '/image'}">
+                                        Change Image
+                                    </a>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-2 form-group">
                                     <label>Categories: </label>
                                 </div>
-                                <ul class="col-md-8 form-group">
+                                <ul class="col-md-10 form-group">
                                     <li th:each="category : *{categories}"
                                         th:text="${category.id + ' - ' + category.description}">
                                         <input type="hidden" th:field="${category.id}" />

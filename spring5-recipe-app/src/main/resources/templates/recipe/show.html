@@ -35,10 +35,10 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
-                            <div class="col-md-3">
+                            <div class="col-md-1">
                                 <label>Categories:</label>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-4">
                                 <!--/*@thymesVar id="category" type="guru.springframework.domain.Category"*/-->
                                 <ul>
                                     <li th:remove="all">cat one</li>
@@ -46,6 +46,11 @@
                                     <li th:each="category: ${recipe.categories}"
                                         th:text="${category.getDescription()}">cat three</li>
                                 </ul>
+                            </div>
+                            <div class="col-md-7">
+                                <img src="../../static/images/guacamole400x400WithX.jpg"
+                                     th:src="@{/images/guacamole400x400WithX.jpg}"
+                                     width="230" height="200">
                             </div>
                         </div>
                         <div class="row">
