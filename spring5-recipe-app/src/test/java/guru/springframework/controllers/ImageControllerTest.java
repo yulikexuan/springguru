@@ -82,7 +82,7 @@ public class ImageControllerTest {
         String locationHeader = "/recipe/" + this.recipeId + "/update";
 
         MockMultipartFile multipartFile = new MockMultipartFile(
-                "imageFile",
+                "imagefile",
                 "testing.txt",
                 "text/plain",
                 "Spring Framework Guru".getBytes());
