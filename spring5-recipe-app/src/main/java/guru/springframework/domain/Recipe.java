@@ -45,6 +45,9 @@ public class Recipe {
         inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
 
+    /*
+     * Using Byte[] other than byte[]: this is a hibernate recommendation
+     */
     @Lob
     private Byte[] image;
 
