@@ -12,17 +12,18 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Random;
 
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -95,6 +96,37 @@ public class ImageControllerTest {
         // Then
         verify(this.imageService, times(1))
                 .saveImage(this.recipeId, multipartFile);
+    }
+
+    @Test
+    public void able_To_Load_Image_From_Database() throws Exception {
+
+        // Given
+        String imageUrl = "/recipe/" + this.recipeId + "/recipeimage";
+
+        RecipeCommand recipeCommand = mock(RecipeCommand.class);
+        when(this.recipeService.findCommandById(this.recipeId))
+                .thenReturn(recipeCommand);
+
+        String str = "Fake image bytes";
+        byte[] bytes = str.getBytes();
+        Byte[] image = new Byte[bytes.length];
+
+        for (int i = 0; i < bytes.length; i++) {
+            image[i] = bytes[i];
+        }
+
+        when(recipeCommand.getImage()).thenReturn(image);
+
+        // When
+        MockHttpServletResponse response = this.mockMvc
+                .perform(get(imageUrl))
+                .andExpect(status().isOk())
+                .andReturn().getResponse();
+
+        // Then
+        assertThat(response.getContentType(), is("image/jpeg"));
+        assertThat(response.getContentAsByteArray(), is(bytes));
     }
 
 }///:~

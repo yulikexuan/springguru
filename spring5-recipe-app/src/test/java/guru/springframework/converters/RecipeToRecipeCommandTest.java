@@ -126,6 +126,8 @@ public class RecipeToRecipeCommandTest {
 
         when(this.notesConverter.convert(notes)).thenReturn(notesCommand);
 
+        Byte[] image = new Byte[10];
+
         final Recipe recipe = new RecipeBuilder()
                 .setId(id)
                 .setCookTime(cookTime)
@@ -139,6 +141,7 @@ public class RecipeToRecipeCommandTest {
                 .setNotes(notes)
                 .setCategories(categories)
                 .setIngredients(ingredients)
+                .setImage(image)
                 .build();
 
         // When
@@ -156,6 +159,7 @@ public class RecipeToRecipeCommandTest {
         assertThat(command.getSource(), is(source));
         assertThat(command.getUrl(), is(url));
         assertThat(command.getNotes(), is(notesCommand));
+        assertThat(command.getImage(), is(image));
 
         assertThat(command.getCategories().size(),
                 is(categoryCommandArr.length));

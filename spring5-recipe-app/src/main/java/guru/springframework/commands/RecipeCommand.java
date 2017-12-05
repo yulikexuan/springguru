@@ -30,13 +30,14 @@ public class RecipeCommand {
     private Set<IngredientCommand> ingredients = new HashSet<>();
     private NotesCommand notes;
     private Set<CategoryCommand> categories = new HashSet<>();
-    // private Byte[] image;
+    private Byte[] image;
 
     private RecipeCommand(Long id, String description, Integer prepTime,
                           Integer cookTime, Integer servings, String source,
                           String url, String directions, Difficulty difficulty,
                           Set<IngredientCommand> ingredients,
-                          NotesCommand notes, Set<CategoryCommand> categories) {
+                          NotesCommand notes, Set<CategoryCommand> categories,
+                          Byte[] image) {
         this.id = id;
         this.description = description;
         this.prepTime = prepTime;
@@ -49,6 +50,7 @@ public class RecipeCommand {
         this.ingredients = ingredients;
         this.notes = notes;
         this.categories = categories;
+        this.image = image;
     }
 
     public static final class Builder {
@@ -65,6 +67,7 @@ public class RecipeCommand {
         private Set<IngredientCommand> ingredients;
         private NotesCommand notes;
         private Set<CategoryCommand> categories;
+        private Byte[] image;
 
         public Builder setId(Long id) {
             this.id = id;
@@ -126,10 +129,15 @@ public class RecipeCommand {
             return this;
         }
 
+        public Builder setImage(Byte[] image) {
+            this.image = image;
+            return this;
+        }
+
         public RecipeCommand createRecipeCommand() {
             return new RecipeCommand(id, description, prepTime, cookTime,
                     servings, source, url, directions, difficulty, ingredients,
-                    notes, categories);
+                    notes, categories, image);
         }
 
     }//: End of class Builder
