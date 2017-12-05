@@ -6,6 +6,7 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.domain.Recipe;
+import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.services.RecipeService;
 import org.hamcrest.Matchers;
 import org.junit.Before;
@@ -160,4 +161,23 @@ public class RecipeControllerTest {
         verify(this.recipeService, times(1))
                 .deleteById(id);
     }
+
+    @Test
+    public void able_To_Show_404error_Page_When_Getting_NotFoundException()
+            throws Exception {
+
+        // Given
+        Long id = this.random.nextLong();
+
+        String url = "/recipe/" + id + "/update";
+
+        when(this.recipeService.findCommandById(id))
+                .thenThrow(NotFoundException.class);
+
+        // When
+        this.mockMvc.perform(get(url))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("404error"));
+    }
+
 }///~

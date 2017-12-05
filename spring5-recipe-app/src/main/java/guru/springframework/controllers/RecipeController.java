@@ -6,12 +6,15 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.domain.Recipe;
+import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.services.IRecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
 
@@ -93,6 +96,24 @@ public class RecipeController {
         log.debug(">>>>>>> Deleting recipe by id: " + id);
         this.recipeService.deleteById(Long.valueOf(id));
         return "redirect:/";
+    }
+
+    /*
+     * We have to explicitly annotate this handler method with
+     * @ResponseStatus(HttpStatus.NOT_FOUND) here because the NotFoundException
+     * class has already been annotated by @ResponseStatus (taking precedence)
+     * and makes this method be bypassed
+     */
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundException.class)
+    public ModelAndView handleNotFound() {
+
+        log.error(">>>>>>> Handling NotFoundException ... ... ");
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("404error");
+
+        return mav;
     }
 
 }///~

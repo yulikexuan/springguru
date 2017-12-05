@@ -8,6 +8,7 @@ import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converters.RecipeCommandToRecipe;
 import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.domain.Recipe;
+import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.repositories.IRecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,12 @@ public class RecipeService implements IRecipeService {
     @Transactional(readOnly = true, rollbackFor = Exception.class)
     @Override
     public Optional<Recipe> findById(Long id) {
-        return this.recipeRepository.findById(id);
+        Optional<Recipe> recipeOpt = this.recipeRepository.findById(id);
+        if (!recipeOpt.isPresent()) {
+            throw new NotFoundException("Recipe not found according to the id "
+                    + id);
+        }
+        return recipeOpt;
     }
 
     @Transactional(readOnly = true, rollbackFor = Exception.class)
@@ -84,6 +90,7 @@ public class RecipeService implements IRecipeService {
         return this.recipeToRecipeCommand.convert(savedRecipe);
     }
 
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
     @Override
     public boolean existById(Long id) {
         return this.recipeRepository.existsById(id);
