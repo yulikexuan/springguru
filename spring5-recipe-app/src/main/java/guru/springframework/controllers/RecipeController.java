@@ -13,15 +13,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 
 @Slf4j
 @Controller
 public class RecipeController {
+
+    static final String RECIPE_FORM_URL = "recipe/recipeform";
 
     private final IRecipeService recipeService;
 
@@ -49,17 +53,33 @@ public class RecipeController {
     public String newRecipe(Model model) {
         model.addAttribute("recipe",
                 new RecipeCommand.Builder().createRecipeCommand());
-        return "recipe/recipeform";
+        return RECIPE_FORM_URL;
     }
 
     /*
      * Annotation for mapping HTTP POST requests onto specific handler methods.
      * - Specifically, @PostMapping is a composed annotation that acts as a
      *   shortcut for @RequestMapping(method = RequestMethod.POST)
+     *
+     * @Valid:
+     * - Marks a property, method parameter or method return type for
+     *   validation cascading
+     * - Constraints defined on the object and its properties are be validated
+     *   when the property, method parameter or method return type is validated
+     * - This behavior is applied recursively
      */
     @PostMapping
     @RequestMapping("recipe")
-    public String saveOrUpdate(@ModelAttribute RecipeCommand command) {
+    public String saveOrUpdate(@Valid @ModelAttribute RecipeCommand command,
+                               BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(
+                    err -> log.debug(">>>>>>> " + err.toString()));
+            model.addAttribute("recipe", command);
+            return RECIPE_FORM_URL;
+        }
+
         RecipeCommand savedCommand = this.recipeService.saveRecipeCommand(
                 command);
         /*

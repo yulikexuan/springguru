@@ -125,9 +125,34 @@ public class RecipeControllerTest extends AbstractControllerTest {
         this.mockMvc.perform(post("/recipe")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("description",
+                                UUID.randomUUID().toString())
+                        .param("directions",
                                 UUID.randomUUID().toString()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/recipe/" + id + "/show"));
+    }
+
+    @Test
+    public void able_To_Back_To_Form_Page_If_Any_Field_Is_Invalid()
+            throws Exception {
+
+        // Given
+        RecipeCommand savedCommand = Mockito.mock(RecipeCommand.class);
+
+        when(this.recipeService
+                .saveRecipeCommand(Mockito.any(RecipeCommand.class)))
+                .thenReturn(savedCommand);
+
+        Long id = this.random.nextLong();
+        when(savedCommand.getId()).thenReturn(id);
+
+        // When
+        this.mockMvc.perform(post("/recipe")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", ""))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("recipe"))
+                .andExpect(view().name(RecipeController.RECIPE_FORM_URL));
     }
 
     @Test
