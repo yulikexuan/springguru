@@ -181,4 +181,14 @@ public class RecipeControllerTest {
                 .andExpect(view().name("404error"));
     }
 
+    @Test
+    public void able_To_Handle_NumberFormatException() throws Exception {
+
+        // When
+        this.mockMvc.perform(get("/recipe/23lkfj34/show"))
+                .andExpect(status().isBadRequest())
+                .andExpect(model().attributeExists("exception"))
+                .andExpect(view().name("400error"));
+    }
+
 }///~
