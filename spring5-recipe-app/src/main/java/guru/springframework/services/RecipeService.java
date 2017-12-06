@@ -54,8 +54,7 @@ public class RecipeService implements IRecipeService {
     public Optional<Recipe> findById(Long id) {
         Optional<Recipe> recipeOpt = this.recipeRepository.findById(id);
         if (!recipeOpt.isPresent()) {
-            throw new NotFoundException("Recipe not found according to the id "
-                    + id);
+            throw new NotFoundException("Recipe not found by id: " + id);
         }
         return recipeOpt;
     }
@@ -67,7 +66,7 @@ public class RecipeService implements IRecipeService {
         Optional<Recipe> recipeOpt = this.findById(id);
 
         if (!recipeOpt.isPresent()) {
-            throw new RuntimeException("Recipe not found by id: " + id);
+            throw new NotFoundException("Recipe not found by id: " + id);
         }
 
         Recipe recipe = recipeOpt.get();

@@ -33,11 +33,16 @@
                         404 Not Found Error
                     </div>
                     <div class="panel-body">
+                        <!--/*@thymesVar id="exception" type="java.lang.Exception"*/-->
+                        <p style="color: #FF2200" th:text="${exception.message}">
+                            Recipe not found by id: 5
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 </body>
