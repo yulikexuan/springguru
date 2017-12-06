@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-public class ImageControllerTest {
+public class ImageControllerTest extends AbstractControllerTest {
 
     @Mock
     private IImageService imageService;
@@ -37,20 +37,26 @@ public class ImageControllerTest {
     @Mock
     private IRecipeService recipeService;
 
-    private MockMvc mockMvc;
     private ImageController controller;
 
-    private Random random;
     private Long recipeId;
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
-        this.random = new Random(System.currentTimeMillis());
+        super.setUp();
         this.recipeId = this.random.nextLong();
+    }
+
+    @Override
+    Object initController() {
         this.controller = new ImageController(this.imageService,
                 this.recipeService);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(this.controller).build();
+        return this.controller;
+    }
+
+    @Override
+    String getInvalidUrl() {
+        return "/recipe/123abc/image";
     }
 
     @Test
@@ -130,3 +136,4 @@ public class ImageControllerTest {
     }
 
 }///:~
+

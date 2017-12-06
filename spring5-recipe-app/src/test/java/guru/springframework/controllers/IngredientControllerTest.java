@@ -25,9 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-public class IngredientControllerTest {
-
-    private MockMvc mockMvc;
+public class IngredientControllerTest extends AbstractControllerTest {
 
     @Mock
     private RecipeService recipeService;
@@ -43,21 +41,26 @@ public class IngredientControllerTest {
 
     private IngredientController controller;
 
-    private Random random;
     private Long ingredientId;
     private Long recipeId;
 
     @Before
     public void setUp() throws Exception {
-        this.random = new Random(System.currentTimeMillis());
+        super.setUp();
         this.ingredientId = this.random.nextLong();
         this.recipeId = this.random.nextLong();
+    }
 
-        MockitoAnnotations.initMocks(this);
-
+    @Override
+    Object initController() {
         this.controller = new IngredientController(this.recipeService,
                 this.ingredientService, this.unitOfMeasureService);
-        this.mockMvc = MockMvcBuilders.standaloneSetup(this.controller).build();
+        return this.controller;
+    }
+
+    @Override
+    String getInvalidUrl() {
+        return "/recipe/123abc456/ingredients";
     }
 
     @Test

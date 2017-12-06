@@ -28,24 +28,27 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-public class RecipeControllerTest {
-
-    private MockMvc mockMvc;
+public class RecipeControllerTest extends AbstractControllerTest {
 
     @Mock
     private RecipeService recipeService;
 
     private RecipeController recipeController;
 
-    private Random random;
-
     @Before
     public void setUp() throws Exception {
-        this.random = new Random(System.currentTimeMillis());
-        MockitoAnnotations.initMocks(this);
+        super.setUp();
+    }
+
+    @Override
+    Object initController() {
         this.recipeController = new RecipeController(this.recipeService);
-        this.mockMvc = MockMvcBuilders
-                .standaloneSetup(this.recipeController).build();
+        return this.recipeController;
+    }
+
+    @Override
+    String getInvalidUrl() {
+        return "/recipe/123abc/show";
     }
 
     @Test
@@ -179,16 +182,6 @@ public class RecipeControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(model().attributeExists("exception"))
                 .andExpect(view().name("404error"));
-    }
-
-    @Test
-    public void able_To_Handle_NumberFormatException() throws Exception {
-
-        // When
-        this.mockMvc.perform(get("/recipe/23lkfj34/show"))
-                .andExpect(status().isBadRequest())
-                .andExpect(model().attributeExists("exception"))
-                .andExpect(view().name("400error"));
     }
 
 }///~
