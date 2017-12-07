@@ -149,7 +149,10 @@ public class RecipeControllerTest extends AbstractControllerTest {
         // When
         this.mockMvc.perform(post("/recipe")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", ""))
+                .param("id", "")
+                .param("description", "D")
+                .param("cookTime", "0")
+                .param("url", "abs"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("recipe"))
                 .andExpect(view().name(RecipeController.RECIPE_FORM_URL));
