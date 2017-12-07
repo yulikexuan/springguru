@@ -67,16 +67,29 @@ public class RecipeController {
      * - Constraints defined on the object and its properties are be validated
      *   when the property, method parameter or method return type is validated
      * - This behavior is applied recursively
+     *
+     * @ModelAttribute
+     * - The @ModelAttribute is an annotation that binds a method parameter or
+     *   method return value to a named model attribute and then exposes it to
+     *   a web view
+     * - When used as a method argument, it indicates the argument should be
+     *   retrieved from the model
+     *   - When not present, it should be first instantiated and then added to
+     *     the model
+     *   - Once present in the model, the arguments fields should be populated
+     *     from all request parameters that have matching names
+     *
+     *   "recipe" is required!!!  @ModelAttribute("recipe")
      */
     @PostMapping
     @RequestMapping("recipe")
-    public String saveOrUpdate(@Valid @ModelAttribute RecipeCommand command,
-                               BindingResult bindingResult, Model model) {
+    public String saveOrUpdate(
+            @Valid @ModelAttribute("recipe") RecipeCommand command,
+            BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             bindingResult.getAllErrors().forEach(
                     err -> log.debug(">>>>>>> " + err.toString()));
-            model.addAttribute("recipe", command);
             return RECIPE_FORM_URL;
         }
 
