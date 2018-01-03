@@ -49,10 +49,6 @@ public class RecipeBootstrap implements
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        this.initDB();
-    }// End of onApplicationEvent(...)
-
-    private void initDB() {
 
         List<Category> allCategories = this.categoryRepository.findAll();
         Map<String, Category> categoryMap = new HashMap<>();
@@ -99,7 +95,7 @@ public class RecipeBootstrap implements
 
         this.ingredientBuilder.clear();
         this.ingredientBuilder.setDescription("Fresh lime juice or lemon " +
-                "juice")
+                    "juice")
                 .setAmount(BigDecimal.valueOf(1))
                 .setUom(uomMap.get("Tablespoon"))
                 .setRecipe(perfectGuacamole);
@@ -107,7 +103,7 @@ public class RecipeBootstrap implements
 
         this.ingredientBuilder.clear();
         this.ingredientBuilder.setDescription("Minced red onion or thinly " +
-                "sliced green onion")
+                    "sliced green onion")
                 .setAmount(BigDecimal.valueOf(2))
                 .setUom(uomMap.get("Tablespoon"))
                 .setRecipe(perfectGuacamole);
@@ -221,6 +217,7 @@ public class RecipeBootstrap implements
 
         this.log.info(">>>>> Saving chicken tacos recipe ... ...");
         this.recipeRepository.save(chickenTacos);
-    }
+
+    }// End of onApplicationEvent(...)
 
 }///~
