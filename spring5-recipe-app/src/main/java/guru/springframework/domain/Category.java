@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"description", "recipe"})
+@EqualsAndHashCode(of = {"description"})
 @ToString(of = "description")
 @Entity
 public class Category {
