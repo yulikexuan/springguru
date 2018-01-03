@@ -32,6 +32,7 @@
                 <module>spring5-di-demo</module>
                 <module>spring5-jokes-app</module>
                 <module>spring5-recipe-app</module>
+                <module>spring-boot-mongodb</module>
             </modules>
         </profile>
         
