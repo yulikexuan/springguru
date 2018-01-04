@@ -14,3 +14,17 @@ spring:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     database: mysql
     show-sql: true
+#   Create the schema for MySQL database: use hibernate to generate it
+#     create source of metadata which is going to basically do reflection upon
+#     guru domains entities, generate a file named 'guru_db_ceate.sql' and
+#     the project route for getting this file
+#     Then, run this file inside of MySQL and generate the schema, tables and
+#     relationships
+#    properties:
+#      javax:
+#        persistence:
+#          schema-generation:
+#            create-source: metadata
+#            scripts:
+#              action: create
+#              create-target: guru_db_create.sql
