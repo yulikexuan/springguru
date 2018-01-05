@@ -1,0 +1,10 @@
+# logging.level.guru.springframework=debug
+spring:
+  datasource:
+    platform: h2
+  jpa:
+    hibernate:
+#     Using embedded database, create-drop is a default value,
+#     drop the schema at the end of the session
+      ddl-auto: create-drop
+    show-sql: true

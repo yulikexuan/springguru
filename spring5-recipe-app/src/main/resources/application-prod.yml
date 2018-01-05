@@ -5,11 +5,13 @@ spring:
 #   Should pass password as an environment variable
 #   Or, set up encryption on that
     password: guru
+    platform: mysql
   jpa:
     hibernate:
 #     Let hibernate go in and check the schema, make sure that the schema that
 #         it finds is as expected
 #     Do not let hibernate do DDL changes
+#     validate: validate the schema, makes no changes to the database
       ddl-auto: validate
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     database: mysql
