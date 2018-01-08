@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 
 
 @Controller
@@ -40,8 +39,7 @@ public class ImageController {
     @GetMapping("/recipe/{recipeId}/image")
     public String getImageForm(@PathVariable String recipeId, Model model) {
 
-        RecipeCommand recipe = this.recipeService.findCommandById(
-                Long.valueOf(recipeId));
+        RecipeCommand recipe = this.recipeService.findCommandById(recipeId);
 
         model.addAttribute("recipe", recipe);
 
@@ -53,7 +51,7 @@ public class ImageController {
             @PathVariable String recipeId,
             @RequestParam("imagefile") MultipartFile file) {
 
-        this.imageService.saveImage(Long.valueOf(recipeId), file);
+        this.imageService.saveImage(recipeId, file);
 
         return "redirect:/recipe/" + recipeId + "/update";
     }
@@ -63,7 +61,7 @@ public class ImageController {
             HttpServletResponse response) throws IOException {
 
         RecipeCommand recipeCommand = this.recipeService.findCommandById(
-                Long.valueOf(recipeId));
+                recipeId);
 
         Byte[] image = recipeCommand.getImage();
         if (image != null) {

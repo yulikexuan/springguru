@@ -46,16 +46,16 @@ public class UnitOfMeasureServiceTest {
         // Given
         List<UnitOfMeasure> unitOfMeasures = new ArrayList<>();
         UnitOfMeasure uom1 = new UnitOfMeasure();
-        uom1.setId(1L);
+        uom1.setId(1L + "");
         uom1.setDescription(UUID.randomUUID().toString());
 
         UnitOfMeasure uom2 = new UnitOfMeasure();
-        uom2.setId(2L);
+        uom2.setId(2L + "");
         uom2.setDescription(UUID.randomUUID().toString());
 
         UnitOfMeasure uom3 = new UnitOfMeasure();
         uom3.setDescription(UUID.randomUUID().toString());
-        uom3.setId(3L);
+        uom3.setId(3L + "");
 
         unitOfMeasures.add(uom1);
         unitOfMeasures.add(uom2);

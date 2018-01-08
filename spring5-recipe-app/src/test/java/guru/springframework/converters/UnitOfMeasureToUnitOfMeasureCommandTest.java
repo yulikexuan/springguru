@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 public class UnitOfMeasureToUnitOfMeasureCommandTest {
 
     private Random random;
-    private Long id;
+    private String id;
     private String description;
 
     private UnitOfMeasureToUnitOfMeasureCommand converter;
@@ -26,7 +26,7 @@ public class UnitOfMeasureToUnitOfMeasureCommandTest {
     @Before
     public void setUp() throws Exception {
         this.random = new Random(System.currentTimeMillis());
-        this.id = this.random.nextLong();
+        this.id = this.random.nextLong() + "";
         this.description = UUID.randomUUID().toString();
         this.converter = new UnitOfMeasureToUnitOfMeasureCommand();
     }

@@ -29,7 +29,7 @@ public class IngredientToIngredientCommandTest {
 
     private Random random;
 
-    private Long id;
+    private String id;
     private String description;
     private BigDecimal amount;
 
@@ -50,7 +50,7 @@ public class IngredientToIngredientCommandTest {
         MockitoAnnotations.initMocks(this);
 
         this.random = new Random(System.currentTimeMillis());
-        this.id = this.random.nextLong();
+        this.id = this.random.nextLong() + "";
         this.description = UUID.randomUUID().toString();
         this.amount = new BigDecimal(this.random.nextDouble());
 
@@ -68,7 +68,7 @@ public class IngredientToIngredientCommandTest {
     }
 
     private Ingredient createIngredient() {
-        Long recipeId = this.random.nextLong();
+        String recipeId = this.random.nextLong() + "";
         Recipe recipe = new Recipe();
         recipe.setId(recipeId);
         return new IngredientBuilder()

@@ -46,8 +46,8 @@ public class IngredientService implements IIngredientService {
 
     @Transactional
     @Override
-    public IngredientCommand findByRecipeIdAndIngredientId(Long recipeId,
-                                                           Long ingredientId) {
+    public IngredientCommand findByRecipeIdAndIngredientId(String recipeId,
+                                                           String ingredientId) {
 
         Optional<Recipe> recipeOptional = this.recipeRepository.findById(
                 recipeId);
@@ -88,8 +88,8 @@ public class IngredientService implements IIngredientService {
             return savedIngredientCommand;
         }
 
-        Long recipeId = ingredientCommand.getRecipeId();
-        Long ingredientId = ingredientCommand.getId();
+        String recipeId = ingredientCommand.getRecipeId();
+        String ingredientId = ingredientCommand.getId();
 
         // Find recipe
         Optional<Recipe> recipoeOpt = this.recipeRepository.findById(recipeId);
@@ -113,7 +113,7 @@ public class IngredientService implements IIngredientService {
                         getDescription());
                 foundIngredient.setAmount(ingredientCommand.getAmount());
 
-                Long uomId = ingredientCommand.getUomc().getId();
+                String uomId = ingredientCommand.getUomc().getId();
 
                 Optional<UnitOfMeasure> foundUom = this.uomRepository.findById(
                         uomId);
@@ -155,7 +155,7 @@ public class IngredientService implements IIngredientService {
 
     @Transactional
     @Override
-    public void deleteIngredientCommand(Long recipeId, Long ingredientId) {
+    public void deleteIngredientCommand(String recipeId, String ingredientId) {
         Optional<Recipe> recipeOpt = this.recipeRepository.findById(recipeId);
         Recipe foundRecipe = recipeOpt.orElseThrow(
                 () -> new RuntimeException("Recipe not found!:"));

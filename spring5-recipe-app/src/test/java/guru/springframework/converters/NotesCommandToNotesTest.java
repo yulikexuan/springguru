@@ -20,7 +20,7 @@ public class NotesCommandToNotesTest {
 
     private Random random;
 
-    private Long id;
+    private String id;
     private String recipeNotes;
 
     private NotesCommandToNotes converter;
@@ -28,7 +28,7 @@ public class NotesCommandToNotesTest {
     @Before
     public void setUp() {
         this.random = new Random(System.currentTimeMillis());
-        this.id = this.random.nextLong();
+        this.id = this.random.nextLong() + "";
         this.recipeNotes = UUID.randomUUID().toString();
         this.converter = new NotesCommandToNotes();
     }

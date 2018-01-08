@@ -4,6 +4,7 @@
 package guru.springframework.repositories;
 
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 
+@Ignore
 @DataJpaTest
 @RunWith(SpringRunner.class)
 public class ICategoryRepositoryIT {

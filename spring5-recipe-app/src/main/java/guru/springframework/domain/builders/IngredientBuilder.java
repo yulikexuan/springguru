@@ -17,13 +17,13 @@ import java.math.BigDecimal;
 @Scope("prototype")
 public class IngredientBuilder implements IModelBuilder<Ingredient> {
 
-    private Long id;
+    private String id;
     private String description;
     private BigDecimal amount;
     private UnitOfMeasure uom;
     private Recipe recipe;
 
-    public IngredientBuilder setId(Long id) {
+    public IngredientBuilder setId(String id) {
         this.id = id;
         return this;
     }

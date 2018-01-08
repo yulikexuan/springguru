@@ -6,6 +6,7 @@ package guru.springframework.repositories;
 
 import guru.springframework.domain.UnitOfMeasure;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
@@ -46,6 +47,7 @@ import static org.junit.Assert.*;
  *
  *     @AutoConfigureTestDatabase(replace=Replace.NONE)
  */
+@Ignore
 @DataJpaTest
 @RunWith(SpringRunner.class)
 public class IUnitOfMeasureRepositoryIT {

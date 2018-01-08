@@ -41,14 +41,14 @@ public class IngredientControllerTest extends AbstractControllerTest {
 
     private IngredientController controller;
 
-    private Long ingredientId;
-    private Long recipeId;
+    private String ingredientId;
+    private String recipeId;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        this.ingredientId = this.random.nextLong();
-        this.recipeId = this.random.nextLong();
+        this.ingredientId = this.random.nextLong() + "";
+        this.recipeId = this.random.nextLong() + "";
     }
 
     @Override
@@ -68,7 +68,7 @@ public class IngredientControllerTest extends AbstractControllerTest {
             throws Exception {
 
         // Given
-        Long id = this.random.nextLong();
+        String id = this.random.nextLong() + "";
         RecipeCommand command = mock(RecipeCommand.class);
 
         when(this.recipeService.findCommandById(id)).thenReturn(command);

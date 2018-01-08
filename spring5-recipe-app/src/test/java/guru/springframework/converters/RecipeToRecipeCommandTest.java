@@ -66,7 +66,7 @@ public class RecipeToRecipeCommandTest {
         // Given
         Random random = new Random(System.currentTimeMillis());
 
-        Long id = random.nextLong();
+        String id = random.nextLong() + "";
         String description = UUID.randomUUID().toString();
         Integer cookTime = random.nextInt();
         Integer prepTime = random.nextInt();

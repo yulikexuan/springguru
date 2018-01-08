@@ -5,23 +5,12 @@ package guru.springframework.domain;
 
 import lombok.*;
 
-import javax.persistence.*;
-
 
 @Data
 @ToString(of = {"recipe", "recipeNotes"})
 @EqualsAndHashCode(of = {"recipe"})
-@Entity
 public class Notes {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @OneToOne(mappedBy = "notes")
+    private String id;
     private Recipe recipe;
-
-    @Lob
     private String recipeNotes;
-
 }///~

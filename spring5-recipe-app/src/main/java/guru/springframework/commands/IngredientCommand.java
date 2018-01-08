@@ -21,13 +21,13 @@ import java.math.BigDecimal;
 @ToString(exclude = "id")
 public class IngredientCommand {
 
-    private Long id;
-    private Long recipeId;
+    private String id;
+    private String recipeId;
     private String description;
     private BigDecimal amount;
     private UnitOfMeasureCommand uomc;
 
-    private IngredientCommand(Long id, Long recipeId, String description,
+    private IngredientCommand(String id, String recipeId, String description,
                               BigDecimal amount, UnitOfMeasureCommand uomc) {
         this.id = id;
         this.recipeId = recipeId;
@@ -38,18 +38,18 @@ public class IngredientCommand {
 
     public static final class Builder {
 
-        private Long id;
-        private Long recipeId;
+        private String id;
+        private String recipeId;
         private String description;
         private BigDecimal amount;
         private UnitOfMeasureCommand uomc;
 
-        public Builder setId(Long id) {
+        public Builder setId(String id) {
             this.id = id;
             return this;
         }
 
-        public Builder setRecipeId(Long recipeId) {
+        public Builder setRecipeId(String recipeId) {
             this.recipeId = recipeId;
             return this;
         }

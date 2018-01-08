@@ -53,7 +53,7 @@ public class RecipeServiceTest {
     public void able_To_Get_A_Recipe_By_Its_ID() {
 
         // Given
-        Long id = this.random.nextLong();
+        String id = this.random.nextLong() + "";
         Recipe recipe = new Recipe();
         recipe.setId(id);
 
@@ -80,7 +80,7 @@ public class RecipeServiceTest {
 
         // Given
         Optional<Recipe> recipeOpt = Optional.empty();
-        Long id = this.random.nextLong();
+        String id = this.random.nextLong() + "";
         when(this.recipeRepository.findById(id)).thenReturn(recipeOpt);
 
         // When
@@ -133,7 +133,7 @@ public class RecipeServiceTest {
     public void able_To_find_The_RecipeCommand_By_Id() throws Exception {
 
         // Given
-        Long id = this.random.nextLong();
+        String id = this.random.nextLong() + "";
 
         Recipe recipe = mock(Recipe.class);
         RecipeCommand command = mock(RecipeCommand.class);
@@ -154,7 +154,7 @@ public class RecipeServiceTest {
     public void maybe_Not_Able_To_Find_RecipeCommand_By_Id() {
 
         // Given
-        Long id = this.random.nextLong();
+        String id = this.random.nextLong() + "";
 
         Optional<Recipe> recipeOpt = Optional.empty();
         when(this.recipeRepository.findById(id)).thenReturn(recipeOpt);
@@ -167,7 +167,7 @@ public class RecipeServiceTest {
     public void able_To_Delete_A_Recipe_By_Its_Id() {
 
         // Given
-        Long id = this.random.nextLong();
+        String id = this.random.nextLong() + "";
 
         // When
         this.recipeService.deleteById(id);
@@ -184,7 +184,7 @@ public class RecipeServiceTest {
             Exception {
 
         // Give
-        Long recipeId = this.random.nextLong();
+        String recipeId = this.random.nextLong()  + "";
 
         when(this.recipeRepository.existsById(recipeId)).thenReturn(exists);
 

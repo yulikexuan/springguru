@@ -19,20 +19,20 @@ import lombok.*;
 @ToString(of = "description")
 public class CategoryCommand {
 
-    private Long id;
+    private String id;
     private String description;
 
-    private CategoryCommand(Long id, String description) {
+    private CategoryCommand(String id, String description) {
         this.id = id;
         this.description = description;
     }
 
     public static final class Builder {
 
-        private Long id;
+        private String id;
         private String description;
 
-        public Builder setId(Long id) {
+        public Builder setId(String id) {
             this.id = id;
             return this;
         }

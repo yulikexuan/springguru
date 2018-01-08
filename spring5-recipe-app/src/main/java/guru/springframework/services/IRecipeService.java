@@ -14,12 +14,12 @@ import java.util.Set;
 public interface IRecipeService {
 
     Set<Recipe> getAllRecipes();
-    Optional<Recipe> findById(Long id);
-    RecipeCommand findCommandById(Long id);
+    Optional<Recipe> findById(String id);
+    RecipeCommand findCommandById(String id);
     RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand);
 
-    boolean existById(Long id);
+    boolean existById(String id);
 
-    void deleteById(Long id);
+    void deleteById(String id);
 
 }///~

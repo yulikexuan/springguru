@@ -39,7 +39,7 @@ public class RecipeController {
     public String showById(@PathVariable String id, Model model) {
 
         Optional<Recipe> recipeOptional =
-                this.recipeService.findById(Long.valueOf(id));
+                this.recipeService.findById(id);
 
         if (recipeOptional.isPresent()) {
             model.addAttribute("recipe", recipeOptional.get());
@@ -115,8 +115,7 @@ public class RecipeController {
     @RequestMapping("/recipe/{id}/update")
     public String showFormToUpdateRecipe(@PathVariable String id, Model model) {
 
-        RecipeCommand command = this.recipeService.findCommandById(
-                Long.valueOf(id));
+        RecipeCommand command = this.recipeService.findCommandById(id);
 
         model.addAttribute("recipe", command);
 
@@ -127,7 +126,7 @@ public class RecipeController {
     @RequestMapping("/recipe/{id}/delete")
     public String deleteById(@PathVariable String id) {
         log.debug(">>>>>>> Deleting recipe by id: " + id);
-        this.recipeService.deleteById(Long.valueOf(id));
+        this.recipeService.deleteById(id);
         return "redirect:/";
     }
 

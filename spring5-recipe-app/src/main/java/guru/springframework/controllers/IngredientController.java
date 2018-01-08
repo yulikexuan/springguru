@@ -43,7 +43,7 @@ public class IngredientController {
         log.debug(">>>>>>> Getting ingredient list for recipoe id: " + id);
 
         model.addAttribute("recipe",
-                this.recipeService.findCommandById(Long.valueOf(id)));
+                this.recipeService.findCommandById(id));
 
         return "/recipe/ingredient/list";
     }
@@ -58,7 +58,7 @@ public class IngredientController {
 
         model.addAttribute("ingredient",
                 this.ingredientService.findByRecipeIdAndIngredientId(
-                        Long.valueOf(recipeId), Long.valueOf(id)));
+                        recipeId, id));
 
         return "/recipe/ingredient/show";
     }
@@ -68,11 +68,10 @@ public class IngredientController {
     public String showIngredientFormForCreatingNew(
             @PathVariable String recipeId, Model model) {
 
-        Long id = Long.valueOf(recipeId);
         String viewName = "/";
-        if (this.recipeService.existById(id)) {
+        if (this.recipeService.existById(recipeId)) {
             IngredientCommand ingredient = new IngredientCommand.Builder()
-                    .setRecipeId(id).createIngredientCommand();
+                    .setRecipeId(recipeId).createIngredientCommand();
             model.addAttribute("ingredient", ingredient);
 
             Set<UnitOfMeasureCommand> unitOfMeasures =
@@ -95,7 +94,7 @@ public class IngredientController {
 
         model.addAttribute("ingredient",
                 this.ingredientService.findByRecipeIdAndIngredientId(
-                        Long.valueOf(recipeId), Long.valueOf(ingredientId)));
+                        recipeId, ingredientId));
 
         model.addAttribute("unitOfMeasures",
                 this.unitOfMeasureService.findAllUnitOfMeasureCommands());
@@ -111,8 +110,8 @@ public class IngredientController {
         IngredientCommand savedCommand = this.ingredientService
                 .saveIngredientCommand(ingredientCommand);
 
-        Long recipeId = savedCommand.getRecipeId();
-        Long ingredientId = savedCommand.getId();
+        String recipeId = savedCommand.getRecipeId();
+        String ingredientId = savedCommand.getId();
 
         //"redirect:/recipe/" + savedCommand.getId() + "/show"
 
@@ -132,8 +131,7 @@ public class IngredientController {
     public String deleteIngredientFromRecipe(@PathVariable String recipeId,
                                              @PathVariable String ingredientId) {
 
-        this.ingredientService.deleteIngredientCommand(Long.valueOf(recipeId),
-                Long.valueOf(ingredientId));
+        this.ingredientService.deleteIngredientCommand(recipeId, ingredientId);
 
         return "redirect:/recipe/" + recipeId + "/ingredients";
     }

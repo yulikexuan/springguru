@@ -39,12 +39,12 @@ public class ImageControllerTest extends AbstractControllerTest {
 
     private ImageController controller;
 
-    private Long recipeId;
+    private String recipeId;
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        this.recipeId = this.random.nextLong();
+        this.recipeId = this.random.nextLong() + "";
     }
 
     @Override

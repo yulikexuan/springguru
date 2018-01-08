@@ -15,7 +15,7 @@ import java.util.Set;
 @Scope("prototype")
 public class RecipeBuilder implements IModelBuilder<Recipe> {
 
-    private Long id;
+    private String id;
     private String description;
     private Integer prepTime;
     private Integer cookTime;
@@ -31,7 +31,7 @@ public class RecipeBuilder implements IModelBuilder<Recipe> {
 
     public RecipeBuilder() {}
 
-    public RecipeBuilder setId(Long id) {
+    public RecipeBuilder setId(String id) {
         this.id = id;
         return this;
     }

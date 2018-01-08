@@ -26,7 +26,7 @@ public class ImageService implements IImageService {
     }
 
     @Override
-    public void saveImage(Long recipeId, MultipartFile multipartFile) {
+    public void saveImage(String recipeId, MultipartFile multipartFile) {
 
         log.info(">>>>>>> Recived a file for new recipe image."
                 + multipartFile.getOriginalFilename());

@@ -23,7 +23,7 @@ import java.util.Set;
 @ToString(of = "description")
 public class RecipeCommand {
 
-    private Long id;
+    private String id;
 
     /*
      * max=255:
@@ -61,7 +61,7 @@ public class RecipeCommand {
     private Set<CategoryCommand> categories = new HashSet<>();
     private Byte[] image;
 
-    private RecipeCommand(Long id, String description, Integer prepTime,
+    private RecipeCommand(String id, String description, Integer prepTime,
                           Integer cookTime, Integer servings, String source,
                           String url, String directions, Difficulty difficulty,
                           Set<IngredientCommand> ingredients,
@@ -84,7 +84,7 @@ public class RecipeCommand {
 
     public static final class Builder {
 
-        private Long id;
+        private String id;
         private String description;
         private Integer prepTime;
         private Integer cookTime;
@@ -98,7 +98,7 @@ public class RecipeCommand {
         private Set<CategoryCommand> categories;
         private Byte[] image;
 
-        public Builder setId(Long id) {
+        public Builder setId(String id) {
             this.id = id;
             return this;
         }

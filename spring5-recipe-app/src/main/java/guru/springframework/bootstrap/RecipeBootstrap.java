@@ -57,12 +57,12 @@ public class RecipeBootstrap implements
 
     private void initDB() {
 
-        List<Category> allCategories = this.categoryRepository.findAll();
+        Iterable<Category> allCategories = this.categoryRepository.findAll();
         Map<String, Category> categoryMap = new HashMap<>();
         allCategories.forEach(category ->
                 categoryMap.put(category.getDescription(), category));
 
-        List<UnitOfMeasure> allUoms = this.unitOfMeasureRepository.findAll();
+        Iterable<UnitOfMeasure> allUoms = this.unitOfMeasureRepository.findAll();
         Map<String, UnitOfMeasure> uomMap = new HashMap<>();
         allUoms.forEach(uom -> uomMap.put(uom.getDescription(), uom));
 

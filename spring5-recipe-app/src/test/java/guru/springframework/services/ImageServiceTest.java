@@ -35,13 +35,13 @@ public class ImageServiceTest {
     private ImageService imageService;
 
     private Random random;
-    private Long recipeId;
+    private String recipeId;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         this.random = new Random(System.currentTimeMillis());
-        this.recipeId = this.random.nextLong();
+        this.recipeId = this.random.nextLong() + "";
         this.imageService = new ImageService(this.recipeRepository);
     }
 

@@ -5,10 +5,10 @@ package guru.springframework.repositories;
 
 
 import guru.springframework.domain.Recipe;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 
 //@Repository: not needed as this class extends JpaRepository
-public interface IRecipeRepository extends JpaRepository<Recipe, Long> {
+public interface IRecipeRepository extends CrudRepository<Recipe, String> {
 
 }///:~

@@ -5,13 +5,13 @@ package guru.springframework.repositories;
 
 
 import guru.springframework.domain.Category;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
 
 //@Repository: not needed as this class extends JpaRepository
-public interface ICategoryRepository extends JpaRepository<Category, Long> {
+public interface ICategoryRepository extends CrudRepository<Category, String> {
 
     Optional<Category> findByDescription(String description);
 

@@ -22,8 +22,8 @@ public class CategoryTest {
     @Test
     public void getId() throws Exception {
         // Arrange
-        Long id = 4L;
-        this.category.setId(4L);
+        String id = 4L + "";
+        this.category.setId(id);
 
         // Action & Assert
         assertEquals(id, this.category.getId());

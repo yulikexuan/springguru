@@ -56,7 +56,7 @@ public class RecipeControllerTest extends AbstractControllerTest {
             throws Exception {
 
         // Given
-        Long id = this.random.nextLong();
+        String id = this.random.nextLong() + "";
         Recipe recipe = new Recipe();
         recipe.setId(id);
 
@@ -79,7 +79,7 @@ public class RecipeControllerTest extends AbstractControllerTest {
             throws Exception {
 
         // Given
-        Long id = this.random.nextLong();
+        String id = this.random.nextLong() + "";
 
         Optional<Recipe> recipeOptional = Optional.empty();
 
@@ -88,7 +88,7 @@ public class RecipeControllerTest extends AbstractControllerTest {
 
         // Then
         this.mockMvc.perform(get(
-                "/recipe/" + Long.toString(id) + "/show"))
+                "/recipe/" + id + "/show"))
                 .andExpect(status().isOk())
                 .andExpect(model().attribute("recipe",
                         Matchers.nullValue()))
@@ -118,7 +118,7 @@ public class RecipeControllerTest extends AbstractControllerTest {
                 .saveRecipeCommand(Mockito.any(RecipeCommand.class)))
                 .thenReturn(savedCommand);
 
-        Long id = this.random.nextLong();
+        String id = this.random.nextLong() +  "";
         when(savedCommand.getId()).thenReturn(id);
 
         // When
@@ -143,7 +143,7 @@ public class RecipeControllerTest extends AbstractControllerTest {
                 .saveRecipeCommand(Mockito.any(RecipeCommand.class)))
                 .thenReturn(savedCommand);
 
-        Long id = this.random.nextLong();
+        String id = this.random.nextLong() + "";
         when(savedCommand.getId()).thenReturn(id);
 
         // When
@@ -163,7 +163,7 @@ public class RecipeControllerTest extends AbstractControllerTest {
             throws Exception {
 
         // Given
-        Long id = this.random.nextLong();
+        String id = this.random.nextLong() + "";
 
         RecipeCommand command = Mockito.mock(RecipeCommand.class);
 
@@ -180,8 +180,8 @@ public class RecipeControllerTest extends AbstractControllerTest {
     public void able_To_Handle_Delete_Recipe_By_Id_Request() throws Exception {
 
         // Given
-        Long id = this.random.nextLong();
-        String idParam = Long.toString(id);
+        String id = this.random.nextLong() + "";
+        String idParam = id;
 
         // When
         this.mockMvc.perform(get("/recipe/" + idParam + "/delete"))
@@ -198,7 +198,7 @@ public class RecipeControllerTest extends AbstractControllerTest {
             throws Exception {
 
         // Given
-        Long id = this.random.nextLong();
+        String id = this.random.nextLong() + "";
 
         String url = "/recipe/" + id + "/update";
 

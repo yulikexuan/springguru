@@ -67,7 +67,7 @@ public class IngredientServiceTest {
             throws Exception {
 
         // Given
-        Long recipeId = this.random.nextLong();
+        String recipeId = this.random.nextLong() + "";
 
         Recipe recipe = new Recipe();
         recipe.setId(recipeId);
@@ -76,15 +76,15 @@ public class IngredientServiceTest {
         String desc_2 = UUID.randomUUID().toString();
 
         Ingredient ingredient_0 = new Ingredient();
-        ingredient_0.setId(1L);
+        ingredient_0.setId(1L + "");
         ingredient_0.setDescription(desc_0);
 
         Ingredient ingredient_1 = new Ingredient();
-        ingredient_1.setId(1L);
+        ingredient_1.setId(1L + "");
         ingredient_1.setDescription(desc_0);
 
         Ingredient ingredient_2 = new Ingredient();
-        ingredient_2.setId(3L);
+        ingredient_2.setId(3L + "");
         ingredient_2.setDescription(desc_2);
 
         recipe.addIngredient(ingredient_0);
@@ -101,7 +101,7 @@ public class IngredientServiceTest {
 
         // When
         IngredientCommand result = this.ingredientService
-                .findByRecipeIdAndIngredientId(recipeId, 3L);
+                .findByRecipeIdAndIngredientId(recipeId, 3L + "");
 
         // Then
         assertThat(result, is(ingredientCommand));
@@ -111,9 +111,9 @@ public class IngredientServiceTest {
     public void able_To_Update_Existing_Ingredient() throws Exception {
 
         // Given
-        Long recipeId = this.random.nextLong();
-        Long ingredientId = this.random.nextLong();
-        Long uomId = this.random.nextLong();
+        String recipeId = this.random.nextLong() + "";
+        String ingredientId = this.random.nextLong() + "";
+        String uomId = this.random.nextLong() + "";
         String ingredientDesc = UUID.randomUUID().toString();
 
         // - The ingredient command from ingredient-form
@@ -177,8 +177,8 @@ public class IngredientServiceTest {
     public void able_To_Delete_An_Ingredient_From_Recipe() throws Exception {
 
         // Given
-        Long recipeId = this.random.nextLong();
-        Long ingredientId = this.random.nextLong();
+        String recipeId = this.random.nextLong() + "";
+        String ingredientId = this.random.nextLong() + "";
 
         Recipe foundRecipe = new Recipe();
         Ingredient ingredient = new Ingredient();

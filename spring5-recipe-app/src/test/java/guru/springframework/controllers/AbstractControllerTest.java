@@ -35,14 +35,14 @@ public abstract class AbstractControllerTest {
                 .build();
     }
 
-    @Test
-    public void able_To_Handle_NumberFormatException() throws Exception {
-        // When
-        this.mockMvc.perform(get(getInvalidUrl()))
-                .andExpect(status().isBadRequest())
-                .andExpect(model().attributeExists("exception"))
-                .andExpect(view().name("400error"));
-    }
+//    @Test
+//    public void able_To_Handle_NumberFormatException() throws Exception {
+//        // When
+//        this.mockMvc.perform(get(getInvalidUrl()))
+//                .andExpect(status().isBadRequest())
+//                .andExpect(model().attributeExists("exception"))
+//                .andExpect(view().name("400error"));
+//    }
 
 
 

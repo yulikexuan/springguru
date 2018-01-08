@@ -25,7 +25,7 @@ public class RecipeCommandToRecipeTest {
 
     private Random random;
 
-    private Long id;
+    private String id;
     private String description;
     private Integer cookTime;
     private Integer prepTime;
@@ -95,7 +95,7 @@ public class RecipeCommandToRecipeTest {
 
         this.random = new Random(System.currentTimeMillis());
 
-        this.id = this.random.nextLong();
+        this.id = this.random.nextLong() + "";
         this.description = UUID.randomUUID().toString();
         this.cookTime = this.random.nextInt();
         this.prepTime = this.random.nextInt();

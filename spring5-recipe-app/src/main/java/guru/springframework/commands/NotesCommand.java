@@ -20,20 +20,20 @@ import lombok.ToString;
 @ToString(of = "recipeNotes")
 public class NotesCommand {
 
-    private Long id;
+    private String id;
     private String recipeNotes;
 
-    private NotesCommand(Long id, String recipeNotes) {
+    private NotesCommand(String id, String recipeNotes) {
         this.id = id;
         this.recipeNotes = recipeNotes;
     }
 
     public static final class Builder {
 
-        private Long id;
+        private String id;
         private String recipeNotes;
 
-        public Builder setId(Long id) {
+        public Builder setId(String id) {
             this.id = id;
             return this;
         }

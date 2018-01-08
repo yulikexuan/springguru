@@ -26,7 +26,7 @@ public class IngredientCommandToIngredientTest {
 
     private Random random;
 
-    private Long id;
+    private String id;
     private String description;
     private BigDecimal amount;
 
@@ -47,7 +47,7 @@ public class IngredientCommandToIngredientTest {
         MockitoAnnotations.initMocks(this);
 
         this.random = new Random(System.currentTimeMillis());
-        this.id = this.random.nextLong();
+        this.id = UUID.randomUUID().toString();
         this.description = UUID.randomUUID().toString();
         this.amount = new BigDecimal(this.random.nextDouble());
 

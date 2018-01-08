@@ -51,7 +51,7 @@ public class RecipeService implements IRecipeService {
 
     @Transactional(readOnly = true, rollbackFor = Exception.class)
     @Override
-    public Optional<Recipe> findById(Long id) {
+    public Optional<Recipe> findById(String id) {
         Optional<Recipe> recipeOpt = this.recipeRepository.findById(id);
         if (!recipeOpt.isPresent()) {
             throw new NotFoundException("Recipe not found by id: " + id);
@@ -61,7 +61,7 @@ public class RecipeService implements IRecipeService {
 
     @Transactional(readOnly = true, rollbackFor = Exception.class)
     @Override
-    public RecipeCommand findCommandById(Long id) {
+    public RecipeCommand findCommandById(String id) {
 
         Optional<Recipe> recipeOpt = this.findById(id);
 
@@ -91,13 +91,13 @@ public class RecipeService implements IRecipeService {
 
     @Transactional(readOnly = true, rollbackFor = Exception.class)
     @Override
-    public boolean existById(Long id) {
+    public boolean existById(String id) {
         return this.recipeRepository.existsById(id);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         this.recipeRepository.deleteById(id);
     }
 
