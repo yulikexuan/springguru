@@ -147,6 +147,7 @@ public class IngredientService implements IIngredientService {
 
             savedIngredientCommand = this.ingredientToIngredientCommand.convert(
                     savedIngredient);
+            savedIngredientCommand.setRecipeId(savedRecipe.getId());
 
         }// End of if (!recipoeOpt.isPresent())
 

@@ -12,7 +12,9 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -56,9 +58,9 @@ public class RecipeCommand {
     private String directions;
 
     private Difficulty difficulty;
-    private Set<IngredientCommand> ingredients = new HashSet<>();
+    private List<IngredientCommand> ingredients = new ArrayList<>();
     private NotesCommand notes;
-    private Set<CategoryCommand> categories = new HashSet<>();
+    private List<CategoryCommand> categories = new ArrayList<>();
     private Byte[] image;
 
     private RecipeCommand(String id, String description, Integer prepTime,
@@ -76,9 +78,9 @@ public class RecipeCommand {
         this.url = url;
         this.directions = directions;
         this.difficulty = difficulty;
-        this.ingredients = ingredients;
+        this.ingredients.addAll(ingredients);
         this.notes = notes;
-        this.categories = categories;
+        this.categories.addAll(categories);
         this.image = image;
     }
 

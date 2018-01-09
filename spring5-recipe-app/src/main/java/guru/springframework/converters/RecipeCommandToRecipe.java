@@ -15,6 +15,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -58,14 +59,14 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
 
         recipe.setNotes(this.notesConverter.convert(command.getNotes()));
 
-        Set<CategoryCommand> categorieCommands = command.getCategories();
+        List<CategoryCommand> categorieCommands = command.getCategories();
         Set<Category> categories = recipe.getCategories();
         if (categorieCommands != null) {
             categorieCommands.iterator().forEachRemaining(
                     c -> categories.add(this.categoryConverter.convert(c)));
         }
 
-        Set<IngredientCommand> ingredientCommands = command.getIngredients();
+        List<IngredientCommand> ingredientCommands = command.getIngredients();
         if (ingredientCommands != null) {
             ingredientCommands.iterator().forEachRemaining(
                     i -> recipe.addIngredient(this.ingredientConverter.convert(i)));
