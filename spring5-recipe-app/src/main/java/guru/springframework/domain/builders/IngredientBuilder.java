@@ -57,7 +57,6 @@ public class IngredientBuilder implements IModelBuilder<Ingredient> {
         ingredient.setDescription(this.description);
         ingredient.setAmount(this.amount);
         ingredient.setUom(this.uom);
-        ingredient.setRecipe(this.recipe);
 
         return ingredient;
     }

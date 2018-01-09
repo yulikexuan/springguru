@@ -20,11 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.Supplier;
 
 
 @Slf4j
 @Component
-@Profile("default")
 public class RecipeBootstrap implements
         ApplicationListener<ContextRefreshedEvent> {
 
@@ -55,7 +55,51 @@ public class RecipeBootstrap implements
         this.log.info(">>>>> Recipe data has been loaded.");
     }// End of onApplicationEvent(...)
 
+    private void loadCategories() {
+        String[] categoryNames = {
+                "American", "Italian", "Mexican", "Fast Food",
+        };
+        Arrays.stream(categoryNames).forEach(s -> {
+            this.persistCategory(Category::new, s);
+        });
+    }
+
+    private void persistCategory(Supplier<Category> categorySupplier,
+                                 String desc) {
+        Category category = categorySupplier.get();
+        category.setDescription(desc);
+        this.categoryRepository.save(category);
+    }
+
+    private void loadUom() {
+        String[] uoms = {
+                "Teaspoon", "Tablespoon", "Cup", "Pinch", "Ounce", "Each",
+                "Dash", "Pint",
+        };
+        Arrays.stream(uoms).forEach(s -> {
+            this.persistUom(UnitOfMeasure::new, s);
+        });
+    }
+
+    private void persistUom(Supplier<UnitOfMeasure> uomSupplier, String desc) {
+        UnitOfMeasure uom = uomSupplier.get();
+        uom.setDescription(desc);
+        this.unitOfMeasureRepository.save(uom);
+    }
+
     private void initDB() {
+
+        // Check if categories are available
+        if (this.categoryRepository.count() == 0) {
+            this.loadCategories();
+            this.log.info(">>>>> Category data has been loaded.");
+        }
+
+        // Check if unit of measures are available
+        if (this.unitOfMeasureRepository.count() == 0) {
+            this.loadUom();
+            this.log.info(">>>>> Unit of measure data has been loaded.");
+        }
 
         Iterable<Category> allCategories = this.categoryRepository.findAll();
         Map<String, Category> categoryMap = new HashMap<>();

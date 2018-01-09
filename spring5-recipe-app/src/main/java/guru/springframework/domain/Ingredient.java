@@ -4,20 +4,23 @@ package guru.springframework.domain;
 
 
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.math.BigDecimal;
 
 
 @Data
 @EqualsAndHashCode(of = {"id", "description"})
-@ToString(of = {"id", "description", "recipe"})
+@ToString(of = {"id", "description"})
 public class Ingredient {
 
+    @Id
     private String id;
     private String description;
     private BigDecimal amount;
 
-    private Recipe recipe;
+    @DBRef
     private UnitOfMeasure uom;
 
     public Ingredient() {}
@@ -34,11 +37,7 @@ public class Ingredient {
         this.description = description;
         this.amount = amount;
         this.uom = uom;
-        this.recipe = recipe;
-    }
-
-    public String getRecipeId() {
-        return (this.recipe == null) ? null : this.recipe.getId();
+//        this.recipe = recipe;
     }
 
 }///~

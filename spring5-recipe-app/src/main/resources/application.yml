@@ -2,3 +2,9 @@
 logging:
   level:
     guru.springframework: debug
+spring:
+  data:
+    mongodb:
+      # Set up a random port
+      port: 27017
+      host: localhost
