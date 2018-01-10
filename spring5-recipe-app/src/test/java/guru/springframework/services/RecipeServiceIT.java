@@ -27,7 +27,6 @@ import static org.junit.Assert.*;
  *   ApplicationContext, so use @SpringBootTest instead
  */
 @SpringBootTest
-@Ignore
 public class RecipeServiceIT {
 
     @Autowired
@@ -43,7 +42,6 @@ public class RecipeServiceIT {
      * @Transactional: Run test in transaction, rollback when complete by
      * default when used for Integration Test
      */
-    @Transactional
     @Test
     public void able_To_Save_A_RecipeCommand_As_A_Recipe() {
 

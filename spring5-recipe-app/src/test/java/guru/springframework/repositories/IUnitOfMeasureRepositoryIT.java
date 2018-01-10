@@ -4,59 +4,58 @@
 package guru.springframework.repositories;
 
 
+import guru.springframework.bootstrap.RecipeBootstrap;
 import guru.springframework.domain.UnitOfMeasure;
+import guru.springframework.domain.builders.IngredientBuilder;
+import guru.springframework.domain.builders.RecipeBuilder;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.experimental.theories.DataPoint;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 
 /*
- * @DataJpaTest can be used if want to test JPA applications.
  *
- *   - By default it will configure an in-memory embedded database, scan for
- *     @Entity classes and configure Spring Data JPA repositories
- *
- *   - Regular @Component beans will not be loaded into the ApplicationContext
- *
- *   - Data JPA tests are transactional and rollback at the end of each test by
- *     default
- *
- *     - To disable this feature, can disable transaction management for a test
- *       or for the whole class as follows:
- *
- *       @Transactional(propagation = Propagation.NOT_SUPPORTED)
- *
- *   - Data JPA tests may also inject a TestEntityManager bean which provides
- *     an alternative to the standard JPA EntityManager specifically designed
- *     for tests
- *
- *   - To run tests against a real database you can use the
- *     @AutoConfigureTestDatabase annotation:
- *
- *     @AutoConfigureTestDatabase(replace=Replace.NONE)
  */
-@Ignore
-@DataJpaTest
+@DataMongoTest
 @RunWith(SpringRunner.class)
 public class IUnitOfMeasureRepositoryIT {
 
     @Autowired
     private IUnitOfMeasureRepository unitOfMeasureRepository;
 
+    @Autowired
+    private IRecipeRepository recipeRepository;
+
+    @Autowired
+    private ICategoryRepository categoryRepository;
+
+    private RecipeBuilder recipeBuilder;
+
+    private IngredientBuilder ingredientBuilder;
+
     @Before
     public void setUp() throws Exception {
+
+        this.recipeBuilder = new RecipeBuilder();
+        this.ingredientBuilder = new IngredientBuilder();
+
+        this.categoryRepository.deleteAll();
+        this.unitOfMeasureRepository.deleteAll();
+        this.recipeRepository.deleteAll();
+
+        RecipeBootstrap recipeBootstrap = new RecipeBootstrap(
+                this.recipeRepository, this.categoryRepository,
+                this.unitOfMeasureRepository, this.recipeBuilder,
+                this.ingredientBuilder);
+        recipeBootstrap.onApplicationEvent(null);
     }
 
     @Test
