@@ -10,6 +10,7 @@ import guru.springframework.domain.builders.RecipeBuilder;
 import guru.springframework.repositories.ICategoryRepository;
 import guru.springframework.repositories.IRecipeRepository;
 import guru.springframework.repositories.IUnitOfMeasureRepository;
+import guru.springframework.repositories.reactive.IUnitOfMeasureReactiveRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -36,6 +37,9 @@ public class RecipeBootstrap implements
     private final IngredientBuilder ingredientBuilder;
 
     @Autowired
+    private IUnitOfMeasureReactiveRepository unitOfMeasureReactiveRepository;
+
+    @Autowired
     public RecipeBootstrap(IRecipeRepository recipeRepository,
             ICategoryRepository categoryRepository,
             IUnitOfMeasureRepository unitOfMeasureRepository,
@@ -51,8 +55,16 @@ public class RecipeBootstrap implements
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
+
         this.initDB();
         this.log.info(">>>>> Recipe data has been loaded.");
+
+        log.error("####### Count of UOM: " +
+                this.unitOfMeasureReactiveRepository
+                        .count()
+                        .block()
+                        .toString());
+
     }// End of onApplicationEvent(...)
 
     private void loadCategories() {
