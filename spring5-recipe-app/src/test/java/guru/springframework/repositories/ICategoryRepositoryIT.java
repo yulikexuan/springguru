@@ -21,6 +21,7 @@ import java.util.Arrays;
 import static org.junit.Assert.*;
 
 
+//@Ignore
 @DataMongoTest
 @RunWith(SpringRunner.class)
 public class ICategoryRepositoryIT {
@@ -35,7 +36,7 @@ public class ICategoryRepositoryIT {
     private ICategoryRepository categoryRepository;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         this.categoryRepository.deleteAll();
         this.unitOfMeasureRepository.deleteAll();
         this.recipeRepository.deleteAll();
@@ -47,7 +48,7 @@ public class ICategoryRepositoryIT {
     }
 
     @Test
-    public void findByDescription() throws Exception {
+    public void findByDescription() {
 
         // Given
         String[] categories = {

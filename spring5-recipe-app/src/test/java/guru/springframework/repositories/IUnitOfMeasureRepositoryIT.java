@@ -9,6 +9,7 @@ import guru.springframework.domain.UnitOfMeasure;
 import guru.springframework.domain.builders.IngredientBuilder;
 import guru.springframework.domain.builders.RecipeBuilder;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 
-/*
- *
- */
+//@Ignore
 @DataMongoTest
 @RunWith(SpringRunner.class)
 public class IUnitOfMeasureRepositoryIT {
