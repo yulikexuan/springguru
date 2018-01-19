@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -74,8 +75,10 @@ public class IngredientController {
                     .setRecipeId(recipeId).createIngredientCommand();
             model.addAttribute("ingredient", ingredient);
 
-            Set<UnitOfMeasureCommand> unitOfMeasures =
-                    this.unitOfMeasureService.findAllUnitOfMeasureCommands();
+            List<UnitOfMeasureCommand> unitOfMeasures =
+                    this.unitOfMeasureService.findAllUnitOfMeasureCommands()
+                            .collectList()
+                            .block();
             model.addAttribute("unitOfMeasures", unitOfMeasures);
 
             viewName = "/recipe/ingredient/ingredientform";

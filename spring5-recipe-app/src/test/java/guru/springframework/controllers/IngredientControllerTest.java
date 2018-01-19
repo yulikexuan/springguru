@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import reactor.core.publisher.Flux;
 
 import java.util.*;
 
@@ -118,9 +119,9 @@ public class IngredientControllerTest extends AbstractControllerTest {
                 this.recipeId, this.ingredientId)).thenReturn(
                 this.ingredientCommand);
 
-        Set<UnitOfMeasureCommand> uomcs = new HashSet<>();
+        List<UnitOfMeasureCommand> uomcs = new ArrayList<>();
         when(this.unitOfMeasureService.findAllUnitOfMeasureCommands())
-                .thenReturn(uomcs);
+                .thenReturn(Flux.just());
 
         StringBuilder apiBuilder = new StringBuilder();
         String api = apiBuilder.append("/recipe/")
@@ -185,7 +186,7 @@ public class IngredientControllerTest extends AbstractControllerTest {
 
         Set<UnitOfMeasureCommand> unitOfMeasures = new HashSet<>();
         when(this.unitOfMeasureService.findAllUnitOfMeasureCommands())
-                .thenReturn(unitOfMeasures);
+                .thenReturn(Flux.just());
 
         // When
         this.mockMvc.perform(get(requestUrl))

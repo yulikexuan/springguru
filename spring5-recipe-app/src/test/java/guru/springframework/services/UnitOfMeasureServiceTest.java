@@ -8,10 +8,12 @@ import guru.springframework.commands.UnitOfMeasureCommand;
 import guru.springframework.converters.UnitOfMeasureToUnitOfMeasureCommand;
 import guru.springframework.domain.UnitOfMeasure;
 import guru.springframework.repositories.IUnitOfMeasureRepository;
+import guru.springframework.repositories.reactive.IUnitOfMeasureReactiveRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,7 @@ import static org.mockito.Mockito.when;
 public class UnitOfMeasureServiceTest {
 
     @Mock
-    private IUnitOfMeasureRepository unitOfMeasureRepository;
+    private IUnitOfMeasureReactiveRepository unitOfMeasureRepository;
 
     private UnitOfMeasureToUnitOfMeasureCommand uomcConverter;
 
@@ -62,11 +64,11 @@ public class UnitOfMeasureServiceTest {
         unitOfMeasures.add(uom3);
 
         when(this.unitOfMeasureRepository.findAll())
-                .thenReturn(unitOfMeasures);
+                .thenReturn(Flux.just(uom1, uom2, uom3));
 
         // When
-        Set<UnitOfMeasureCommand> commands = this.unitOfMeasureService
-                .findAllUnitOfMeasureCommands();
+        List<UnitOfMeasureCommand> commands = this.unitOfMeasureService
+                .findAllUnitOfMeasureCommands().collectList().block();
 
         // Then
         assertThat(commands.size(), is(3));

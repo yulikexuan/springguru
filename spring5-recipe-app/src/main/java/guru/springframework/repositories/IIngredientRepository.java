@@ -11,7 +11,8 @@ import java.util.Optional;
 
 
 //@Repository: not needed as this class extends JpaRepository
-public interface IIngredientRepository extends CrudRepository<Ingredient, String> {
+public interface IIngredientRepository extends
+        CrudRepository<Ingredient, String> {
 
     Optional<Ingredient> findByDescription(String description);
 
