@@ -54,7 +54,8 @@ public class IngredientBuilder implements IModelBuilder<Ingredient> {
 
         Ingredient ingredient = new Ingredient();
 
-        ingredient.setId(UUID.randomUUID().toString());
+        ingredient.setId(this.id == null ?
+                UUID.randomUUID().toString() : this.id);
         ingredient.setDescription(this.description);
         ingredient.setAmount(this.amount);
         ingredient.setUom(this.uom);
