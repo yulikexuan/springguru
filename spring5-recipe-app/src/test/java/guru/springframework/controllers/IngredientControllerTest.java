@@ -7,16 +7,16 @@ package guru.springframework.controllers;
 import guru.springframework.commands.IngredientCommand;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.commands.UnitOfMeasureCommand;
-import guru.springframework.services.*;
+import guru.springframework.services.IIngredientReactiveService;
+import guru.springframework.services.IUnitOfMeasureService;
+import guru.springframework.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.*;
 
@@ -32,7 +32,7 @@ public class IngredientControllerTest extends AbstractControllerTest {
     private RecipeService recipeService;
 
     @Mock
-    private IIngredientService ingredientService;
+    private IIngredientReactiveService ingredientService;
 
     @Mock
     private IUnitOfMeasureService unitOfMeasureService;
@@ -92,7 +92,7 @@ public class IngredientControllerTest extends AbstractControllerTest {
         // Given
         when(this.ingredientService.findByRecipeIdAndIngredientId(
                 this.recipeId, this.ingredientId)).thenReturn(
-                        this.ingredientCommand);
+                        Mono.just(this.ingredientCommand));
 
         StringBuilder apiBuilder = new StringBuilder();
         String api = apiBuilder.append("/recipe/")
@@ -117,7 +117,7 @@ public class IngredientControllerTest extends AbstractControllerTest {
         // Given
         when(this.ingredientService.findByRecipeIdAndIngredientId(
                 this.recipeId, this.ingredientId)).thenReturn(
-                this.ingredientCommand);
+                Mono.just(this.ingredientCommand));
 
         List<UnitOfMeasureCommand> uomcs = new ArrayList<>();
         when(this.unitOfMeasureService.findAllUnitOfMeasureCommands())
@@ -149,7 +149,7 @@ public class IngredientControllerTest extends AbstractControllerTest {
         // Given
         when(this.ingredientService
                 .saveIngredientCommand(Mockito.any(IngredientCommand.class)))
-                .thenReturn(this.ingredientCommand);
+                .thenReturn(Mono.just(this.ingredientCommand));
 
         when(this.ingredientCommand.getRecipeId()).thenReturn(this.recipeId);
         when(this.ingredientCommand.getId()).thenReturn(this.ingredientId);
@@ -217,6 +217,10 @@ public class IngredientControllerTest extends AbstractControllerTest {
                 .append(this.recipeId)
                 .append("/ingredients")
                 .toString();
+
+        when(this.ingredientService.deleteIngredientCommand(
+                this.recipeId, this.ingredientId))
+                .thenReturn(Mono.empty());
 
         // When
         this.mockMvc.perform(get(delUrl))

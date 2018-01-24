@@ -36,10 +36,6 @@ public class IIngredientReactiveRepositoryIT {
         this.ingredient.setDescription(this.desc);
     }
 
-    private void save_New_Ingredient() {
-
-    }
-
     @Test
     public void able_To_Save_A_New_Ingredient() {
 

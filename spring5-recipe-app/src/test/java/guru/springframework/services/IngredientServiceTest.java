@@ -53,7 +53,7 @@ public class IngredientServiceTest {
     private Random random;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         this.random = new Random(System.currentTimeMillis());
         this.ingredientService = new IngredientService(
@@ -63,8 +63,7 @@ public class IngredientServiceTest {
     }
 
     @Test
-    public void able_To_Find_Ingredient_By_RecipeId_And_IngredientId()
-            throws Exception {
+    public void able_To_Find_Ingredient_By_RecipeId_And_IngredientId() {
 
         // Given
         String recipeId = this.random.nextLong() + "";
@@ -108,7 +107,7 @@ public class IngredientServiceTest {
     }
 
     @Test
-    public void able_To_Update_Existing_Ingredient() throws Exception {
+    public void able_To_Update_Existing_Ingredient() {
 
         // Given
         String recipeId = this.random.nextLong() + "";
@@ -174,7 +173,7 @@ public class IngredientServiceTest {
     }// End of able_To_Update_Existing_Ingredient()
 
     @Test
-    public void able_To_Delete_An_Ingredient_From_Recipe() throws Exception {
+    public void able_To_Delete_An_Ingredient_From_Recipe() {
 
         // Given
         String recipeId = this.random.nextLong() + "";

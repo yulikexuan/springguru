@@ -6,18 +6,15 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.IngredientCommand;
 import guru.springframework.commands.UnitOfMeasureCommand;
-import guru.springframework.services.IIngredientService;
-import guru.springframework.services.IRecipeService;
-import guru.springframework.services.IUnitOfMeasureService;
-import guru.springframework.services.RecipeService;
+import guru.springframework.services.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Set;
 
 
 @Slf4j
@@ -25,13 +22,14 @@ import java.util.Set;
 public class IngredientController {
 
     private final IRecipeService recipeService;
-    private final IIngredientService ingredientService;
+    private final IIngredientReactiveService ingredientService;
     private final IUnitOfMeasureService unitOfMeasureService;
 
     @Autowired
     public IngredientController(RecipeService recipeService,
-                                IIngredientService ingredientService,
+                                IIngredientReactiveService ingredientService,
                                 IUnitOfMeasureService unitOfMeasureService) {
+
         this.recipeService = recipeService;
         this.ingredientService = ingredientService;
         this.unitOfMeasureService = unitOfMeasureService;
@@ -57,9 +55,13 @@ public class IngredientController {
         log.debug(">>>>>>> Getting the ingredient of the recipe: " + id + "/"
                 + recipeId);
 
-        model.addAttribute("ingredient",
-                this.ingredientService.findByRecipeIdAndIngredientId(
-                        recipeId, id));
+        Mono<IngredientCommand> ingredientCommandMono =
+                this.ingredientService.findByRecipeIdAndIngredientId(recipeId,
+                        id);
+
+        IngredientCommand ic = ingredientCommandMono.block();
+
+        model.addAttribute("ingredient", ic);
 
         return "/recipe/ingredient/show";
     }
@@ -97,7 +99,7 @@ public class IngredientController {
 
         model.addAttribute("ingredient",
                 this.ingredientService.findByRecipeIdAndIngredientId(
-                        recipeId, ingredientId));
+                        recipeId, ingredientId).block());
 
         model.addAttribute("unitOfMeasures",
                 this.unitOfMeasureService.findAllUnitOfMeasureCommands());
@@ -111,7 +113,7 @@ public class IngredientController {
             @ModelAttribute IngredientCommand ingredientCommand) {
 
         IngredientCommand savedCommand = this.ingredientService
-                .saveIngredientCommand(ingredientCommand);
+                .saveIngredientCommand(ingredientCommand).block();
 
         String recipeId = savedCommand.getRecipeId();
         String ingredientId = savedCommand.getId();
@@ -134,7 +136,8 @@ public class IngredientController {
     public String deleteIngredientFromRecipe(@PathVariable String recipeId,
                                              @PathVariable String ingredientId) {
 
-        this.ingredientService.deleteIngredientCommand(recipeId, ingredientId);
+        this.ingredientService.deleteIngredientCommand(recipeId, ingredientId)
+                .block();
 
         return "redirect:/recipe/" + recipeId + "/ingredients";
     }

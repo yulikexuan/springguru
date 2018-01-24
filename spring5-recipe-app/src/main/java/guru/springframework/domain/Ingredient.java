@@ -16,7 +16,7 @@ import java.util.UUID;
 @ToString(of = {"id", "description"})
 public class Ingredient {
 
-    private String id = UUID.randomUUID().toString();
+    private String id;
     private String description;
     private BigDecimal amount;
 

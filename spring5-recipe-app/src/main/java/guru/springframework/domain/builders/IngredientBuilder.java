@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 
 @Component()
@@ -53,7 +54,7 @@ public class IngredientBuilder implements IModelBuilder<Ingredient> {
 
         Ingredient ingredient = new Ingredient();
 
-        ingredient.setId(this.id);
+        ingredient.setId(UUID.randomUUID().toString());
         ingredient.setDescription(this.description);
         ingredient.setAmount(this.amount);
         ingredient.setUom(this.uom);
