@@ -34,7 +34,7 @@ public class Recipe {
 
     private Byte[] image;
 
-    @DBRef
+//    @DBRef
     private Set<Category> categories = new HashSet<>();
 
     public void setNotes(Notes notes) {
