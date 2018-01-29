@@ -153,12 +153,13 @@ public class IngredientReactiveService implements IIngredientReactiveService {
             throw new RuntimeException("Recipe not found!:");
         }
         recipe.removeIngredient(ingredientId);
-        this.recipeRepository.save(recipe).doOnSuccess(
-                r -> log.info(">>>>>>> Ingredient is deleted ? " +
-                        (r.getIngredients().stream()
-                                .filter(i -> i.getId().equals(ingredientId))
-                                .count() == 0))
-        );
+
+        recipe = this.recipeRepository.save(recipe).block();
+
+        log.info(">>>>>>> Ingredient is deleted ? " +
+                (recipe.getIngredients().stream()
+                        .filter(i -> i.getId().equals(ingredientId))
+                        .count() == 0));
 
         return Mono.empty();
     }

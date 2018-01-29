@@ -101,8 +101,14 @@ public class IngredientController {
                 this.ingredientService.findByRecipeIdAndIngredientId(
                         recipeId, ingredientId).block());
 
-        model.addAttribute("unitOfMeasures",
-                this.unitOfMeasureService.findAllUnitOfMeasureCommands());
+//        model.addAttribute("unitOfMeasures",
+//                this.unitOfMeasureService.findAllUnitOfMeasureCommands());
+
+        List<UnitOfMeasureCommand> unitOfMeasures =
+                this.unitOfMeasureService.findAllUnitOfMeasureCommands()
+                        .collectList()
+                        .block();
+        model.addAttribute("unitOfMeasures", unitOfMeasures);
 
         return "/recipe/ingredient/ingredientform";
     }
