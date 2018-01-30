@@ -1,4 +1,4 @@
-//: guru.springframework.services.RecipeServiceTest.java
+//: guru.springframework.services.RecipeReactiveServiceTest.java
 
 
 package guru.springframework.services;
@@ -7,7 +7,7 @@ package guru.springframework.services;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.domain.Recipe;
-import guru.springframework.repositories.IRecipeRepository;
+import guru.springframework.repositories.reactive.IRecipeReactiveRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +25,13 @@ import static org.junit.Assert.assertThat;
  *   ApplicationContext, so use @SpringBootTest instead
  */
 @SpringBootTest
-public class RecipeServiceIT {
+public class RecipeReacticeServiceIT {
 
     @Autowired
-    private IRecipeRepository recipeRepository;
+    private IRecipeReactiveRepository recipeReacticeRepository;
 
     @Autowired
-    private IRecipeService recipeService;
+    private IRecipeReactiveService recipeReactiveService;
 
     @Autowired
     private RecipeToRecipeCommand recipeToRecipeCommand;
@@ -44,28 +44,25 @@ public class RecipeServiceIT {
     public void able_To_Save_A_RecipeCommand_As_A_Recipe() {
 
         // Given
-        Iterable<Recipe> recipes = this.recipeRepository.findAll();
+        Recipe recipe = this.recipeReacticeRepository.findAll().blockFirst();
 
-        Recipe testRecipe = recipes.iterator().next();
-        String revicedDesc = "Command : " + testRecipe.getDescription();
-        testRecipe.setDescription(revicedDesc);
+        String revicedDesc = "Command : " + recipe.getDescription();
+        recipe.setDescription(revicedDesc);
 
-        RecipeCommand testCommand = this.recipeToRecipeCommand.convert(
-                testRecipe);
+        RecipeCommand rc = this.recipeToRecipeCommand.convert(recipe);
 
         // When
-        RecipeCommand savedCommand = this.recipeService.saveRecipeCommand(
-                testCommand);
+        RecipeCommand savedCommand = this.recipeReactiveService
+                .saveRecipeCommand(rc)
+                .block();
 
         // Then
         assertThat(savedCommand.getDescription(), is(revicedDesc));
-        assertThat(testRecipe.getId(), is(savedCommand.getId()));
-        assertThat(testRecipe.getCategories().size(),
+        assertThat(recipe.getId(), is(savedCommand.getId()));
+        assertThat(recipe.getCategories().size(),
                 is(savedCommand.getCategories().size()));
-        assertThat(testRecipe.getIngredients().size(),
+        assertThat(recipe.getIngredients().size(),
                 is(savedCommand.getIngredients().size()));
     }
-
-
 
 }///:~

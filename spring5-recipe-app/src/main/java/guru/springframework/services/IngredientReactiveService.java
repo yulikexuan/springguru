@@ -46,7 +46,6 @@ public class IngredientReactiveService implements IIngredientReactiveService {
         this.uomRepository = uomRepository;
     }
 
-    @Transactional
     @Override
     public Mono<IngredientCommand> findByRecipeIdAndIngredientId(
             String recipeId, String ingredientId) {
@@ -142,7 +141,6 @@ public class IngredientReactiveService implements IIngredientReactiveService {
 
     }// End of saveIngredientCommand
 
-    @Transactional
     @Override
     public Mono<Void> deleteIngredientCommand(String recipeId,
                                               String ingredientId) {
