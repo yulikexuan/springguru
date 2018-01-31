@@ -7,7 +7,7 @@ package guru.springframework.controllers;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.domain.Recipe;
 import guru.springframework.exceptions.NotFoundException;
-import guru.springframework.services.IRecipeService;
+import guru.springframework.services.IRecipeReactiveService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 
 @Slf4j
@@ -27,22 +26,21 @@ public class RecipeController {
 
     static final String RECIPE_FORM_URL = "recipe/recipeform";
 
-    private final IRecipeService recipeService;
+    private final IRecipeReactiveService recipeReactiveService;
 
     @Autowired
-    public RecipeController(IRecipeService recipeService) {
-        this.recipeService = recipeService;
+    public RecipeController(IRecipeReactiveService recipeReactiveService) {
+        this.recipeReactiveService = recipeReactiveService;
     }
 
     @GetMapping
     @RequestMapping("/recipe/{id}/show")
     public String showById(@PathVariable String id, Model model) {
 
-        Optional<Recipe> recipeOptional =
-                this.recipeService.findById(id);
+        Recipe recipe = this.recipeReactiveService.findById(id).block();
 
-        if (recipeOptional.isPresent()) {
-            model.addAttribute("recipe", recipeOptional.get());
+        if (recipe != null) {
+            model.addAttribute("recipe", recipe);
         }
 
         return "recipe/show";
@@ -93,8 +91,8 @@ public class RecipeController {
             return RECIPE_FORM_URL;
         }
 
-        RecipeCommand savedCommand = this.recipeService.saveRecipeCommand(
-                command);
+        RecipeCommand savedCommand = this.recipeReactiveService
+                .saveRecipeCommand(command).block();
         /*
          * By using the prefix redirect:
          *    – the redirect view name is injected into the controller like any
@@ -115,7 +113,8 @@ public class RecipeController {
     @RequestMapping("/recipe/{id}/update")
     public String showFormToUpdateRecipe(@PathVariable String id, Model model) {
 
-        RecipeCommand command = this.recipeService.findCommandById(id);
+        RecipeCommand command = this.recipeReactiveService.findCommandById(id)
+                .block();
 
         model.addAttribute("recipe", command);
 
@@ -126,7 +125,7 @@ public class RecipeController {
     @RequestMapping("/recipe/{id}/delete")
     public String deleteById(@PathVariable String id) {
         log.debug(">>>>>>> Deleting recipe by id: " + id);
-        this.recipeService.deleteById(id);
+        this.recipeReactiveService.deleteById(id);
         return "redirect:/";
     }
 

@@ -89,11 +89,14 @@ public class RecipeReactiveServiceTest {
                 .thenReturn(Flux.just(recipe));
 
         // Action
-        Recipe result = this.recipeReactiveService.getAllRecipes()
-                .blockFirst();
+        List<Recipe> recipes = this.recipeReactiveService
+                .getAllRecipes()
+                .collectList()
+                .block();
 
         // Assert
-        assertEquals(result, recipe);
+        assertThat(recipes.get(0), is(recipe));
+        assertThat(recipes.size(), is(1));
     }
 
     @Test

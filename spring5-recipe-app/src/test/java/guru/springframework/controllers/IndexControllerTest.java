@@ -5,7 +5,7 @@ package guru.springframework.controllers;
 
 
 import guru.springframework.domain.Recipe;
-import guru.springframework.services.IRecipeService;
+import guru.springframework.services.IRecipeReactiveService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.theories.DataPoint;
@@ -14,16 +14,13 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
+import reactor.core.publisher.Flux;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.eq;
@@ -39,22 +36,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(Theories.class)
 public class IndexControllerTest {
 
-    @Mock private IRecipeService recipeService;
+    @Mock private IRecipeReactiveService recipeReactiveService;
     @Mock private Model model;
 
     private IndexController indexController;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
-        this.indexController = new IndexController(this.recipeService);
+        this.indexController = new IndexController(this.recipeReactiveService);
     }
 
     @Test
     public void able_To_Inject_All_Recipes_Into_Index_Page() {
 
         // Given
-        Set<Recipe> recipes = new HashSet<>();
+        List<Recipe> recipes = new ArrayList<>();
         Recipe r1 = new Recipe();
         r1.setDescription(UUID.randomUUID().toString());
         Recipe r2 = new Recipe();
@@ -63,10 +60,11 @@ public class IndexControllerTest {
         recipes.add(r1);
         recipes.add(r2);
 
-        when(this.recipeService.getAllRecipes()).thenReturn(recipes);
+        when(this.recipeReactiveService.getAllRecipes())
+                .thenReturn(Flux.fromIterable(recipes));
 
-        ArgumentCaptor<Set<Recipe>> recipesCaptor = ArgumentCaptor.forClass(
-                Set.class);
+        ArgumentCaptor<List<Recipe>> recipesCaptor = ArgumentCaptor.forClass(
+                List.class);
 
         // When
         String pageName = this.indexController.getIndexPage(this.model);
@@ -76,7 +74,7 @@ public class IndexControllerTest {
         verify(this.model, times(1)).addAttribute(
                 eq("allRecipes"), recipesCaptor.capture());
 
-        Set<Recipe> actualRecipes = recipesCaptor.getValue();
+        List<Recipe> actualRecipes = recipesCaptor.getValue();
         assertEquals(actualRecipes.size(), 2);
     }
 
@@ -85,6 +83,19 @@ public class IndexControllerTest {
     @DataPoint public static String defaultUrl = "";
     @Theory
     public void able_To_Access_Index_Page(String url) throws Exception {
+
+        // Given
+        List<Recipe> recipes = new ArrayList<>();
+        Recipe r1 = new Recipe();
+        r1.setDescription(UUID.randomUUID().toString());
+        Recipe r2 = new Recipe();
+        r2.setDescription(UUID.randomUUID().toString());
+
+        recipes.add(r1);
+        recipes.add(r2);
+
+        when(this.recipeReactiveService.getAllRecipes())
+                .thenReturn(Flux.fromIterable(recipes));
 
         MockMvc mockMvc = MockMvcBuilders
                 .standaloneSetup(this.indexController)

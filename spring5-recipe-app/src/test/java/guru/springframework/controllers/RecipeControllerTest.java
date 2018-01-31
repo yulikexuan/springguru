@@ -7,19 +7,16 @@ package guru.springframework.controllers;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.domain.Recipe;
 import guru.springframework.exceptions.NotFoundException;
-import guru.springframework.services.RecipeService;
+import guru.springframework.services.RecipeReactiveService;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 
 import static org.mockito.Mockito.*;
@@ -31,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RecipeControllerTest extends AbstractControllerTest {
 
     @Mock
-    private RecipeService recipeService;
+    private RecipeReactiveService recipeReactiveService;
 
     private RecipeController recipeController;
 
@@ -42,7 +39,7 @@ public class RecipeControllerTest extends AbstractControllerTest {
 
     @Override
     Object initController() {
-        this.recipeController = new RecipeController(this.recipeService);
+        this.recipeController = new RecipeController(this.recipeReactiveService);
         return this.recipeController;
     }
 
@@ -60,12 +57,11 @@ public class RecipeControllerTest extends AbstractControllerTest {
         Recipe recipe = new Recipe();
         recipe.setId(id);
 
-        Optional<Recipe> recipeOptional = Optional.of(recipe);
-
         String url = "/recipe/" + id + "/show";
 
         // When
-        when(this.recipeService.findById(id)).thenReturn(recipeOptional);
+        when(this.recipeReactiveService.findById(id))
+                .thenReturn(Mono.just(recipe));
 
         // Then
         mockMvc.perform(get(url))
@@ -81,10 +77,8 @@ public class RecipeControllerTest extends AbstractControllerTest {
         // Given
         String id = this.random.nextLong() + "";
 
-        Optional<Recipe> recipeOptional = Optional.empty();
-
         // When
-        when(this.recipeService.findById(id)).thenReturn(recipeOptional);
+        when(this.recipeReactiveService.findById(id)).thenReturn(Mono.empty());
 
         // Then
         this.mockMvc.perform(get(
@@ -114,9 +108,9 @@ public class RecipeControllerTest extends AbstractControllerTest {
         // Given
         RecipeCommand savedCommand = Mockito.mock(RecipeCommand.class);
 
-        when(this.recipeService
+        when(this.recipeReactiveService
                 .saveRecipeCommand(Mockito.any(RecipeCommand.class)))
-                .thenReturn(savedCommand);
+                .thenReturn(Mono.just(savedCommand));
 
         String id = this.random.nextLong() +  "";
         when(savedCommand.getId()).thenReturn(id);
@@ -139,9 +133,9 @@ public class RecipeControllerTest extends AbstractControllerTest {
         // Given
         RecipeCommand savedCommand = Mockito.mock(RecipeCommand.class);
 
-        when(this.recipeService
+        when(this.recipeReactiveService
                 .saveRecipeCommand(Mockito.any(RecipeCommand.class)))
-                .thenReturn(savedCommand);
+                .thenReturn(Mono.just(savedCommand));
 
         String id = this.random.nextLong() + "";
         when(savedCommand.getId()).thenReturn(id);
@@ -167,7 +161,8 @@ public class RecipeControllerTest extends AbstractControllerTest {
 
         RecipeCommand command = Mockito.mock(RecipeCommand.class);
 
-        when(this.recipeService.findCommandById(id)).thenReturn(command);
+        when(this.recipeReactiveService.findCommandById(id))
+                .thenReturn(Mono.just(command));
 
         // When
         this.mockMvc.perform(get("/recipe/" + id + "/update"))
@@ -189,7 +184,7 @@ public class RecipeControllerTest extends AbstractControllerTest {
             .andExpect(redirectedUrl("/"));
 
         // Then
-        verify(this.recipeService, times(1))
+        verify(this.recipeReactiveService, times(1))
                 .deleteById(id);
     }
 
@@ -202,7 +197,7 @@ public class RecipeControllerTest extends AbstractControllerTest {
 
         String url = "/recipe/" + id + "/update";
 
-        when(this.recipeService.findCommandById(id))
+        when(this.recipeReactiveService.findCommandById(id))
                 .thenThrow(NotFoundException.class);
 
         // When

@@ -3,6 +3,7 @@
 package guru.springframework.controllers;
 
 
+import guru.springframework.services.IRecipeReactiveService;
 import guru.springframework.services.IRecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class IndexController {
 
-    private final IRecipeService recipeService;
+    private final IRecipeReactiveService recipeReactiveService;
 
     @Autowired
-    public IndexController(IRecipeService recipeService) {
-        this.recipeService = recipeService;
+    public IndexController(IRecipeReactiveService recipeReactiveService) {
+        this.recipeReactiveService = recipeReactiveService;
     }
 
     @RequestMapping({"", "/", "/home"})
@@ -27,7 +28,7 @@ public class IndexController {
 
         this.log.info(">>>>>>> Adding recipes to Model of index page ... ...");
         model.addAttribute("allRecipes",
-                this.recipeService.getAllRecipes());
+                this.recipeReactiveService.getAllRecipes().collectList().block());
 
         return "index";
     }
