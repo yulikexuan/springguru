@@ -5,7 +5,7 @@ package guru.springframework.services;
 
 
 import guru.springframework.domain.Recipe;
-import guru.springframework.repositories.IRecipeRepository;
+import guru.springframework.repositories.reactive.IRecipeReactiveRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 import java.util.Random;
@@ -30,7 +31,7 @@ public class ImageServiceTest {
     private Recipe recipe;
 
     @Mock
-    private IRecipeRepository recipeRepository;
+    private IRecipeReactiveRepository recipeReactiveRepository;
 
     private ImageService imageService;
 
@@ -38,11 +39,11 @@ public class ImageServiceTest {
     private String recipeId;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         this.random = new Random(System.currentTimeMillis());
         this.recipeId = this.random.nextLong() + "";
-        this.imageService = new ImageService(this.recipeRepository);
+        this.imageService = new ImageService(this.recipeReactiveRepository);
     }
 
     @Test
@@ -53,22 +54,19 @@ public class ImageServiceTest {
                 "testing.txt", "text/plain",
                 "Spring Framework Guru".getBytes());
 
-        Optional<Recipe> recipeOpt = Optional.of(this.recipe);
+        this.recipe = new Recipe();
+        this.recipe.setId(this.recipeId);
 
-        when(this.recipeRepository.findById(this.recipeId))
-                .thenReturn(recipeOpt);
+        when(this.recipeReactiveRepository.findById(this.recipeId))
+                .thenReturn(Mono.just(this.recipe));
 
-        ArgumentCaptor<Byte[]> argumentCaptor = ArgumentCaptor.forClass(
-                Byte[].class);
+        when(this.recipeReactiveRepository.save(this.recipe))
+                .thenReturn(Mono.just(recipe));
 
         // When
         this.imageService.saveImage(this.recipeId, multipartFile);
-        verify(this.recipeRepository, times(1))
+        verify(this.recipeReactiveRepository, times(1))
                 .save(this.recipe);
-        verify(this.recipe, times(1))
-                .setImage(argumentCaptor.capture());
-        assertThat(multipartFile.getBytes().length,
-                is(argumentCaptor.getValue().length));
     }
 
 }///:~

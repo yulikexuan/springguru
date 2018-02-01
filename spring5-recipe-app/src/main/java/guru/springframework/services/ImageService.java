@@ -5,11 +5,12 @@ package guru.springframework.services;
 
 
 import guru.springframework.domain.Recipe;
-import guru.springframework.repositories.IRecipeRepository;
+import guru.springframework.repositories.reactive.IRecipeReactiveRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 
@@ -18,35 +19,40 @@ import java.io.IOException;
 @Service
 public class ImageService implements IImageService {
 
-    private final IRecipeRepository recipeRepository;
+	private final IRecipeReactiveRepository recipeReactiveRepository;
 
-    @Autowired
-    public ImageService(IRecipeRepository recipeRepository) {
-        this.recipeRepository = recipeRepository;
-    }
+	@Autowired
+	public ImageService(IRecipeReactiveRepository recipeReactiveRepository) {
+		this.recipeReactiveRepository = recipeReactiveRepository;
+	}
 
-    @Override
-    public void saveImage(String recipeId, MultipartFile multipartFile) {
+	@Override
+	public Mono<Void> saveImage(String recipeId, MultipartFile multipartFile) {
 
-        log.info(">>>>>>> Recived a file for new recipe image."
-                + multipartFile.getOriginalFilename());
+		log.info(">>>>>>> Recived a file for new recipe image."
+				+ multipartFile.getOriginalFilename());
 
-        Recipe recipe = this.recipeRepository.findById(recipeId).get();
+		Mono<Recipe> recipeMono = this.recipeReactiveRepository
+				.findById(recipeId).map(r -> {
+					try {
+						byte[] byteArr = multipartFile.getBytes();
+						Byte[] byteObjects = new Byte[byteArr.length];
+						for (int i = 0; i < byteArr.length; i++) {
+							byteObjects[i] = byteArr[i];
+						}
+						r.setImage(byteObjects);
+						return r;
+					} catch (IOException e) {
+						log.error("Error occurred when saving recipe-image. Recipe ID is "
+								+ recipeId);
+						throw new RuntimeException(e);
+					}
 
-        try {
-            byte[] byteArr = multipartFile.getBytes();
-            Byte[] byteObjects = new Byte[byteArr.length];
-            for (int i = 0; i < byteArr.length; i++) {
-                byteObjects[i] = byteArr[i];
-            }
-            recipe.setImage(byteObjects);
-            this.recipeRepository.save(recipe);
-            log.debug(">>>>>>> Recipe Image has been saved.");
-        } catch (IOException e) {
-            log.error("Error occurred when saving recipe-image. Recipe ID is "
-                    + recipeId);
-            e.printStackTrace();
-        }
-    }
+				});
+
+		this.recipeReactiveRepository.save(recipeMono.block()).block();
+
+		return Mono.empty();
+	}
 
 }///~

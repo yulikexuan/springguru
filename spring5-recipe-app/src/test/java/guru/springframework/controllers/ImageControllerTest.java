@@ -6,20 +6,13 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.services.IImageService;
-import guru.springframework.services.IRecipeService;
+import guru.springframework.services.IRecipeReactiveService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.Random;
+import reactor.core.publisher.Mono;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
@@ -35,7 +28,7 @@ public class ImageControllerTest extends AbstractControllerTest {
     private IImageService imageService;
 
     @Mock
-    private IRecipeService recipeService;
+    private IRecipeReactiveService recipeReactiveService;
 
     private ImageController controller;
 
@@ -50,7 +43,7 @@ public class ImageControllerTest extends AbstractControllerTest {
     @Override
     Object initController() {
         this.controller = new ImageController(this.imageService,
-                this.recipeService);
+                this.recipeReactiveService);
         return this.controller;
     }
 
@@ -70,8 +63,8 @@ public class ImageControllerTest extends AbstractControllerTest {
                 .setId(this.recipeId)
                 .createRecipeCommand();
 
-        when(this.recipeService.findCommandById(this.recipeId)).thenReturn(
-                recipe);
+        when(this.recipeReactiveService.findCommandById(this.recipeId))
+                .thenReturn(Mono.just(recipe));
 
         // When
         this.mockMvc.perform(get(imageFormUrl))
@@ -94,6 +87,9 @@ public class ImageControllerTest extends AbstractControllerTest {
                 "text/plain",
                 "Spring Framework Guru".getBytes());
 
+        when(this.imageService.saveImage(anyString(), any()))
+                .thenReturn(Mono.empty());
+
         // When
         this.mockMvc.perform(multipart(uploadUrl).file(multipartFile))
                 .andExpect(status().is3xxRedirection())
@@ -111,8 +107,8 @@ public class ImageControllerTest extends AbstractControllerTest {
         String imageUrl = "/recipe/" + this.recipeId + "/recipeimage";
 
         RecipeCommand recipeCommand = mock(RecipeCommand.class);
-        when(this.recipeService.findCommandById(this.recipeId))
-                .thenReturn(recipeCommand);
+        when(this.recipeReactiveService.findCommandById(this.recipeId))
+                .thenReturn(Mono.just(recipeCommand));
 
         String str = "Fake image bytes";
         byte[] bytes = str.getBytes();

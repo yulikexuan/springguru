@@ -6,6 +6,7 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.services.IImageService;
+import guru.springframework.services.IRecipeReactiveService;
 import guru.springframework.services.IRecipeService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,21 +28,24 @@ import java.io.InputStream;
 public class ImageController {
 
     private final IImageService imageService;
-    private final IRecipeService recipeService;
+    private final IRecipeReactiveService recipeReactiveService;
 
     @Autowired
     public ImageController(IImageService imageService,
-                           IRecipeService recipeService) {
+                           IRecipeReactiveService recipeReactiveService) {
         this.imageService = imageService;
-        this.recipeService = recipeService;
+        this.recipeReactiveService = recipeReactiveService;
     }
 
     @GetMapping("/recipe/{recipeId}/image")
     public String getImageForm(@PathVariable String recipeId, Model model) {
 
-        RecipeCommand recipe = this.recipeService.findCommandById(recipeId);
+    	if (!recipeId.equals("null")) {
+		    RecipeCommand recipe = this.recipeReactiveService
+				    .findCommandById(recipeId).block();
 
-        model.addAttribute("recipe", recipe);
+		    model.addAttribute("recipe", recipe);
+	    }
 
         return "/recipe/imageuploadform";
     }
@@ -51,7 +55,7 @@ public class ImageController {
             @PathVariable String recipeId,
             @RequestParam("imagefile") MultipartFile file) {
 
-        this.imageService.saveImage(recipeId, file);
+        this.imageService.saveImage(recipeId, file).block();
 
         return "redirect:/recipe/" + recipeId + "/update";
     }
@@ -60,8 +64,12 @@ public class ImageController {
     public void renderImageFromDB(@PathVariable String recipeId,
             HttpServletResponse response) throws IOException {
 
-        RecipeCommand recipeCommand = this.recipeService.findCommandById(
-                recipeId);
+        if (recipeId.equals("null")) {
+            return;
+        }
+
+        RecipeCommand recipeCommand = this.recipeReactiveService
+                .findCommandById(recipeId).block();
 
         Byte[] image = recipeCommand.getImage();
         if (image != null) {

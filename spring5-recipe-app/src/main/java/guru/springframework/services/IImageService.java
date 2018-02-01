@@ -5,10 +5,11 @@ package guru.springframework.services;
 
 
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Mono;
 
 
 public interface IImageService {
 
-    void saveImage(String recipeId, MultipartFile multipartFile);
+    Mono<Void> saveImage(String recipeId, MultipartFile multipartFile);
 
 }///~
