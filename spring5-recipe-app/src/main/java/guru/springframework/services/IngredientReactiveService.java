@@ -52,15 +52,25 @@ public class IngredientReactiveService implements IIngredientReactiveService {
 
         Recipe r = this.recipeRepository.findById(recipeId).block();
 
-
+        /*
+         * Mono::flatMapIterable
+         * - Transform the item emitted by this Mono into Iterable
+         * - then forward its elements into the returned Flux
+         * - The prefetch argument allows to give an arbitrary prefetch size to
+         *   the inner Iterable
+         *
+         * Flux::single
+         * - Expect and emit a single item from this Flux source or signal
+         *   NoSuchElementException for an empty source, or
+         *   IndexOutOfBoundsException for a source with more than one element
+         */
         Mono<IngredientCommand> icm = this.recipeRepository.findById(recipeId)
-                .map(recipe -> recipe.getIngredients().stream()
-                        .filter(i -> i.getId().equalsIgnoreCase(ingredientId))
-                        .findFirst())
-                .filter(Optional::isPresent)
+                .flatMapIterable(Recipe::getIngredients)
+                .filter(i -> i.getId().equalsIgnoreCase(ingredientId))
+                .single()
                 .map(i -> {
                     IngredientCommand command =
-                            this.ingredientToIngredientCommand.convert(i.get());
+                            this.ingredientToIngredientCommand.convert(i);
                     command.setRecipeId(recipeId);
                     return command;
                 });
