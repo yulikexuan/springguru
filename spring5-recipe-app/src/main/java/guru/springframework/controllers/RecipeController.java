@@ -6,16 +6,13 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.domain.Recipe;
-import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.services.IRecipeReactiveService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
@@ -135,19 +132,19 @@ public class RecipeController {
      * class has already been annotated by @ResponseStatus (taking precedence)
      * and makes this method be bypassed
      */
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NotFoundException.class)
-    public ModelAndView handleNotFound(Exception e) {
-        log.error(">>>>>>> Handling NotFoundException: " + e.getMessage());
-        return this.handleException(e, "404error");
-    }
-
-    private ModelAndView handleException(Exception e, String viewName) {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName(viewName);
-        mav.addObject("exception", e);
-
-        return mav;
-    }
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    @ExceptionHandler(NotFoundException.class)
+//    public ModelAndView handleNotFound(Exception e) {
+//        log.error(">>>>>>> Handling NotFoundException: " + e.getMessage());
+//        return this.handleException(e, "404error");
+//    }
+//
+//    private ModelAndView handleException(Exception e, String viewName) {
+//        ModelAndView mav = new ModelAndView();
+//        mav.setViewName(viewName);
+//        mav.addObject("exception", e);
+//
+//        return mav;
+//    }
 
 }///~
