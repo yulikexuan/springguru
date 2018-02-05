@@ -11,9 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 
 @Slf4j
@@ -24,9 +23,16 @@ public class RecipeController {
 
     private final IRecipeReactiveService recipeReactiveService;
 
+    private WebDataBinder webDataBinder;
+
     @Autowired
     public RecipeController(IRecipeReactiveService recipeReactiveService) {
         this.recipeReactiveService = recipeReactiveService;
+    }
+
+    @InitBinder
+    public void initWebDataBinder(WebDataBinder webDataBinder) {
+        this.webDataBinder = webDataBinder;
     }
 
     @GetMapping
@@ -51,7 +57,7 @@ public class RecipeController {
      *
      * @Valid:
      * - Marks a property, method parameter or method return type for
-     *   validation cascading
+     *   validation cascading and passing on the binding result
      * - Constraints defined on the object and its properties are be validated
      *   when the property, method parameter or method return type is validated
      * - This behavior is applied recursively
@@ -71,9 +77,11 @@ public class RecipeController {
      */
     @PostMapping
     @RequestMapping("recipe")
-    public String saveOrUpdate(
-            @Valid @ModelAttribute("recipe") RecipeCommand command,
-            BindingResult bindingResult, Model model) {
+    public String saveOrUpdate(@ModelAttribute("recipe") RecipeCommand command,
+                               Model model) {
+
+        this.webDataBinder.validate();
+        BindingResult bindingResult = this.webDataBinder.getBindingResult();
 
         if (bindingResult.hasErrors()) {
             bindingResult.getAllErrors().forEach(
