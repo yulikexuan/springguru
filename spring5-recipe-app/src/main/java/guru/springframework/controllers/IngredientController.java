@@ -6,13 +6,16 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.IngredientCommand;
 import guru.springframework.commands.UnitOfMeasureCommand;
-import guru.springframework.services.*;
+import guru.springframework.services.IIngredientReactiveService;
+import guru.springframework.services.IRecipeReactiveService;
+import guru.springframework.services.IUnitOfMeasureService;
+import guru.springframework.services.RecipeReactiveService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -21,16 +24,16 @@ import java.util.List;
 @Controller
 public class IngredientController {
 
-    private final IRecipeService recipeService;
+    private final IRecipeReactiveService recipeReactiveService;
     private final IIngredientReactiveService ingredientService;
     private final IUnitOfMeasureService unitOfMeasureService;
 
     @Autowired
-    public IngredientController(RecipeService recipeService,
+    public IngredientController(RecipeReactiveService recipeReactiveService,
                                 IIngredientReactiveService ingredientService,
                                 IUnitOfMeasureService unitOfMeasureService) {
 
-        this.recipeService = recipeService;
+        this.recipeReactiveService = recipeReactiveService;
         this.ingredientService = ingredientService;
         this.unitOfMeasureService = unitOfMeasureService;
     }
@@ -42,7 +45,7 @@ public class IngredientController {
         log.debug(">>>>>>> Getting ingredient list for recipoe id: " + id);
 
         model.addAttribute("recipe",
-                this.recipeService.findCommandById(id));
+                this.recipeReactiveService.findCommandById(id));
 
         return "/recipe/ingredient/list";
     }
@@ -55,13 +58,15 @@ public class IngredientController {
         log.debug(">>>>>>> Getting the ingredient of the recipe: " + id + "/"
                 + recipeId);
 
-        Mono<IngredientCommand> ingredientCommandMono =
+//        Mono<IngredientCommand> ingredientCommandMono =
+//                this.ingredientService.findByRecipeIdAndIngredientId(recipeId,
+//                        id);
+//
+//        IngredientCommand ic = ingredientCommandMono.block();
+
+        model.addAttribute("ingredient",
                 this.ingredientService.findByRecipeIdAndIngredientId(recipeId,
-                        id);
-
-        IngredientCommand ic = ingredientCommandMono.block();
-
-        model.addAttribute("ingredient", ic);
+                        id));
 
         return "/recipe/ingredient/show";
     }
@@ -72,15 +77,13 @@ public class IngredientController {
             @PathVariable String recipeId, Model model) {
 
         String viewName = "/";
-        if (this.recipeService.existById(recipeId)) {
+        if (this.recipeReactiveService.existById(recipeId).block()) {
             IngredientCommand ingredient = new IngredientCommand.Builder()
                     .setRecipeId(recipeId).createIngredientCommand();
             model.addAttribute("ingredient", ingredient);
 
-            List<UnitOfMeasureCommand> unitOfMeasures =
-                    this.unitOfMeasureService.findAllUnitOfMeasureCommands()
-                            .collectList()
-                            .block();
+            Flux<UnitOfMeasureCommand> unitOfMeasures =
+                    this.unitOfMeasureService.findAllUnitOfMeasureCommands();
             model.addAttribute("unitOfMeasures", unitOfMeasures);
 
             viewName = "/recipe/ingredient/ingredientform";
@@ -104,10 +107,8 @@ public class IngredientController {
 //        model.addAttribute("unitOfMeasures",
 //                this.unitOfMeasureService.findAllUnitOfMeasureCommands());
 
-        List<UnitOfMeasureCommand> unitOfMeasures =
-                this.unitOfMeasureService.findAllUnitOfMeasureCommands()
-                        .collectList()
-                        .block();
+        Flux<UnitOfMeasureCommand> unitOfMeasures =
+                this.unitOfMeasureService.findAllUnitOfMeasureCommands();
         model.addAttribute("unitOfMeasures", unitOfMeasures);
 
         return "/recipe/ingredient/ingredientform";

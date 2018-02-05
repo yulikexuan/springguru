@@ -34,16 +34,9 @@ public class UnitOfMeasureService implements IUnitOfMeasureService {
 
     @Override
     public Flux<UnitOfMeasureCommand> findAllUnitOfMeasureCommands() {
-
         return this.unitOfMeasureRepository
                 .findAll()
                 .map(this.uomcConverter::convert);
-
-//        return StreamSupport
-//                .stream(this.unitOfMeasureRepository.findAll().spliterator(),
-//                        false)
-//                .map(this.uomcConverter::convert)
-//                .collect(Collectors.toSet());
     }
 
 }///~

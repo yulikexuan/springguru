@@ -9,7 +9,7 @@ import guru.springframework.commands.RecipeCommand;
 import guru.springframework.commands.UnitOfMeasureCommand;
 import guru.springframework.services.IIngredientReactiveService;
 import guru.springframework.services.IUnitOfMeasureService;
-import guru.springframework.services.RecipeService;
+import guru.springframework.services.RecipeReactiveService;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class IngredientControllerTest extends AbstractControllerTest {
 
     @Mock
-    private RecipeService recipeService;
+    private RecipeReactiveService recipeReactiveService;
 
     @Mock
     private IIngredientReactiveService ingredientService;
@@ -56,7 +56,7 @@ public class IngredientControllerTest extends AbstractControllerTest {
 
     @Override
     Object initController() {
-        this.controller = new IngredientController(this.recipeService,
+        this.controller = new IngredientController(this.recipeReactiveService,
                 this.ingredientService, this.unitOfMeasureService);
         return this.controller;
     }
@@ -74,7 +74,8 @@ public class IngredientControllerTest extends AbstractControllerTest {
         String id = this.random.nextLong() + "";
         RecipeCommand command = mock(RecipeCommand.class);
 
-        when(this.recipeService.findCommandById(id)).thenReturn(command);
+        when(this.recipeReactiveService.findCommandById(id))
+                .thenReturn(Mono.just(command));
 
         // When
         this.mockMvc.perform(get("/recipe/" + id + "/ingredients"))
@@ -83,7 +84,7 @@ public class IngredientControllerTest extends AbstractControllerTest {
                 .andExpect(model().attributeExists("recipe"));
 
         // Then
-        verify(this.recipeService, times(1))
+        verify(this.recipeReactiveService, times(1))
                 .findCommandById(id);
     }
 
@@ -184,7 +185,8 @@ public class IngredientControllerTest extends AbstractControllerTest {
         String requestUrl = "/recipe/" + this.recipeId + "/ingredient/new";
         String formUrl = "/recipe/ingredient/ingredientform";
 
-        when(this.recipeService.existById(this.recipeId)).thenReturn(true);
+        when(this.recipeReactiveService.existById(this.recipeId))
+                .thenReturn(Mono.just(true));
 
         Set<UnitOfMeasureCommand> unitOfMeasures = new HashSet<>();
         when(this.unitOfMeasureService.findAllUnitOfMeasureCommands())
@@ -198,7 +200,7 @@ public class IngredientControllerTest extends AbstractControllerTest {
                 .andExpect(model().attributeExists("unitOfMeasures"));
 
         // Then
-        verify(this.recipeService, times(1))
+        verify(this.recipeReactiveService, times(1))
                 .existById(this.recipeId);
     }
 
