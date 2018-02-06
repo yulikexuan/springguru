@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
@@ -28,6 +30,8 @@ public class IngredientController {
     private final IIngredientReactiveService ingredientService;
     private final IUnitOfMeasureService unitOfMeasureService;
 
+    private WebDataBinder webDataBinder;
+
     @Autowired
     public IngredientController(RecipeReactiveService recipeReactiveService,
                                 IIngredientReactiveService ingredientService,
@@ -36,6 +40,11 @@ public class IngredientController {
         this.recipeReactiveService = recipeReactiveService;
         this.ingredientService = ingredientService;
         this.unitOfMeasureService = unitOfMeasureService;
+    }
+
+    @InitBinder("ingredient")
+    public void initWebDataBinder(WebDataBinder webDataBinder) {
+        this.webDataBinder = webDataBinder;
     }
 
     @GetMapping
@@ -100,9 +109,10 @@ public class IngredientController {
         log.debug(">>>>>>> Getting the ingredient of the recipe: "
                 + ingredientId + "/" + recipeId);
 
-        model.addAttribute("ingredient",
-                this.ingredientService.findByRecipeIdAndIngredientId(
-                        recipeId, ingredientId).block());
+        IngredientCommand ic = this.ingredientService
+                .findByRecipeIdAndIngredientId(recipeId, ingredientId).block();
+
+        model.addAttribute("ingredient", ic);
 
 //        model.addAttribute("unitOfMeasures",
 //                this.unitOfMeasureService.findAllUnitOfMeasureCommands());
@@ -116,13 +126,36 @@ public class IngredientController {
 
     @PostMapping
     @RequestMapping("/recipe/{recipeId}/ingredient")
-    public String saveOrUpdateIngredient(
-            @ModelAttribute IngredientCommand ingredientCommand) {
+    public String saveOrUpdateIngredient(@PathVariable String recipeId,
+            @ModelAttribute("ingredient") IngredientCommand ingredientCommand,
+                                         Model model) {
+
+        ingredientCommand.setRecipeId(recipeId);
+
+        this.webDataBinder.validate();
+        BindingResult bindingResult = this.webDataBinder.getBindingResult();
+
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(
+                    err -> log.debug(">>>>>>> " + err.toString()));
+
+            Flux<UnitOfMeasureCommand> unitOfMeasures =
+                    this.unitOfMeasureService.findAllUnitOfMeasureCommands();
+            model.addAttribute("unitOfMeasures", unitOfMeasures);
+
+            /*
+             * Should return full template name here other than an UPDATE
+             * REQUEST URL like:
+             *   return "/recipe/" + recipeId + "/ingredient/" +
+             *           ingredientCommand.getId() + "/update"
+             */
+            return "/recipe/ingredient/ingredientform";
+        }
 
         IngredientCommand savedCommand = this.ingredientService
                 .saveIngredientCommand(ingredientCommand).block();
 
-        String recipeId = savedCommand.getRecipeId();
+//        String recipeId = savedCommand.getRecipeId();
         String ingredientId = savedCommand.getId();
 
         //"redirect:/recipe/" + savedCommand.getId() + "/show"
