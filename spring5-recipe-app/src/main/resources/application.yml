@@ -2,6 +2,7 @@
 logging:
   level:
     guru.springframework: debug
+    # org.springframework: debug
 spring:
   data:
     mongodb:
