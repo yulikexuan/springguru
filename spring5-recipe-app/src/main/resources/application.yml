@@ -9,3 +9,6 @@ spring:
       # Set up a random port
       port: 0
       host: localhost
+  # Pretty-print JSON responses
+  jackson:
+    serialization.INDENT_OUTPUT: true
