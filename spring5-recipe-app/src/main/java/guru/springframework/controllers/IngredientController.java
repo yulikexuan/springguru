@@ -67,12 +67,6 @@ public class IngredientController {
         log.debug(">>>>>>> Getting the ingredient of the recipe: " + id + "/"
                 + recipeId);
 
-//        Mono<IngredientCommand> ingredientCommandMono =
-//                this.ingredientService.findByRecipeIdAndIngredientId(recipeId,
-//                        id);
-//
-//        IngredientCommand ic = ingredientCommandMono.block();
-
         model.addAttribute("ingredient",
                 this.ingredientService.findByRecipeIdAndIngredientId(recipeId,
                         id));
@@ -91,9 +85,10 @@ public class IngredientController {
                     .setRecipeId(recipeId).createIngredientCommand();
             model.addAttribute("ingredient", ingredient);
 
-            Flux<UnitOfMeasureCommand> unitOfMeasures =
-                    this.unitOfMeasureService.findAllUnitOfMeasureCommands();
-            model.addAttribute("unitOfMeasures", unitOfMeasures);
+//            Use the defined @ModelAttribute method instead
+//            Flux<UnitOfMeasureCommand> unitOfMeasures =
+//                    getAllUnitOfMeasureCommands();
+//            model.addAttribute("unitOfMeasures", unitOfMeasures);
 
             viewName = "/recipe/ingredient/ingredientform";
         }
@@ -114,12 +109,13 @@ public class IngredientController {
 
         model.addAttribute("ingredient", ic);
 
+//        Use the defined @ModelAttribute method instead
 //        model.addAttribute("unitOfMeasures",
 //                this.unitOfMeasureService.findAllUnitOfMeasureCommands());
 
-        Flux<UnitOfMeasureCommand> unitOfMeasures =
-                this.unitOfMeasureService.findAllUnitOfMeasureCommands();
-        model.addAttribute("unitOfMeasures", unitOfMeasures);
+//        Flux<UnitOfMeasureCommand> unitOfMeasures =
+//                getAllUnitOfMeasureCommands();
+//        model.addAttribute("unitOfMeasures", unitOfMeasures);
 
         return "/recipe/ingredient/ingredientform";
     }
@@ -139,9 +135,10 @@ public class IngredientController {
             bindingResult.getAllErrors().forEach(
                     err -> log.debug(">>>>>>> " + err.toString()));
 
-            Flux<UnitOfMeasureCommand> unitOfMeasures =
-                    this.unitOfMeasureService.findAllUnitOfMeasureCommands();
-            model.addAttribute("unitOfMeasures", unitOfMeasures);
+//            Use the defined @ModelAttribute method instead
+//            Flux<UnitOfMeasureCommand> unitOfMeasures =
+//                    getAllUnitOfMeasureCommands();
+//            model.addAttribute("unitOfMeasures", unitOfMeasures);
 
             /*
              * Should return full template name here other than an UPDATE
@@ -180,6 +177,17 @@ public class IngredientController {
                 .block();
 
         return "redirect:/recipe/" + recipeId + "/ingredients";
+    }
+
+
+    /*
+     * This method will be run with every request so that every time we get a
+     * model being returned to the view layer, we are going to populate the
+     * property called "unitOfMeasures"
+     */
+    @ModelAttribute("unitOfMeasures")
+    public Flux<UnitOfMeasureCommand> getAllUnitOfMeasureCommands() {
+        return this.unitOfMeasureService.findAllUnitOfMeasureCommands();
     }
 
 }///~
