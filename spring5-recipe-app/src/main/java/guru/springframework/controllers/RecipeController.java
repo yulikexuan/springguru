@@ -6,13 +6,17 @@ package guru.springframework.controllers;
 
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.services.IRecipeReactiveService;
+import guru.springframework.exceptions.NotFoundException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.exceptions.TemplateInputException;
 
 
 @Slf4j
@@ -132,20 +136,22 @@ public class RecipeController {
      * @ResponseStatus(HttpStatus.NOT_FOUND) here because the NotFoundException
      * class has already been annotated by @ResponseStatus (taking precedence)
      * and makes this method be bypassed
+     *
+     * We have to handle TemplateInputException here because the template has to
+     * get model from a Mono but this no any Mono
      */
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    @ExceptionHandler(NotFoundException.class)
-//    public ModelAndView handleNotFound(Exception e) {
-//        log.error(">>>>>>> Handling NotFoundException: " + e.getMessage());
-//        return this.handleException(e, "404error");
-//    }
-//
-//    private ModelAndView handleException(Exception e, String viewName) {
-//        ModelAndView mav = new ModelAndView();
-//        mav.setViewName(viewName);
-//        mav.addObject("exception", e);
-//
-//        return mav;
-//    }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler({NotFoundException.class, TemplateInputException.class})
+    public String handleNotFound(Exception e, Model model) {
+
+        log.error(">>>>>>> Handling NotFoundException: " + e.getMessage());
+
+        model.addAttribute("exception", e);
+
+        /*
+         * Return the template name of "404error.html"
+         */
+        return "404error";
+    }
 
 }///~
