@@ -1,4 +1,4 @@
-package guru.springframework.springrestclientapp;
+package guru.springframework.restclientapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
