@@ -29,7 +29,7 @@ public class WebConfig {
 	 * recipes and then it is going to go ahead and render that.
 	 */
 	@Bean
-	RouterFunction<?> routes(IRecipeReactiveService recipeReactiveService) {
+	public RouterFunction<?> routes(IRecipeReactiveService recipeReactiveService) {
 		return RouterFunctions.route(GET("/api/recipes"),
 				serverRequest -> ServerResponse
 						.ok()
