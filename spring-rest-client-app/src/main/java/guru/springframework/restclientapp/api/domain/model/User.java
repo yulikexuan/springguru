@@ -1,12 +1,17 @@
+//: guru.springframework.restclientapp.api.domain.model.User.java
 
-package guru.springframework.restclientapp.api.domain;
+
+package guru.springframework.restclientapp.api.domain.model;
+
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class User implements Serializable
-{
+
+public class User implements Serializable {
+
+    private final static long serialVersionUID = -3145006859420320086L;
 
     private String gender;
     private Name name;
@@ -19,7 +24,6 @@ public class User implements Serializable
     private String language;
     private String currency;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = -3145006859420320086L;
 
     public String getGender() {
         return gender;
@@ -109,4 +113,4 @@ public class User implements Serializable
         this.additionalProperties.put(name, value);
     }
 
-}
+}///:~

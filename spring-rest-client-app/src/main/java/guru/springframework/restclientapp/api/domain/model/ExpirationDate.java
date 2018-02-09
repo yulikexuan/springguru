@@ -1,12 +1,15 @@
+//: guru.springframework.restclientapp.api.domain.model.ExpirationDate.java
 
-package guru.springframework.restclientapp.api.domain;
+
+package guru.springframework.restclientapp.api.domain.model;
+
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExpirationDate implements Serializable
-{
+
+public class ExpirationDate implements Serializable {
 
     private String date;
     private Integer timezoneType;
@@ -46,4 +49,4 @@ public class ExpirationDate implements Serializable
         this.additionalProperties.put(name, value);
     }
 
-}
+}///:~

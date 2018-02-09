@@ -1,12 +1,18 @@
+//: guru.springframework.restclientapp.api.domain.model.Login.java
 
-package guru.springframework.restclientapp.api.domain;
+
+
+package guru.springframework.restclientapp.api.domain.model;
+
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Login implements Serializable
-{
+
+public class Login implements Serializable {
+
+    private final static long serialVersionUID = 8745387172857855697L;
 
     private String username;
     private String password;
@@ -14,7 +20,6 @@ public class Login implements Serializable
     private String sha1;
     private String sha256;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = 8745387172857855697L;
 
     public String getUsername() {
         return username;
@@ -64,4 +69,4 @@ public class Login implements Serializable
         this.additionalProperties.put(name, value);
     }
 
-}
+}///:~

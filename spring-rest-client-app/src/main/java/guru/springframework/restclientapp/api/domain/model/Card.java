@@ -1,7 +1,7 @@
-//: guru.springframework.restclientapp.api.domain.Card.java
+//: guru.springframework.restclientapp.api.domain.model.Card.java
 
 
-package guru.springframework.restclientapp.api.domain;
+package guru.springframework.restclientapp.api.domain.model;
 
 
 import java.io.Serializable;
@@ -11,13 +11,14 @@ import java.util.Map;
 
 public class Card implements Serializable {
 
+    private final static long serialVersionUID = 6285867052003567140L;
+
     private String type;
     private String number;
     private ExpirationDate expirationDate;
     private String iban;
     private String swift;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = 6285867052003567140L;
 
     public String getType() {
         return type;

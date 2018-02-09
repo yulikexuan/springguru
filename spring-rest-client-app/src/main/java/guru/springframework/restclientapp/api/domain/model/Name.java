@@ -1,17 +1,22 @@
+//: guru.springframework.restclientapp.api.domain.model.Name.java
 
-package guru.springframework.restclientapp.api.domain;
+
+package guru.springframework.restclientapp.api.domain.model;
+
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Job implements Serializable
-{
+
+public class Name implements Serializable {
+
+    private final static long serialVersionUID = -5577448257369954162L;
 
     private String title;
-    private String company;
+    private String first;
+    private String last;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = -6095971880029680368L;
 
     public String getTitle() {
         return title;
@@ -21,12 +26,20 @@ public class Job implements Serializable
         this.title = title;
     }
 
-    public String getCompany() {
-        return company;
+    public String getFirst() {
+        return first;
     }
 
-    public void setCompany(String company) {
-        this.company = company;
+    public void setFirst(String first) {
+        this.first = first;
+    }
+
+    public String getLast() {
+        return last;
+    }
+
+    public void setLast(String last) {
+        this.last = last;
     }
 
     public Map<String, Object> getAdditionalProperties() {
@@ -37,4 +50,4 @@ public class Job implements Serializable
         this.additionalProperties.put(name, value);
     }
 
-}
+}///:~

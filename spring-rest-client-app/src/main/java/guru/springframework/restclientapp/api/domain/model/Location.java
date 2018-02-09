@@ -1,19 +1,23 @@
+//: guru.springframework.restclientapp.api.domain.model.Location.java
 
-package guru.springframework.restclientapp.api.domain;
+
+package guru.springframework.restclientapp.api.domain.model;
+
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Location implements Serializable
-{
+
+public class Location implements Serializable {
+
+    private final static long serialVersionUID = -5703709162905661462L;
 
     private String street;
     private String city;
     private String state;
     private String postcode;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = -5703709162905661462L;
 
     public String getStreet() {
         return street;
@@ -55,4 +59,4 @@ public class Location implements Serializable
         this.additionalProperties.put(name, value);
     }
 
-}
+}///:~

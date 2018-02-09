@@ -1,7 +1,7 @@
-//: guru.springframework.restclientapp.api.domain.Billing.java
+//: guru.springframework.restclientapp.api.domain.model.Billing.java
 
 
-package guru.springframework.restclientapp.api.domain;
+package guru.springframework.restclientapp.api.domain.model;
 
 
 import java.io.Serializable;
@@ -11,9 +11,10 @@ import java.util.Map;
 
 public class Billing implements Serializable {
 
+    private final static long serialVersionUID = -6943470952206420942L;
+
     private Card card;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-    private final static long serialVersionUID = -6943470952206420942L;
 
     public Card getCard() {
         return card;
