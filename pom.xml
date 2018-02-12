@@ -18,7 +18,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <modules>
-                <module>spring5-recipe-app</module>
+                <module>spring-rest-client-app</module>
             </modules>
         </profile>
         
@@ -32,6 +32,7 @@
                 <module>spring5-di-demo</module>
                 <module>spring5-jokes-app</module>
                 <module>spring5-recipe-app</module>
+                <module>spring-rest-client-app</module>
                 <module>spring-boot-mongodb</module>
             </modules>
         </profile>
