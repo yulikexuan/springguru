@@ -41,7 +41,7 @@ public class ApiServiceIT {
 		// Given
 
 		// When
-		List<User> users = this.apiService.getUsers();
+		List<User> users = this.apiService.getUsers(3);
 
 		// Then
 		assertThat(users.size(), greaterThan(0));

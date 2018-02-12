@@ -65,9 +65,9 @@ public class UserController {
 //		}
 
 		log.debug(">>>>>>> Setting limit to  default value: " + 3);
-//		limit = 3;
+		limit = 3;
 
-		model.addAttribute("users", this.apiService.getUsers());
+		model.addAttribute("users", this.apiService.getUsers(limit));
 
 		return "userlist";
 

@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface IApiService {
 
-	List<User> getUsers();
+	List<User> getUsers(int limit);
 
 }///:~
