@@ -9,9 +9,13 @@ import guru.springframework.restclientapp.api.domain.model.UserData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +74,20 @@ public class ApiService implements IApiService {
 		}
 
 		return users;
+	}
+
+	@Override
+	public Flux<User> getUsers(Mono<Integer> limit) {
+
+		return WebClient
+				.create(this.api_uri_users)
+				.get()
+				.uri(uriBuilder -> uriBuilder.queryParam(
+						"limit", limit.block()).build())
+				.accept(MediaType.APPLICATION_JSON)
+				.exchange()
+				.flatMap(r -> r.bodyToMono(UserData.class))
+				.flatMapIterable(UserData::getData);
 	}
 
 }///~

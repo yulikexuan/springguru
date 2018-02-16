@@ -52,22 +52,29 @@ public class UserController {
 	@PostMapping("/users")
 	public String userList(Model model, ServerWebExchange serverWebExchange) {
 
-		MultiValueMap<String, String> map = serverWebExchange.getFormData()
-				.block();
+//		MultiValueMap<String, String> map = serverWebExchange.getFormData()
+//				.block();
+//
+//		Integer limit = new Integer(map.get("limit").get(0));
+//
+//		log.debug(">>>>>>> Received limit-value: " + limit);
+//
+////		if (limit == null) {
+////			log.debug("Setting limit to  default value: " + 3);
+////			limit = 3;
+////		}
+//
+//		log.debug(">>>>>>> Setting limit to  default value: " + 3);
+//		limit = 3;
+//
+//		model.addAttribute("users", this.apiService.getUsers(limit));
 
-		Integer limit = new Integer(map.get("limit").get(0));
-
-		log.debug(">>>>>>> Received limit-value: " + limit);
-
-//		if (limit == null) {
-//			log.debug("Setting limit to  default value: " + 3);
-//			limit = 3;
-//		}
-
-		log.debug(">>>>>>> Setting limit to  default value: " + 3);
-		limit = 3;
-
-		model.addAttribute("users", this.apiService.getUsers(limit));
+		model.addAttribute("users",
+				this.apiService.getUsers(
+						serverWebExchange
+								.getFormData()
+								.map(d ->
+										new Integer(d.getFirst("limit")))));
 
 		return "userlist";
 
