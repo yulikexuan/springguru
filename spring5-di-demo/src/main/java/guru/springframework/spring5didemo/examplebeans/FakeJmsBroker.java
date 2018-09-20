@@ -41,10 +41,6 @@ public class FakeJmsBroker {
 
     @Override
     public String toString() {
-        return "FakeJmsBroker{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", url='" + url + '\'' +
-                '}';
+        return "FakeJmsBroker{" + "username='" + username + '\'' + ", password='" + password + '\'' + ", url='" + url + '\'' + '}';
     }
 }///~

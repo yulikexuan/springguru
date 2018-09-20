@@ -13,8 +13,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class UnitOfMeasureToUnitOfMeasureCommand implements
-        Converter<UnitOfMeasure, UnitOfMeasureCommand> {
+public class UnitOfMeasureToUnitOfMeasureCommand implements Converter<UnitOfMeasure, UnitOfMeasureCommand> {
 
     @Synchronized
     @Nullable
@@ -25,10 +24,7 @@ public class UnitOfMeasureToUnitOfMeasureCommand implements
             return null;
         }
 
-        return new UnitOfMeasureCommand.Builder()
-                .setId(uom.getId())
-                .setDescription(uom.getDescription())
-                .createUnitOfMeasureCommand();
+        return new UnitOfMeasureCommand.Builder().setId(uom.getId()).setDescription(uom.getDescription()).createUnitOfMeasureCommand();
     }
 
 }///~

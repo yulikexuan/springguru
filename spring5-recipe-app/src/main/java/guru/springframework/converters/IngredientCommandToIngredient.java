@@ -16,13 +16,11 @@ import javax.validation.constraints.NotNull;
 
 
 @Component
-public class IngredientCommandToIngredient implements
-        Converter<IngredientCommand, Ingredient> {
+public class IngredientCommandToIngredient implements Converter<IngredientCommand, Ingredient> {
 
     private final UnitOfMeasureCommandToUnitOfMeasure uomConverter;
 
-    public IngredientCommandToIngredient(
-            @NotNull UnitOfMeasureCommandToUnitOfMeasure uomConverter) {
+    public IngredientCommandToIngredient(@NotNull UnitOfMeasureCommandToUnitOfMeasure uomConverter) {
 
         this.uomConverter = uomConverter;
     }
@@ -36,12 +34,7 @@ public class IngredientCommandToIngredient implements
             return null;
         }
 
-        return new IngredientBuilder()
-                .setId(command.getId())
-                .setDescription(command.getDescription())
-                .setAmount(command.getAmount())
-                .setUom(this.uomConverter.convert(command.getUomc()))
-                .build();
+        return new IngredientBuilder().setId(command.getId()).setDescription(command.getDescription()).setAmount(command.getAmount()).setUom(this.uomConverter.convert(command.getUomc())).build();
     }
 
 }///~

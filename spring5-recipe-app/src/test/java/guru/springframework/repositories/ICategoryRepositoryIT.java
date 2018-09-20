@@ -40,10 +40,7 @@ public class ICategoryRepositoryIT {
         this.categoryRepository.deleteAll();
         this.unitOfMeasureRepository.deleteAll();
         this.recipeRepository.deleteAll();
-        RecipeBootstrap recipeBootstrap = new RecipeBootstrap(
-                this.recipeRepository, this.categoryRepository,
-                this.unitOfMeasureRepository, new RecipeBuilder(),
-                new IngredientBuilder());
+        RecipeBootstrap recipeBootstrap = new RecipeBootstrap(this.recipeRepository, this.categoryRepository, this.unitOfMeasureRepository, new RecipeBuilder(), new IngredientBuilder());
         recipeBootstrap.onApplicationEvent(null);
     }
 
@@ -51,14 +48,10 @@ public class ICategoryRepositoryIT {
     public void findByDescription() {
 
         // Given
-        String[] categories = {
-                "American", "Italian", "Mexican", "Fast Food",
-        };
+        String[] categories = {"American", "Italian", "Mexican", "Fast Food",};
 
         // When
-        Arrays.stream(categories)
-                .forEach(c -> assertTrue(categoryRepository
-                        .findByDescription(c).isPresent()));
+        Arrays.stream(categories).forEach(c -> assertTrue(categoryRepository.findByDescription(c).isPresent()));
     }
 
 }///:~

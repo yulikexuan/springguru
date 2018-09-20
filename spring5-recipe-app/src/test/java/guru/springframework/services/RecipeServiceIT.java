@@ -50,22 +50,17 @@ public class RecipeServiceIT {
         String revicedDesc = "Command : " + testRecipe.getDescription();
         testRecipe.setDescription(revicedDesc);
 
-        RecipeCommand testCommand = this.recipeToRecipeCommand.convert(
-                testRecipe);
+        RecipeCommand testCommand = this.recipeToRecipeCommand.convert(testRecipe);
 
         // When
-        RecipeCommand savedCommand = this.recipeService.saveRecipeCommand(
-                testCommand);
+        RecipeCommand savedCommand = this.recipeService.saveRecipeCommand(testCommand);
 
         // Then
         assertThat(savedCommand.getDescription(), is(revicedDesc));
         assertThat(testRecipe.getId(), is(savedCommand.getId()));
-        assertThat(testRecipe.getCategories().size(),
-                is(savedCommand.getCategories().size()));
-        assertThat(testRecipe.getIngredients().size(),
-                is(savedCommand.getIngredients().size()));
+        assertThat(testRecipe.getCategories().size(), is(savedCommand.getCategories().size()));
+        assertThat(testRecipe.getIngredients().size(), is(savedCommand.getIngredients().size()));
     }
-
 
 
 }///:~

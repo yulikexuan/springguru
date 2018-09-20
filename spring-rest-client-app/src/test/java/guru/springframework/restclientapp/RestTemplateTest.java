@@ -27,136 +27,129 @@ import static org.junit.Assert.assertThat;
 @Slf4j
 public class RestTemplateTest {
 
-	static final String API_ROOT = "https://api.predic8.de:443/shop";
+    static final String API_ROOT = "https://api.predic8.de:443/shop";
 
-	private RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
-	@Before
-	public void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
 
-		URL url = new URL("https://api.predic8.de/");
-		System.out.println(url.getHost());
+        URL url = new URL("https://api.predic8.de/");
+        System.out.println(url.getHost());
 
-		HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		con.connect();
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.connect();
 
-		if (con.getResponseCode() != SC_OK) {
-			throw new RuntimeException("No internet is available!");
-		}
+        if (con.getResponseCode() != SC_OK) {
+            throw new RuntimeException("No internet is available!");
+        }
 
-		this.restTemplate = new RestTemplate();
-	}
+        this.restTemplate = new RestTemplate();
+    }
 
-	@Test
-	public void getCategories() {
+    @Test
+    public void getCategories() {
 
-		// Given
-		String apiUrl = API_ROOT + "/categories/";
+        // Given
+        String apiUrl = API_ROOT + "/categories/";
 
-		// When
-		JsonNode jsonNode = this.restTemplate.getForObject(apiUrl,
-				JsonNode.class);
+        // When
+        JsonNode jsonNode = this.restTemplate.getForObject(apiUrl, JsonNode.class);
 
-		// Then
-		System.out.println(">>>>>>> Response: " + jsonNode.toString());
-		assertThat(jsonNode.get("categories").size(), greaterThan(0));
+        // Then
+        System.out.println(">>>>>>> Response: " + jsonNode.toString());
+        assertThat(jsonNode.get("categories").size(), greaterThan(0));
 
-	}// End of getCategories
+    }// End of getCategories
 
-	@Test
-	public void getCustomers() throws Exception {
+    @Test
+    public void getCustomers() throws Exception {
 
-		// Given
-		String apiUrl = API_ROOT + "/customers/";
+        // Given
+        String apiUrl = API_ROOT + "/customers/";
 
-		// When
-		JsonNode jsonNode = this.restTemplate.getForObject(apiUrl,
-				JsonNode.class);
+        // When
+        JsonNode jsonNode = this.restTemplate.getForObject(apiUrl, JsonNode.class);
 
-		// Then
-		System.out.println(jsonNode.toString());
-		assertThat(jsonNode.get("customers").size(), greaterThan(0));
-	}
+        // Then
+        System.out.println(jsonNode.toString());
+        assertThat(jsonNode.get("customers").size(), greaterThan(0));
+    }
 
-	@Test
-	public void create_Customers() throws Exception {
+    @Test
+    public void create_Customers() throws Exception {
 
-		// Given
-		String apiUrl = API_ROOT + "/customers/";
+        // Given
+        String apiUrl = API_ROOT + "/customers/";
 
-		Map<String, String> postMap = new HashMap<>();
-		postMap.put("firstname", "Bill");
-		postMap.put("lastname", "Gates");
+        Map<String, String> postMap = new HashMap<>();
+        postMap.put("firstname", "Bill");
+        postMap.put("lastname", "Gates");
 
-		// When
-		JsonNode jsonNode = this.restTemplate.postForObject(apiUrl, postMap,
-				JsonNode.class);
+        // When
+        JsonNode jsonNode = this.restTemplate.postForObject(apiUrl, postMap, JsonNode.class);
 
-		// Theen
-		System.out.println(jsonNode.toString());
-	}
+        // Theen
+        System.out.println(jsonNode.toString());
+    }
 
-	@Test
-	public void update_Customers() {
+    @Test
+    public void update_Customers() {
 
-		// Given
-		String apiUrl = API_ROOT + "/customers/";     
-		                                              
-		Map<String, String> postMap = new HashMap<>();
-		postMap.put("firstname", "Mike");
-		postMap.put("lastname", "Lee");
-		JsonNode jsonNode = this.restTemplate.postForObject(apiUrl, postMap,
-				JsonNode.class);
+        // Given
+        String apiUrl = API_ROOT + "/customers/";
 
-		String newCustomerUrl = jsonNode.get("customer_url").textValue();
-		String id = newCustomerUrl.split("/")[3];
+        Map<String, String> postMap = new HashMap<>();
+        postMap.put("firstname", "Mike");
+        postMap.put("lastname", "Lee");
+        JsonNode jsonNode = this.restTemplate.postForObject(apiUrl, postMap, JsonNode.class);
 
-		System.out.println("Created customer id is " + id);
+        String newCustomerUrl = jsonNode.get("customer_url").textValue();
+        String id = newCustomerUrl.split("/")[3];
 
-		postMap.clear();
-		postMap.put("firstname", "Wengui");
-		postMap.put("lastname", "Guo");
+        System.out.println("Created customer id is " + id);
 
-		// When
-		this.restTemplate.put(apiUrl + id, postMap);
+        postMap.clear();
+        postMap.put("firstname", "Wengui");
+        postMap.put("lastname", "Guo");
 
-		// Then
-		JsonNode updateJsonNode = this.restTemplate.getForObject(
-				apiUrl + id, JsonNode.class);
-		System.out.println(updateJsonNode);
-	}
+        // When
+        this.restTemplate.put(apiUrl + id, postMap);
 
-	@Test
-	public void delete_Customer() throws Exception {
+        // Then
+        JsonNode updateJsonNode = this.restTemplate.getForObject(apiUrl + id, JsonNode.class);
+        System.out.println(updateJsonNode);
+    }
 
-		// Given
-		String apiUrl = API_ROOT + "/customers/";
+    @Test
+    public void delete_Customer() throws Exception {
 
-		Map<String, String> postMap = new HashMap<>();
-		postMap.put("firstname", UUID.randomUUID().toString());
-		postMap.put("lastname", UUID.randomUUID().toString());
-		JsonNode jsonNode = this.restTemplate.postForObject(apiUrl, postMap,
-				JsonNode.class);
+        // Given
+        String apiUrl = API_ROOT + "/customers/";
 
-		String newCustomerUrl = jsonNode.get("customer_url").textValue();
-		String id = newCustomerUrl.split("/")[3];
+        Map<String, String> postMap = new HashMap<>();
+        postMap.put("firstname", UUID.randomUUID().toString());
+        postMap.put("lastname", UUID.randomUUID().toString());
+        JsonNode jsonNode = this.restTemplate.postForObject(apiUrl, postMap, JsonNode.class);
 
-		System.out.println("Created customer id is " + id);
+        String newCustomerUrl = jsonNode.get("customer_url").textValue();
+        String id = newCustomerUrl.split("/")[3];
 
-		// When
-		this.restTemplate.delete(apiUrl + id);
+        System.out.println("Created customer id is " + id);
 
-		// Then
+        // When
+        this.restTemplate.delete(apiUrl + id);
 
-		JsonNode updateJsonNode = null;
-		try {
-			updateJsonNode = this.restTemplate.getForObject(
-					apiUrl + id, JsonNode.class);
-			System.out.println(updateJsonNode);
-		} catch (HttpClientErrorException e) {
-			int sc = e.getRawStatusCode();
-			System.out.println(sc);
-		}
-	}
+        // Then
+
+        JsonNode updateJsonNode = null;
+        try {
+            updateJsonNode = this.restTemplate.getForObject(apiUrl + id, JsonNode.class);
+            System.out.println(updateJsonNode);
+        } catch (HttpClientErrorException e) {
+            int sc = e.getRawStatusCode();
+            System.out.println(sc);
+        }
+    }
 
 }///~

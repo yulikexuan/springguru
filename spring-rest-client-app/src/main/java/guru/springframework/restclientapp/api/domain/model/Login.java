@@ -1,7 +1,6 @@
 //: guru.springframework.restclientapp.api.domain.model.Login.java
 
 
-
 package guru.springframework.restclientapp.api.domain.model;
 
 

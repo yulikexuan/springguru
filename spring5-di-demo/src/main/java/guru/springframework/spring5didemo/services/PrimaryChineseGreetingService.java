@@ -14,8 +14,7 @@ public class PrimaryChineseGreetingService implements IGreetingService {
     private IGreetingRepository greetingRepository;
 
     @Autowired
-    public PrimaryChineseGreetingService(
-            IGreetingRepository greetingRepository) {
+    public PrimaryChineseGreetingService(IGreetingRepository greetingRepository) {
         this.greetingRepository = greetingRepository;
     }
 

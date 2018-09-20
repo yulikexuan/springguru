@@ -44,18 +44,14 @@ public class CategoryCommandToCategoryTest {
 
     @Test
     public void can_Generate_Empty_Object() {
-        assertNotNull(this.converter.convert(
-                new CategoryCommand.Builder().createCategoryCommand()));
+        assertNotNull(this.converter.convert(new CategoryCommand.Builder().createCategoryCommand()));
     }
 
     @Test
     public void able_To_Converte_CategoryCommand_To_Category() {
 
         // Given
-        CategoryCommand command = new CategoryCommand.Builder()
-                .setId(this.id)
-                .setDescription(this.description)
-                .createCategoryCommand();
+        CategoryCommand command = new CategoryCommand.Builder().setId(this.id).setDescription(this.description).createCategoryCommand();
 
         // When
         Category category = this.converter.convert(command);

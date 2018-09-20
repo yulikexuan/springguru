@@ -8,7 +8,6 @@ import guru.springframework.domain.UnitOfMeasure;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
 
-public interface IUnitOfMeasureReactiveRepository extends
-        ReactiveMongoRepository<UnitOfMeasure, String> {
+public interface IUnitOfMeasureReactiveRepository extends ReactiveMongoRepository<UnitOfMeasure, String> {
 
 }///:~

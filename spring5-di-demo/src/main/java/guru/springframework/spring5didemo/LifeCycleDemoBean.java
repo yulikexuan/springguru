@@ -14,8 +14,7 @@ import javax.annotation.PreDestroy;
 
 
 @Component
-public class LifeCycleDemoBean implements BeanNameAware, BeanFactoryAware,
-        ApplicationContextAware, InitializingBean, DisposableBean {
+public class LifeCycleDemoBean implements BeanNameAware, BeanFactoryAware, ApplicationContextAware, InitializingBean, DisposableBean {
 
     public LifeCycleDemoBean() {
         System.out.println("## I'm in the LifeCycleBean's constructor.");
@@ -39,12 +38,11 @@ public class LifeCycleDemoBean implements BeanNameAware, BeanFactoryAware,
     @Override
     public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
         System.out.println("## My bean factory has been set here. ");
-//        System.out.println(beanFactory.);
+        //        System.out.println(beanFactory.);
     }
 
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext)
-            throws BeansException {
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 
         System.out.println("## ApplicationContext has been set here.");
     }

@@ -14,11 +14,11 @@ import java.util.List;
 @Data
 public class Artist {
 
-	private String name;
-	private Date birthDate;
+    private String name;
+    private Date birthDate;
 
-	private int age;
-	private String homeTown;
-	private List<String> awardsWon = new ArrayList<>();
+    private int age;
+    private String homeTown;
+    private List<String> awardsWon = new ArrayList<>();
 
 }///~

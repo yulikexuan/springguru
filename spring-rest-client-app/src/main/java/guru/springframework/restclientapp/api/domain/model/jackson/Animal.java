@@ -10,18 +10,14 @@ import lombok.Data;
 
 
 @Data
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY,
-		property = "@class")
-@JsonSubTypes({
-		@JsonSubTypes.Type(value = Lion.class, name = "lion"),
-		@JsonSubTypes.Type(value = Elephant.class, name = "elephant")
-})
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
+@JsonSubTypes({@JsonSubTypes.Type(value = Lion.class, name = "lion"), @JsonSubTypes.Type(value = Elephant.class, name = "elephant")})
 public abstract class Animal {
 
-	String name;
+    String name;
 
-	public Animal(String nema) {
-		this.name = nema;
-	}
+    public Animal(String nema) {
+        this.name = nema;
+    }
 
 }///~

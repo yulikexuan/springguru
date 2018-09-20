@@ -38,8 +38,7 @@ public class UnitOfMeasureServiceTest {
     public void setUp() throws Exception {
         this.uomcConverter = new UnitOfMeasureToUnitOfMeasureCommand();
         MockitoAnnotations.initMocks(this);
-        this.unitOfMeasureService = new UnitOfMeasureService(
-                this.unitOfMeasureRepository, this.uomcConverter);
+        this.unitOfMeasureService = new UnitOfMeasureService(this.unitOfMeasureRepository, this.uomcConverter);
     }
 
     @Test
@@ -63,12 +62,10 @@ public class UnitOfMeasureServiceTest {
         unitOfMeasures.add(uom2);
         unitOfMeasures.add(uom3);
 
-        when(this.unitOfMeasureRepository.findAll())
-                .thenReturn(Flux.just(uom1, uom2, uom3));
+        when(this.unitOfMeasureRepository.findAll()).thenReturn(Flux.just(uom1, uom2, uom3));
 
         // When
-        List<UnitOfMeasureCommand> commands = this.unitOfMeasureService
-                .findAllUnitOfMeasureCommands().collectList().block();
+        List<UnitOfMeasureCommand> commands = this.unitOfMeasureService.findAllUnitOfMeasureCommands().collectList().block();
 
         // Then
         assertThat(commands.size(), is(3));

@@ -51,8 +51,7 @@ public class RecipeControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    public void able_To_Get_A_Recipe_From_Service_To_The_View()
-            throws Exception {
+    public void able_To_Get_A_Recipe_From_Service_To_The_View() throws Exception {
 
         // Given
         String id = this.random.nextLong() + "";
@@ -62,19 +61,14 @@ public class RecipeControllerTest extends AbstractControllerTest {
         String url = "/recipe/" + id + "/show";
 
         // When
-        when(this.recipeReactiveService.findById(id))
-                .thenReturn(Mono.just(recipe));
+        when(this.recipeReactiveService.findById(id)).thenReturn(Mono.just(recipe));
 
         // Then
-        mockMvc.perform(get(url))
-                .andExpect(status().isOk())
-                .andExpect(model().attributeExists("recipe"))
-                .andExpect(view().name("recipe/show"));
+        mockMvc.perform(get(url)).andExpect(status().isOk()).andExpect(model().attributeExists("recipe")).andExpect(view().name("recipe/show"));
     }
 
     @Test
-    public void null_Recipe_Is_Not_Set_In_Model_()
-            throws Exception {
+    public void null_Recipe_Is_Not_Set_In_Model_() throws Exception {
 
         // Given
         String id = this.random.nextLong() + "";
@@ -83,94 +77,58 @@ public class RecipeControllerTest extends AbstractControllerTest {
         when(this.recipeReactiveService.findById(id)).thenReturn(Mono.empty());
 
         // Then
-        this.mockMvc.perform(get(
-                "/recipe/" + id + "/show"))
-                .andExpect(status().isOk())
-                .andExpect(model().attribute("recipe",
-                        Matchers.nullValue()))
-                .andExpect(view().name("recipe/show"));
+        this.mockMvc.perform(get("/recipe/" + id + "/show")).andExpect(status().isOk()).andExpect(model().attribute("recipe", Matchers.nullValue())).andExpect(view().name("recipe/show"));
     }
 
     @Test
     public void able_To_Show_A_Recipe_Form_For_Creating_New_Recipe() throws Exception {
 
         // When
-        this.mockMvc.perform(get("/recipe/new"))
-                .andExpect(status().isOk())
-                .andExpect(model().attributeExists("recipe"))
-                .andExpect(model().attribute("recipe",
-                        Matchers.any(RecipeCommand.class)))
-                .andExpect(view().name("recipe/recipeform"));
+        this.mockMvc.perform(get("/recipe/new")).andExpect(status().isOk()).andExpect(model().attributeExists("recipe")).andExpect(model().attribute("recipe", Matchers.any(RecipeCommand.class))).andExpect(view().name("recipe/recipeform"));
     }
 
     @Test
-    public void able_To_Save_New_Recipe_Or_Update_Exist_Recipe()
-            throws Exception {
+    public void able_To_Save_New_Recipe_Or_Update_Exist_Recipe() throws Exception {
 
         // Given
         RecipeCommand savedCommand = Mockito.mock(RecipeCommand.class);
 
-        when(this.recipeReactiveService
-                .saveRecipeCommand(Mockito.any(RecipeCommand.class)))
-                .thenReturn(Mono.just(savedCommand));
-
-        String id = this.random.nextLong() +  "";
-        when(savedCommand.getId()).thenReturn(id);
-
-        // When
-        this.mockMvc.perform(post("/recipe")
-                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                        .param("description",
-                                UUID.randomUUID().toString())
-                        .param("directions",
-                                UUID.randomUUID().toString()))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/recipe/" + id + "/show"));
-    }
-
-    @Test
-    public void able_To_Back_To_Form_Page_If_Any_Field_Is_Invalid()
-            throws Exception {
-
-        // Given
-        RecipeCommand savedCommand = Mockito.mock(RecipeCommand.class);
-
-        when(this.recipeReactiveService
-                .saveRecipeCommand(Mockito.any(RecipeCommand.class)))
-                .thenReturn(Mono.just(savedCommand));
+        when(this.recipeReactiveService.saveRecipeCommand(Mockito.any(RecipeCommand.class))).thenReturn(Mono.just(savedCommand));
 
         String id = this.random.nextLong() + "";
         when(savedCommand.getId()).thenReturn(id);
 
         // When
-        this.mockMvc.perform(post("/recipe")
-                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                .param("id", "")
-                .param("description", "D")
-                .param("cookTime", "0")
-                .param("url", "abs"))
-                .andExpect(status().isOk())
-                .andExpect(model().attributeExists("recipe"))
-                .andExpect(view().name(RecipeController.RECIPE_FORM_URL));
+        this.mockMvc.perform(post("/recipe").contentType(MediaType.APPLICATION_FORM_URLENCODED).param("description", UUID.randomUUID().toString()).param("directions", UUID.randomUUID().toString())).andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/recipe/" + id + "/show"));
     }
 
     @Test
-    public void able_To_Send_An_Exist_Recipe_To_A_Recipe_Form_To_Edit_It()
-            throws Exception {
+    public void able_To_Back_To_Form_Page_If_Any_Field_Is_Invalid() throws Exception {
+
+        // Given
+        RecipeCommand savedCommand = Mockito.mock(RecipeCommand.class);
+
+        when(this.recipeReactiveService.saveRecipeCommand(Mockito.any(RecipeCommand.class))).thenReturn(Mono.just(savedCommand));
+
+        String id = this.random.nextLong() + "";
+        when(savedCommand.getId()).thenReturn(id);
+
+        // When
+        this.mockMvc.perform(post("/recipe").contentType(MediaType.APPLICATION_FORM_URLENCODED).param("id", "").param("description", "D").param("cookTime", "0").param("url", "abs")).andExpect(status().isOk()).andExpect(model().attributeExists("recipe")).andExpect(view().name(RecipeController.RECIPE_FORM_URL));
+    }
+
+    @Test
+    public void able_To_Send_An_Exist_Recipe_To_A_Recipe_Form_To_Edit_It() throws Exception {
 
         // Given
         String id = this.random.nextLong() + "";
 
         RecipeCommand command = Mockito.mock(RecipeCommand.class);
 
-        when(this.recipeReactiveService.findCommandById(id))
-                .thenReturn(Mono.just(command));
+        when(this.recipeReactiveService.findCommandById(id)).thenReturn(Mono.just(command));
 
         // When
-        this.mockMvc.perform(get("/recipe/" + id + "/update"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/recipe/recipeform"))
-                .andExpect(model().attributeExists("recipe"));
+        this.mockMvc.perform(get("/recipe/" + id + "/update")).andExpect(status().isOk()).andExpect(view().name("/recipe/recipeform")).andExpect(model().attributeExists("recipe"));
     }
 
     @Test
@@ -181,32 +139,24 @@ public class RecipeControllerTest extends AbstractControllerTest {
         String idParam = id;
 
         // When
-        this.mockMvc.perform(get("/recipe/" + idParam + "/delete"))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/"));
+        this.mockMvc.perform(get("/recipe/" + idParam + "/delete")).andExpect(status().is3xxRedirection()).andExpect(redirectedUrl("/"));
 
         // Then
-        verify(this.recipeReactiveService, times(1))
-                .deleteById(id);
+        verify(this.recipeReactiveService, times(1)).deleteById(id);
     }
 
     @Test
-    public void able_To_Show_404error_Page_When_Getting_NotFoundException()
-            throws Exception {
+    public void able_To_Show_404error_Page_When_Getting_NotFoundException() throws Exception {
 
         // Given
         String id = this.random.nextLong() + "";
 
         String url = "/recipe/" + id + "/update";
 
-        when(this.recipeReactiveService.findCommandById(id))
-                .thenThrow(NotFoundException.class);
+        when(this.recipeReactiveService.findCommandById(id)).thenThrow(NotFoundException.class);
 
         // When
-        this.mockMvc.perform(get(url))
-                .andExpect(status().isNotFound())
-                .andExpect(model().attributeExists("exception"))
-                .andExpect(view().name("404error"));
+        this.mockMvc.perform(get(url)).andExpect(status().isNotFound()).andExpect(model().attributeExists("exception")).andExpect(view().name("404error"));
     }
 
 }///~

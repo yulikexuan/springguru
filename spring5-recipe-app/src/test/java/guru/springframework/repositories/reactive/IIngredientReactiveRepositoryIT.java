@@ -45,8 +45,7 @@ public class IIngredientReactiveRepositoryIT {
         this.ingredientReactiveRepository.save(ingredient).block();
 
         // Then
-        assertThat(this.ingredientReactiveRepository.count().block(),
-                is(1L));
+        assertThat(this.ingredientReactiveRepository.count().block(), is(1L));
     }
 
     @Test
@@ -56,8 +55,7 @@ public class IIngredientReactiveRepositoryIT {
         this.ingredientReactiveRepository.save(ingredient).block();
 
         // When
-        Ingredient targetIngredient = this.ingredientReactiveRepository
-                .findByDescription(this.desc).block();
+        Ingredient targetIngredient = this.ingredientReactiveRepository.findByDescription(this.desc).block();
 
         // Then
         assertThat(targetIngredient.getDescription(), is(this.desc));

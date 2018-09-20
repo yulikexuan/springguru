@@ -99,15 +99,13 @@ public class RecipeCommandToRecipeTest {
         this.description = UUID.randomUUID().toString();
         this.cookTime = this.random.nextInt();
         this.prepTime = this.random.nextInt();
-        this.difficulty = Difficulty.values()[
-                this.random.nextInt(Difficulty.values().length)];
+        this.difficulty = Difficulty.values()[this.random.nextInt(Difficulty.values().length)];
         this.directions = UUID.randomUUID().toString();
         this.servings = this.random.nextInt();
         this.source = UUID.randomUUID().toString();
         this.url = UUID.randomUUID().toString();
 
-        this.converter = new RecipeCommandToRecipe(this.notesConverter,
-                this.categoryConverter, this.ingredientConverter);
+        this.converter = new RecipeCommandToRecipe(this.notesConverter, this.categoryConverter, this.ingredientConverter);
     }
 
     @Test
@@ -121,8 +119,7 @@ public class RecipeCommandToRecipeTest {
 
     @Test
     public void can_Generate_Empty_Object() {
-        assertNotNull(this.converter.convert(
-                new RecipeCommand.Builder().createRecipeCommand()));
+        assertNotNull(this.converter.convert(new RecipeCommand.Builder().createRecipeCommand()));
     }
 
     @Test
@@ -139,20 +136,7 @@ public class RecipeCommandToRecipeTest {
         ingredientCommands.add(this.ingredientCommand_1);
         ingredientCommands.add(this.ingredientCommand_2);
 
-        RecipeCommand command = new RecipeCommand.Builder()
-                .setId(this.id)
-                .setDescription(this.description)
-                .setCookTime(this.cookTime)
-                .setPrepTime(this.prepTime)
-                .setDifficulty(this.difficulty)
-                .setDirections(this.directions)
-                .setServings(this.servings)
-                .setSource(this.source)
-                .setUrl(this.url)
-                .setNotes(this.notesCommand)
-                .setCategories(categoryCommands)
-                .setIngredients(ingredientCommands)
-                .createRecipeCommand();
+        RecipeCommand command = new RecipeCommand.Builder().setId(this.id).setDescription(this.description).setCookTime(this.cookTime).setPrepTime(this.prepTime).setDifficulty(this.difficulty).setDirections(this.directions).setServings(this.servings).setSource(this.source).setUrl(this.url).setNotes(this.notesCommand).setCategories(categoryCommands).setIngredients(ingredientCommands).createRecipeCommand();
 
         when(this.notesConverter.convert(this.notesCommand)).
                 thenReturn(this.notes);
@@ -164,12 +148,9 @@ public class RecipeCommandToRecipeTest {
         when(this.categoryConverter.convert(this.categoryCommand_2)).
                 thenReturn(this.category_2);
 
-        when(this.ingredientConverter.convert(this.ingredientCommand_0))
-                .thenReturn(this.ingtedient_0);
-        when(this.ingredientConverter.convert(this.ingredientCommand_1))
-                .thenReturn(this.ingtedient_1);
-        when(this.ingredientConverter.convert(this.ingredientCommand_2))
-                .thenReturn(this.ingtedient_2);
+        when(this.ingredientConverter.convert(this.ingredientCommand_0)).thenReturn(this.ingtedient_0);
+        when(this.ingredientConverter.convert(this.ingredientCommand_1)).thenReturn(this.ingtedient_1);
+        when(this.ingredientConverter.convert(this.ingredientCommand_2)).thenReturn(this.ingtedient_2);
 
         // When
         Recipe recipe = this.converter.convert(command);
@@ -187,18 +168,12 @@ public class RecipeCommandToRecipeTest {
         assertThat(recipe.getNotes(), is(this.notes));
         assertThat(recipe.getCategories().size(), is(3));
         assertThat(recipe.getIngredients().size(), is(3));
-        assertThat(recipe.getCategories().contains(this.category_0),
-                is(true));
-        assertThat(recipe.getCategories().contains(this.category_1),
-                is(true));
-        assertThat(recipe.getCategories().contains(this.category_2),
-                is(true));
-        assertThat(recipe.getIngredients().contains(this.ingtedient_0),
-                is(true));
-        assertThat(recipe.getIngredients().contains(this.ingtedient_1),
-                is(true));
-        assertThat(recipe.getIngredients().contains(this.ingtedient_2),
-                is(true));
+        assertThat(recipe.getCategories().contains(this.category_0), is(true));
+        assertThat(recipe.getCategories().contains(this.category_1), is(true));
+        assertThat(recipe.getCategories().contains(this.category_2), is(true));
+        assertThat(recipe.getIngredients().contains(this.ingtedient_0), is(true));
+        assertThat(recipe.getIngredients().contains(this.ingtedient_1), is(true));
+        assertThat(recipe.getIngredients().contains(this.ingtedient_2), is(true));
     }
 
 }///:~

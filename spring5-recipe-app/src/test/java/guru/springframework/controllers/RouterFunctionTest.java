@@ -21,53 +21,40 @@ import static org.mockito.Mockito.when;
 
 public class RouterFunctionTest {
 
-	WebTestClient webTestClient;
+    WebTestClient webTestClient;
 
-	@Mock
-	IRecipeReactiveService recipeReactiveService;
+    @Mock
+    IRecipeReactiveService recipeReactiveService;
 
-	@Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-		WebConfig webConfig = new WebConfig();
-		RouterFunction<?> routerFunction = webConfig.routes(
-				this.recipeReactiveService);
-		this.webTestClient = WebTestClient.bindToRouterFunction(routerFunction)
-				.build();
-	}
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+        WebConfig webConfig = new WebConfig();
+        RouterFunction<?> routerFunction = webConfig.routes(this.recipeReactiveService);
+        this.webTestClient = WebTestClient.bindToRouterFunction(routerFunction).build();
+    }
 
-	@Test
-	public void able_To_Get_A_Flux_Without_Any_Data() {
+    @Test
+    public void able_To_Get_A_Flux_Without_Any_Data() {
 
-		// Given
-		when(this.recipeReactiveService.getAllRecipes())
-				.thenReturn(Flux.just());
+        // Given
+        when(this.recipeReactiveService.getAllRecipes()).thenReturn(Flux.just());
 
-		// When
-		this.webTestClient.get()
-				.uri("/api/recipes")
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange() //Perform the exchange without a request body
-				.expectStatus()
-				.isOk();
+        // When
+        this.webTestClient.get().uri("/api/recipes").accept(MediaType.APPLICATION_JSON).exchange() //Perform the exchange without a request body
+                .expectStatus().isOk();
 
-	}
+    }
 
-	@Test
-	public void able_To_Get_A_Flux_With_Data() {
+    @Test
+    public void able_To_Get_A_Flux_With_Data() {
 
-		// Given
-		when(this.recipeReactiveService.getAllRecipes())
-				.thenReturn(Flux.just(new Recipe()));
+        // Given
+        when(this.recipeReactiveService.getAllRecipes()).thenReturn(Flux.just(new Recipe()));
 
-		// When
-		this.webTestClient.get()
-				.uri("/api/recipes")
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange() //Invoke the web service to perform the exchange without a request body
-				.expectStatus()
-				.isOk()
-				.expectBodyList(Recipe.class);
-	}
+        // When
+        this.webTestClient.get().uri("/api/recipes").accept(MediaType.APPLICATION_JSON).exchange() //Invoke the web service to perform the exchange without a request body
+                .expectStatus().isOk().expectBodyList(Recipe.class);
+    }
 
 }///~

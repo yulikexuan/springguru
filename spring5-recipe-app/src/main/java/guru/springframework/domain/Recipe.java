@@ -34,29 +34,27 @@ public class Recipe {
 
     private Byte[] image;
 
-//    @DBRef
+    //    @DBRef
     private Set<Category> categories = new HashSet<>();
 
     public void setNotes(Notes notes) {
         if (notes != null) {
             this.notes = notes;
-//            this.notes.setRecipe(this);
+            //            this.notes.setRecipe(this);
         }
     }
 
     public Recipe addIngredient(Ingredient ingredient) {
         if (ingredient != null) {
             this.ingredients.add(ingredient);
-//            ingredient.setRecipe(this);
+            //            ingredient.setRecipe(this);
         }
         return this;
     }
 
     public void removeIngredient(String ingredientId) {
 
-        Set<Ingredient> removed = this.ingredients.stream()
-                .filter(i -> i.getId().equals(ingredientId))
-                .collect(Collectors.toSet());
+        Set<Ingredient> removed = this.ingredients.stream().filter(i -> i.getId().equals(ingredientId)).collect(Collectors.toSet());
 
         // Very important: Let Hibernate remove the relationship between
         // the recipe and the deleted ingredient

@@ -50,10 +50,7 @@ public class IUnitOfMeasureRepositoryIT {
         this.unitOfMeasureRepository.deleteAll();
         this.recipeRepository.deleteAll();
 
-        RecipeBootstrap recipeBootstrap = new RecipeBootstrap(
-                this.recipeRepository, this.categoryRepository,
-                this.unitOfMeasureRepository, this.recipeBuilder,
-                this.ingredientBuilder);
+        RecipeBootstrap recipeBootstrap = new RecipeBootstrap(this.recipeRepository, this.categoryRepository, this.unitOfMeasureRepository, this.recipeBuilder, this.ingredientBuilder);
         recipeBootstrap.onApplicationEvent(null);
     }
 
@@ -64,8 +61,7 @@ public class IUnitOfMeasureRepositoryIT {
         String uom = "Teaspoon";
 
         // When
-        Optional<UnitOfMeasure> uomOptional =
-                this.unitOfMeasureRepository.findByDescription(uom);
+        Optional<UnitOfMeasure> uomOptional = this.unitOfMeasureRepository.findByDescription(uom);
 
         // Then
         assertThat(uom, is(uomOptional.get().getDescription()));
@@ -78,8 +74,7 @@ public class IUnitOfMeasureRepositoryIT {
         String uom = "Tablespoon";
 
         // When
-        Optional<UnitOfMeasure> uomOptional =
-                this.unitOfMeasureRepository.findByDescription(uom);
+        Optional<UnitOfMeasure> uomOptional = this.unitOfMeasureRepository.findByDescription(uom);
 
         // Then
         assertThat(uom, is(uomOptional.get().getDescription()));

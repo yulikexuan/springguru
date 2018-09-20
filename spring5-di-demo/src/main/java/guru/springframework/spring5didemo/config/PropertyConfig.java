@@ -45,8 +45,7 @@ public class PropertyConfig {
     List<String> names;
 
     @Bean
-    public static PropertySourcesPlaceholderConfigurer
-            propertySourcesPlaceholderConfigurer() {
+    public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
@@ -61,8 +60,7 @@ public class PropertyConfig {
 
     @Bean
     public FakeJmsBroker fakeJmsBroker() {
-        return new FakeJmsBroker(this.jmsUsername,
-                this.jmsPassword, this.jmsUrl);
+        return new FakeJmsBroker(this.jmsUsername, this.jmsPassword, this.jmsUrl);
     }
 
 }///~

@@ -15,9 +15,7 @@ public class ConstructorInjectedController {
     private final IGreetingService greetingService;
 
     @Autowired
-    public ConstructorInjectedController(
-            @Qualifier("constructorGreetingService")
-                    IGreetingService greetingService) {
+    public ConstructorInjectedController(@Qualifier("constructorGreetingService") IGreetingService greetingService) {
         this.greetingService = greetingService;
     }
 

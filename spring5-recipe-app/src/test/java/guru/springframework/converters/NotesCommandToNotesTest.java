@@ -44,18 +44,14 @@ public class NotesCommandToNotesTest {
 
     @Test
     public void can_Generate_Empty_Object() {
-        assertNotNull(this.converter.convert(
-                new NotesCommand.Builder().createNotesCommand()));
+        assertNotNull(this.converter.convert(new NotesCommand.Builder().createNotesCommand()));
     }
 
     @Test
     public void able_To_Converte_NotesCommand_To_Notes() {
 
         // Given
-        NotesCommand command = new NotesCommand.Builder()
-                .setId(this.id)
-                .setRecipeNotes(this.recipeNotes)
-                .createNotesCommand();
+        NotesCommand command = new NotesCommand.Builder().setId(this.id).setRecipeNotes(this.recipeNotes).createNotesCommand();
 
         // When
         Notes notes = this.converter.convert(command);

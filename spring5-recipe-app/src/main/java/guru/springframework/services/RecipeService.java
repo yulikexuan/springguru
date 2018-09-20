@@ -28,9 +28,7 @@ public class RecipeService implements IRecipeService {
     private final RecipeToRecipeCommand recipeToRecipeCommand;
 
     @Autowired
-    public RecipeService(IRecipeRepository recipeRepository,
-                         RecipeCommandToRecipe recipeCommandToRecipe,
-                         RecipeToRecipeCommand recipeToRecipeCommand) {
+    public RecipeService(IRecipeRepository recipeRepository, RecipeCommandToRecipe recipeCommandToRecipe, RecipeToRecipeCommand recipeToRecipeCommand) {
         this.recipeRepository = recipeRepository;
         this.recipeCommandToRecipe = recipeCommandToRecipe;
         this.recipeToRecipeCommand = recipeToRecipeCommand;
@@ -43,8 +41,7 @@ public class RecipeService implements IRecipeService {
         Set<Recipe> allRecipes = new HashSet<>();
 
         this.log.info(">>>>>>> Retrieving all recipes from repository ... ...");
-        this.recipeRepository.findAll().iterator().forEachRemaining(
-                allRecipes::add);
+        this.recipeRepository.findAll().iterator().forEachRemaining(allRecipes::add);
 
         return allRecipes;
     }
@@ -71,8 +68,7 @@ public class RecipeService implements IRecipeService {
 
         Recipe recipe = recipeOpt.get();
 
-        log.info(">>>>>>> Categories of " + recipe.getDescription() + ": " +
-                recipe.getCategories());
+        log.info(">>>>>>> Categories of " + recipe.getDescription() + ": " + recipe.getCategories());
 
         return this.recipeToRecipeCommand.convert(recipe);
     }

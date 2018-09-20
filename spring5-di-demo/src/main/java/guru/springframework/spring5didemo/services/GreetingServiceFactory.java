@@ -20,7 +20,7 @@ public class GreetingServiceFactory implements IGreetingServiceFactory {
 
     @Override
     public IGreetingService createGreetingService(String lang) {
-        switch (lang){
+        switch (lang) {
             case "en":
                 return new PrimaryGreetingService(this.greetingRepository);
             case "de":

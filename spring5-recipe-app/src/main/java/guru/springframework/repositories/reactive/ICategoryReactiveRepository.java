@@ -9,8 +9,7 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Mono;
 
 
-public interface ICategoryReactiveRepository extends
-        ReactiveMongoRepository<Category, String> {
+public interface ICategoryReactiveRepository extends ReactiveMongoRepository<Category, String> {
 
     Mono<Category> findByDescription(String description);
 

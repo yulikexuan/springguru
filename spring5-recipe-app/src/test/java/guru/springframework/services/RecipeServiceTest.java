@@ -45,8 +45,7 @@ public class RecipeServiceTest {
     public void setUp() throws Exception {
         this.random = new Random(System.currentTimeMillis());
         MockitoAnnotations.initMocks(this);
-        this.recipeService = new RecipeService(this.recipeRepository,
-                this.recipeCommandToRecipe, this.recipeToRecipeCommand);
+        this.recipeService = new RecipeService(this.recipeRepository, this.recipeCommandToRecipe, this.recipeToRecipeCommand);
     }
 
     @Test
@@ -69,14 +68,12 @@ public class RecipeServiceTest {
 
         assertThat(recipeReturned.get(), is(recipe));
 
-        verify(this.recipeRepository, times(1))
-                .findById(id);
+        verify(this.recipeRepository, times(1)).findById(id);
         verify(this.recipeRepository, never()).findAll();
     }
 
     @Test(expected = NotFoundException.class)
-    public void able_To_Throw_NotFoundException_When_Recipe_Not_Fount()
-            throws Exception {
+    public void able_To_Throw_NotFoundException_When_Recipe_Not_Fount() throws Exception {
 
         // Given
         Optional<Recipe> recipeOpt = Optional.empty();
@@ -113,17 +110,14 @@ public class RecipeServiceTest {
         RecipeCommand originalCommand = mock(RecipeCommand.class);
         RecipeCommand returnedCommand = mock(RecipeCommand.class);
 
-        when(this.recipeCommandToRecipe.convert(originalCommand))
-                .thenReturn(recipe);
+        when(this.recipeCommandToRecipe.convert(originalCommand)).thenReturn(recipe);
 
         when(this.recipeRepository.save(recipe)).thenReturn(savedRecipe);
 
-        when(this.recipeToRecipeCommand.convert(savedRecipe))
-                .thenReturn(returnedCommand);
+        when(this.recipeToRecipeCommand.convert(savedRecipe)).thenReturn(returnedCommand);
 
         // When
-        RecipeCommand result = this.recipeService.saveRecipeCommand(
-                originalCommand);
+        RecipeCommand result = this.recipeService.saveRecipeCommand(originalCommand);
 
         // Then
         assertThat(result, is(returnedCommand));
@@ -173,18 +167,19 @@ public class RecipeServiceTest {
         this.recipeService.deleteById(id);
 
         // Then
-        verify(this.recipeRepository, times(1))
-                .deleteById(id);
+        verify(this.recipeRepository, times(1)).deleteById(id);
     }
 
-    @DataPoint public static boolean positive = true;
-    @DataPoint public static boolean negative = false;
+    @DataPoint
+    public static boolean positive = true;
+    @DataPoint
+    public static boolean negative = false;
+
     @Theory
-    public void able_To_Know_If_A_Recipe_Id_Exists(boolean exists) throws
-            Exception {
+    public void able_To_Know_If_A_Recipe_Id_Exists(boolean exists) throws Exception {
 
         // Give
-        String recipeId = this.random.nextLong()  + "";
+        String recipeId = this.random.nextLong() + "";
 
         when(this.recipeRepository.existsById(recipeId)).thenReturn(exists);
 

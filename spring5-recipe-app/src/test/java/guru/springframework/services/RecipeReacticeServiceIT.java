@@ -52,17 +52,13 @@ public class RecipeReacticeServiceIT {
         RecipeCommand rc = this.recipeToRecipeCommand.convert(recipe);
 
         // When
-        RecipeCommand savedCommand = this.recipeReactiveService
-                .saveRecipeCommand(rc)
-                .block();
+        RecipeCommand savedCommand = this.recipeReactiveService.saveRecipeCommand(rc).block();
 
         // Then
         assertThat(savedCommand.getDescription(), is(revicedDesc));
         assertThat(recipe.getId(), is(savedCommand.getId()));
-        assertThat(recipe.getCategories().size(),
-                is(savedCommand.getCategories().size()));
-        assertThat(recipe.getIngredients().size(),
-                is(savedCommand.getIngredients().size()));
+        assertThat(recipe.getCategories().size(), is(savedCommand.getCategories().size()));
+        assertThat(recipe.getIngredients().size(), is(savedCommand.getIngredients().size()));
     }
 
 }///:~

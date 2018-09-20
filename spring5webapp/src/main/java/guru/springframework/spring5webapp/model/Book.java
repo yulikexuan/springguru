@@ -22,17 +22,15 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     private String title;
-    
+
     private String isbn;
-    
+
     private String publisher;
 
     @ManyToMany
-    @JoinTable(name = "author_book", 
-            joinColumns = @JoinColumn(name = "book_id"), 
-            inverseJoinColumns = @JoinColumn(name = "author_id"))
+    @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
     private Set<Author> authors = new HashSet<>();
 
     public Book() {
@@ -44,15 +42,14 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public Book(String title, String isbn, String publisher, 
-            Set<Author> authors) {
-        
+    public Book(String title, String isbn, String publisher, Set<Author> authors) {
+
         this.title = title;
         this.isbn = isbn;
         this.publisher = publisher;
         this.authors = authors;
     }
-    
+
     public Long getId() {
         return id;
     }
@@ -92,7 +89,7 @@ public class Book {
     public void setAuthors(Set<Author> authors) {
         this.authors = authors;
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -103,25 +100,19 @@ public class Book {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         Book other = (Book) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
+            if (other.id != null) return false;
+        } else if (!id.equals(other.id)) return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Book [id=" + id + ", title=" + title + ", isbn=" + isbn
-                + ", publisher=" + publisher + ", authors=" + authors + "]";
+        return "Book [id=" + id + ", title=" + title + ", isbn=" + isbn + ", publisher=" + publisher + ", authors=" + authors + "]";
     }
-    
+
 }///:~

@@ -46,8 +46,7 @@ public class RecipeToRecipeCommandTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        this.converter = new RecipeToRecipeCommand(this.notesConverter,
-                this.categoryConverter, this.ingredientConverter);
+        this.converter = new RecipeToRecipeCommand(this.notesConverter, this.categoryConverter, this.ingredientConverter);
     }
 
     @Test
@@ -70,8 +69,7 @@ public class RecipeToRecipeCommandTest {
         String description = UUID.randomUUID().toString();
         Integer cookTime = random.nextInt();
         Integer prepTime = random.nextInt();
-        Difficulty difficulty = Difficulty.values()[
-                random.nextInt(Difficulty.values().length)];
+        Difficulty difficulty = Difficulty.values()[random.nextInt(Difficulty.values().length)];
         String directions = UUID.randomUUID().toString();
         Integer servings = random.nextInt();
         String source = UUID.randomUUID().toString();
@@ -80,69 +78,31 @@ public class RecipeToRecipeCommandTest {
         Notes notes = mock(Notes.class);
         NotesCommand notesCommand = mock(NotesCommand.class);
 
-        Category[] categoryArr = {
-                mock(Category.class),
-                mock(Category.class),
-                mock(Category.class),
-        };
+        Category[] categoryArr = {mock(Category.class), mock(Category.class), mock(Category.class),};
 
-        CategoryCommand[] categoryCommandArr = {
-                mock(CategoryCommand.class),
-                mock(CategoryCommand.class),
-                mock(CategoryCommand.class),
-        };
+        CategoryCommand[] categoryCommandArr = {mock(CategoryCommand.class), mock(CategoryCommand.class), mock(CategoryCommand.class),};
 
-        Ingredient[] ingredientArr = {
-                mock(Ingredient.class),
-                mock(Ingredient.class),
-                mock(Ingredient.class),
-        };
+        Ingredient[] ingredientArr = {mock(Ingredient.class), mock(Ingredient.class), mock(Ingredient.class),};
 
-        IngredientCommand[] ingredientCommandArr = {
-                mock(IngredientCommand.class),
-                mock(IngredientCommand.class),
-                mock(IngredientCommand.class),
-        };
+        IngredientCommand[] ingredientCommandArr = {mock(IngredientCommand.class), mock(IngredientCommand.class), mock(IngredientCommand.class),};
 
-        Set<Category> categories = Arrays.stream(categoryArr)
-                .collect(Collectors.toSet());
+        Set<Category> categories = Arrays.stream(categoryArr).collect(Collectors.toSet());
 
-        Set<Ingredient> ingredients = Arrays.stream(ingredientArr)
-                .collect(Collectors.toSet());
+        Set<Ingredient> ingredients = Arrays.stream(ingredientArr).collect(Collectors.toSet());
 
-        when(this.categoryConverter.convert(categoryArr[0]))
-                .thenReturn(categoryCommandArr[0]);
-        when(this.categoryConverter.convert(categoryArr[1]))
-                .thenReturn(categoryCommandArr[1]);
-        when(this.categoryConverter.convert(categoryArr[2]))
-                .thenReturn(categoryCommandArr[2]);
+        when(this.categoryConverter.convert(categoryArr[0])).thenReturn(categoryCommandArr[0]);
+        when(this.categoryConverter.convert(categoryArr[1])).thenReturn(categoryCommandArr[1]);
+        when(this.categoryConverter.convert(categoryArr[2])).thenReturn(categoryCommandArr[2]);
 
-        when(this.ingredientConverter.convert(ingredientArr[0]))
-                .thenReturn(ingredientCommandArr[0]);
-        when(this.ingredientConverter.convert(ingredientArr[1]))
-                .thenReturn(ingredientCommandArr[1]);
-        when(this.ingredientConverter.convert(ingredientArr[2]))
-                .thenReturn(ingredientCommandArr[2]);
+        when(this.ingredientConverter.convert(ingredientArr[0])).thenReturn(ingredientCommandArr[0]);
+        when(this.ingredientConverter.convert(ingredientArr[1])).thenReturn(ingredientCommandArr[1]);
+        when(this.ingredientConverter.convert(ingredientArr[2])).thenReturn(ingredientCommandArr[2]);
 
         when(this.notesConverter.convert(notes)).thenReturn(notesCommand);
 
         Byte[] image = new Byte[10];
 
-        final Recipe recipe = new RecipeBuilder()
-                .setId(id)
-                .setCookTime(cookTime)
-                .setPrepTime(prepTime)
-                .setDescription(description)
-                .setDifficulty(difficulty)
-                .setDirections(directions)
-                .setServings(servings)
-                .setSource(source)
-                .setUrl(url)
-                .setNotes(notes)
-                .setCategories(categories)
-                .setIngredients(ingredients)
-                .setImage(image)
-                .build();
+        final Recipe recipe = new RecipeBuilder().setId(id).setCookTime(cookTime).setPrepTime(prepTime).setDescription(description).setDifficulty(difficulty).setDirections(directions).setServings(servings).setSource(source).setUrl(url).setNotes(notes).setCategories(categories).setIngredients(ingredients).setImage(image).build();
 
         // When
         RecipeCommand command = this.converter.convert(recipe);
@@ -161,13 +121,10 @@ public class RecipeToRecipeCommandTest {
         assertThat(command.getNotes(), is(notesCommand));
         assertThat(command.getImage(), is(image));
 
-        assertThat(command.getCategories().size(),
-                is(categoryCommandArr.length));
+        assertThat(command.getCategories().size(), is(categoryCommandArr.length));
 
 
-
-        assertThat(command.getIngredients().size(),
-                is(ingredientCommandArr.length));
+        assertThat(command.getIngredients().size(), is(ingredientCommandArr.length));
 
     }// End of able_To_Convert_Recope_To_RecopeCommand()
 

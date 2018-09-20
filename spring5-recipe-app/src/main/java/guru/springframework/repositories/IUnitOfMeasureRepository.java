@@ -11,8 +11,7 @@ import java.util.Optional;
 
 
 //@Repository: not needed as this class extends JpaRepository
-public interface IUnitOfMeasureRepository extends
-        CrudRepository<UnitOfMeasure, String> {
+public interface IUnitOfMeasureRepository extends CrudRepository<UnitOfMeasure, String> {
 
     Optional<UnitOfMeasure> findByDescription(String description);
 

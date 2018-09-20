@@ -37,8 +37,7 @@ public class IngredientCommand {
     @NotNull
     private UnitOfMeasureCommand uomc;
 
-    private IngredientCommand(String id, String recipeId, String description,
-                              BigDecimal amount, UnitOfMeasureCommand uomc) {
+    private IngredientCommand(String id, String recipeId, String description, BigDecimal amount, UnitOfMeasureCommand uomc) {
         this.id = id;
         this.recipeId = recipeId;
         this.description = description;
@@ -80,8 +79,7 @@ public class IngredientCommand {
         }
 
         public IngredientCommand createIngredientCommand() {
-            return new IngredientCommand(this.id, this.recipeId,
-                    this.description, this.amount,this.uomc);
+            return new IngredientCommand(this.id, this.recipeId, this.description, this.amount, this.uomc);
         }
 
     }//: End of IngredientCommand

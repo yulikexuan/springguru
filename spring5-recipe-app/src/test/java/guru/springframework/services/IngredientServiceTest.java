@@ -56,10 +56,7 @@ public class IngredientServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         this.random = new Random(System.currentTimeMillis());
-        this.ingredientService = new IngredientService(
-                this.ingredientToIngredientCommand,
-                this.ingredientCommandToIngredient,
-                this.recipeRepository, this.uomRepository);
+        this.ingredientService = new IngredientService(this.ingredientToIngredientCommand, this.ingredientCommandToIngredient, this.recipeRepository, this.uomRepository);
     }
 
     @Test
@@ -92,15 +89,12 @@ public class IngredientServiceTest {
 
         Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        when(this.recipeRepository.findById(recipeId)).thenReturn(
-                recipeOptional);
+        when(this.recipeRepository.findById(recipeId)).thenReturn(recipeOptional);
 
-        when(this.ingredientToIngredientCommand.convert(ingredient_2))
-                .thenReturn(ingredientCommand);
+        when(this.ingredientToIngredientCommand.convert(ingredient_2)).thenReturn(ingredientCommand);
 
         // When
-        IngredientCommand result = this.ingredientService
-                .findByRecipeIdAndIngredientId(recipeId, 3L + "");
+        IngredientCommand result = this.ingredientService.findByRecipeIdAndIngredientId(recipeId, 3L + "");
 
         // Then
         assertThat(result, is(ingredientCommand));
@@ -149,26 +143,20 @@ public class IngredientServiceTest {
         ingredient.setDescription(ingredientDesc);
         savedRecipe.addIngredient(ingredient);
 
-        when(this.recipeRepository.save(foundRecipe))
-                .thenReturn(savedRecipe);
+        when(this.recipeRepository.save(foundRecipe)).thenReturn(savedRecipe);
 
-        IngredientCommand updatedIngredientCommand = Mockito.mock(
-                IngredientCommand.class);
-        when(this.ingredientToIngredientCommand.convert(ingredient)).thenReturn(
-                updatedIngredientCommand);
+        IngredientCommand updatedIngredientCommand = Mockito.mock(IngredientCommand.class);
+        when(this.ingredientToIngredientCommand.convert(ingredient)).thenReturn(updatedIngredientCommand);
 
         // When
-        IngredientCommand result = this.ingredientService
-                .saveIngredientCommand(ingredientCommand);
+        IngredientCommand result = this.ingredientService.saveIngredientCommand(ingredientCommand);
 
         // Then
         assertThat(result, is(updatedIngredientCommand));
 
-        verify(oldIngredient, times(1))
-                .setDescription(ingredientDesc);
+        verify(oldIngredient, times(1)).setDescription(ingredientDesc);
         verify(oldIngredient, times(1)).setUom(uom);
-        verify(oldIngredient, times(1))
-                .setAmount(amount);
+        verify(oldIngredient, times(1)).setAmount(amount);
 
     }// End of able_To_Update_Existing_Ingredient()
 
@@ -198,8 +186,7 @@ public class IngredientServiceTest {
 
         // Then
         assertThat(foundRecipe.getIngredients().size(), is(0));
-        verify(this.recipeRepository, times(1))
-                .save(foundRecipe);
+        verify(this.recipeRepository, times(1)).save(foundRecipe);
     }
 
 }///:~

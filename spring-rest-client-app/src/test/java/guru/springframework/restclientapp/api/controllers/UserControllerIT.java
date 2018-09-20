@@ -21,40 +21,30 @@ import org.springframework.web.reactive.function.BodyInserters;
 @SpringBootTest
 public class UserControllerIT {
 
-	@Autowired
-	private ApplicationContext applicationContext;
+    @Autowired
+    private ApplicationContext applicationContext;
 
-	private WebTestClient webTestClient;
+    private WebTestClient webTestClient;
 
-	@Before
-	public void setUp() {
-		this.webTestClient = WebTestClient.bindToApplicationContext(
-				this.applicationContext).build();
-	}
+    @Before
+    public void setUp() {
+        this.webTestClient = WebTestClient.bindToApplicationContext(this.applicationContext).build();
+    }
 
-	@Test
-	public void having_Index_Page() {
-		this.webTestClient.get().uri("/")
-				.exchange()
-				.expectStatus()
-				.isOk();
-	}
+    @Test
+    public void having_Index_Page() {
+        this.webTestClient.get().uri("/").exchange().expectStatus().isOk();
+    }
 
-	@Test
-	public void able_To_Response_A_List_Of_Users_For_Post_Request() {
+    @Test
+    public void able_To_Response_A_List_Of_Users_For_Post_Request() {
 
-		// Given
-		MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-		formData.add("limit", Integer.toString(3));
+        // Given
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+        formData.add("limit", Integer.toString(3));
 
-		// When
-		this.webTestClient.post()
-				.uri("users")
-				.contentType(MediaType.APPLICATION_FORM_URLENCODED)
-				.body(BodyInserters.fromFormData(formData))
-				.exchange()
-				.expectStatus()
-				.isOk();
-	}
+        // When
+        this.webTestClient.post().uri("users").contentType(MediaType.APPLICATION_FORM_URLENCODED).body(BodyInserters.fromFormData(formData)).exchange().expectStatus().isOk();
+    }
 
 }///:~

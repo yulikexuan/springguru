@@ -14,8 +14,11 @@ import java.util.Set;
 public interface IRecipeService {
 
     Set<Recipe> getAllRecipes();
+
     Optional<Recipe> findById(String id);
+
     RecipeCommand findCommandById(String id);
+
     RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand);
 
     boolean existById(String id);

@@ -44,13 +44,12 @@ public class RecipeController {
     public String showById(@PathVariable String id, Model model) {
         model.addAttribute("recipe", this.recipeReactiveService.findById(id));
         return "recipe/show";
-     }
+    }
 
     @GetMapping
     @RequestMapping("recipe/new")
     public String newRecipe(Model model) {
-        model.addAttribute("recipe",
-                new RecipeCommand.Builder().createRecipeCommand());
+        model.addAttribute("recipe", new RecipeCommand.Builder().createRecipeCommand());
         return RECIPE_FORM_URL;
     }
 
@@ -81,20 +80,17 @@ public class RecipeController {
      */
     @PostMapping
     @RequestMapping("recipe")
-    public String saveOrUpdate(@ModelAttribute("recipe") RecipeCommand command,
-                               Model model) {
+    public String saveOrUpdate(@ModelAttribute("recipe") RecipeCommand command, Model model) {
 
         this.webDataBinder.validate();
         BindingResult bindingResult = this.webDataBinder.getBindingResult();
 
         if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(
-                    err -> log.debug(">>>>>>> " + err.toString()));
+            bindingResult.getAllErrors().forEach(err -> log.debug(">>>>>>> " + err.toString()));
             return RECIPE_FORM_URL;
         }
 
-        RecipeCommand savedCommand = this.recipeReactiveService
-                .saveRecipeCommand(command).block();
+        RecipeCommand savedCommand = this.recipeReactiveService.saveRecipeCommand(command).block();
         /*
          * By using the prefix redirect:
          *    – the redirect view name is injected into the controller like any
@@ -115,8 +111,7 @@ public class RecipeController {
     @RequestMapping("/recipe/{id}/update")
     public String showFormToUpdateRecipe(@PathVariable String id, Model model) {
 
-        RecipeCommand command = this.recipeReactiveService.findCommandById(id)
-                .block();
+        RecipeCommand command = this.recipeReactiveService.findCommandById(id).block();
 
         model.addAttribute("recipe", command);
 

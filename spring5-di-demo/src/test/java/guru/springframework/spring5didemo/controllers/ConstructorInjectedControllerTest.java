@@ -15,8 +15,7 @@ public class ConstructorInjectedControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        this.controller = new ConstructorInjectedController(
-                new GreetingService());
+        this.controller = new ConstructorInjectedController(new GreetingService());
     }
 
     @Test

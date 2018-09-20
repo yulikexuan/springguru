@@ -14,8 +14,7 @@ public class Spring5DiDemoApplication {
 
     public static void main(String[] args) {
 
-        ApplicationContext actx = SpringApplication.run(
-                Spring5DiDemoApplication.class, args);
+        ApplicationContext actx = SpringApplication.run(Spring5DiDemoApplication.class, args);
 
         FakeDataSource fakeDataSource = actx.getBean(FakeDataSource.class);
         System.out.println(fakeDataSource.getUser());

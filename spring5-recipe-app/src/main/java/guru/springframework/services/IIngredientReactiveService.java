@@ -9,9 +9,9 @@ import reactor.core.publisher.Mono;
 
 
 public interface IIngredientReactiveService {
-    Mono<IngredientCommand> findByRecipeIdAndIngredientId(String recipeId,
-                                                          String ingredientId);
-    Mono<IngredientCommand> saveIngredientCommand(
-            IngredientCommand ingredientCommand);
+    Mono<IngredientCommand> findByRecipeIdAndIngredientId(String recipeId, String ingredientId);
+
+    Mono<IngredientCommand> saveIngredientCommand(IngredientCommand ingredientCommand);
+
     Mono<Void> deleteIngredientCommand(String recipeId, String ingredientId);
 }///:~

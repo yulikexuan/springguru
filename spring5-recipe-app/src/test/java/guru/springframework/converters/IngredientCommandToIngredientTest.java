@@ -61,20 +61,14 @@ public class IngredientCommandToIngredientTest {
 
     @Test
     public void can_Convert_Empty_To_Empty() throws Exception {
-        assertNotNull(this.converter.convert(
-                new IngredientCommand.Builder().createIngredientCommand()));
+        assertNotNull(this.converter.convert(new IngredientCommand.Builder().createIngredientCommand()));
     }
 
     @Test
     public void able_To_Convert_IngredientCommand_To_Ingredient() {
 
         // Given
-        IngredientCommand command = new IngredientCommand.Builder()
-                .setId(this.id)
-                .setDescription(this.description)
-                .setAmount(this.amount)
-                .setUomc(this.uomc)
-                .createIngredientCommand();
+        IngredientCommand command = new IngredientCommand.Builder().setId(this.id).setDescription(this.description).setAmount(this.amount).setUomc(this.uomc).createIngredientCommand();
 
         when(this.uomConverter.convert(this.uomc)).thenReturn(this.uom);
 
@@ -93,11 +87,7 @@ public class IngredientCommandToIngredientTest {
     public void able_To_Convert_IngredientCommand_To_Ingredient_With_Null_UoM() {
 
         // Given
-        IngredientCommand command = new IngredientCommand.Builder()
-                .setId(this.id)
-                .setDescription(this.description)
-                .setAmount(this.amount)
-                .createIngredientCommand();
+        IngredientCommand command = new IngredientCommand.Builder().setId(this.id).setDescription(this.description).setAmount(this.amount).createIngredientCommand();
 
         when(this.uomConverter.convert(null)).thenReturn(null);
 

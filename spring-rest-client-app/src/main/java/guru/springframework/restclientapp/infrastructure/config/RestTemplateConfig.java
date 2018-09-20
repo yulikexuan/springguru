@@ -13,11 +13,10 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class RestTemplateConfig {
 
-	@Bean
-	public RestTemplate getRestTemplate(
-			RestTemplateBuilder restTemplateBuilder) {
+    @Bean
+    public RestTemplate getRestTemplate(RestTemplateBuilder restTemplateBuilder) {
 
-		return restTemplateBuilder.build();
-	}
+        return restTemplateBuilder.build();
+    }
 
 }///~

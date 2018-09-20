@@ -50,23 +50,18 @@ public class ImageServiceTest {
     public void able_Tp_Save_Recipe_Image() throws Exception {
 
         // Given
-        MultipartFile multipartFile = new MockMultipartFile("imagefile",
-                "testing.txt", "text/plain",
-                "Spring Framework Guru".getBytes());
+        MultipartFile multipartFile = new MockMultipartFile("imagefile", "testing.txt", "text/plain", "Spring Framework Guru".getBytes());
 
         this.recipe = new Recipe();
         this.recipe.setId(this.recipeId);
 
-        when(this.recipeReactiveRepository.findById(this.recipeId))
-                .thenReturn(Mono.just(this.recipe));
+        when(this.recipeReactiveRepository.findById(this.recipeId)).thenReturn(Mono.just(this.recipe));
 
-        when(this.recipeReactiveRepository.save(this.recipe))
-                .thenReturn(Mono.just(recipe));
+        when(this.recipeReactiveRepository.save(this.recipe)).thenReturn(Mono.just(recipe));
 
         // When
         this.imageService.saveImage(this.recipeId, multipartFile);
-        verify(this.recipeReactiveRepository, times(1))
-                .save(this.recipe);
+        verify(this.recipeReactiveRepository, times(1)).save(this.recipe);
     }
 
 }///:~

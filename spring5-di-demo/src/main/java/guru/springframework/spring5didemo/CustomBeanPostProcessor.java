@@ -14,11 +14,10 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
 
     @Nullable
     @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName)
-            throws BeansException {
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 
         if (bean instanceof LifeCycleDemoBean) {
-            ((LifeCycleDemoBean)bean).beforeInit();
+            ((LifeCycleDemoBean) bean).beforeInit();
         }
 
         return bean;
@@ -26,11 +25,10 @@ public class CustomBeanPostProcessor implements BeanPostProcessor {
 
     @Nullable
     @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName)
-            throws BeansException {
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 
         if (bean instanceof LifeCycleDemoBean) {
-            ((LifeCycleDemoBean)bean).afterInit();
+            ((LifeCycleDemoBean) bean).afterInit();
         }
 
         return bean;

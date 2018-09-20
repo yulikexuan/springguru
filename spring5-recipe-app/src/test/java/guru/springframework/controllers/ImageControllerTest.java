@@ -44,8 +44,7 @@ public class ImageControllerTest extends AbstractControllerTest {
 
     @Override
     Object initController() {
-        this.controller = new ImageController(this.imageService,
-                this.recipeReactiveService);
+        this.controller = new ImageController(this.imageService, this.recipeReactiveService);
         return this.controller;
     }
 
@@ -61,18 +60,12 @@ public class ImageControllerTest extends AbstractControllerTest {
         String imageFormUrl = "/recipe/" + this.recipeId + "/image";
         String formUrl = "/recipe/imageuploadform";
 
-        RecipeCommand recipe = new RecipeCommand.Builder()
-                .setId(this.recipeId)
-                .createRecipeCommand();
+        RecipeCommand recipe = new RecipeCommand.Builder().setId(this.recipeId).createRecipeCommand();
 
-        when(this.recipeReactiveService.findCommandById(this.recipeId))
-                .thenReturn(Mono.just(recipe));
+        when(this.recipeReactiveService.findCommandById(this.recipeId)).thenReturn(Mono.just(recipe));
 
         // When
-        this.mockMvc.perform(get(imageFormUrl))
-                .andExpect(status().isOk())
-                .andExpect(model().attributeExists("recipe"))
-                .andExpect(view().name(formUrl));
+        this.mockMvc.perform(get(imageFormUrl)).andExpect(status().isOk()).andExpect(model().attributeExists("recipe")).andExpect(view().name(formUrl));
     }
 
     @Test
@@ -83,23 +76,15 @@ public class ImageControllerTest extends AbstractControllerTest {
 
         String locationHeader = "/recipe/" + this.recipeId + "/update";
 
-        MockMultipartFile multipartFile = new MockMultipartFile(
-                "imagefile",
-                "testing.txt",
-                "text/plain",
-                "Spring Framework Guru".getBytes());
+        MockMultipartFile multipartFile = new MockMultipartFile("imagefile", "testing.txt", "text/plain", "Spring Framework Guru".getBytes());
 
-        when(this.imageService.saveImage(anyString(), any()))
-                .thenReturn(Mono.empty());
+        when(this.imageService.saveImage(anyString(), any())).thenReturn(Mono.empty());
 
         // When
-        this.mockMvc.perform(multipart(uploadUrl).file(multipartFile))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(header().string("Location", locationHeader));
+        this.mockMvc.perform(multipart(uploadUrl).file(multipartFile)).andExpect(status().is3xxRedirection()).andExpect(header().string("Location", locationHeader));
 
         // Then
-        verify(this.imageService, times(1))
-                .saveImage(this.recipeId, multipartFile);
+        verify(this.imageService, times(1)).saveImage(this.recipeId, multipartFile);
     }
 
     @Ignore
@@ -110,8 +95,7 @@ public class ImageControllerTest extends AbstractControllerTest {
         String imageUrl = "/recipe/" + this.recipeId + "/recipeimage";
 
         RecipeCommand recipeCommand = mock(RecipeCommand.class);
-        when(this.recipeReactiveService.findCommandById(this.recipeId))
-                .thenReturn(Mono.just(recipeCommand));
+        when(this.recipeReactiveService.findCommandById(this.recipeId)).thenReturn(Mono.just(recipeCommand));
 
         String str = "Fake image bytes";
         byte[] bytes = str.getBytes();
@@ -124,14 +108,11 @@ public class ImageControllerTest extends AbstractControllerTest {
         when(recipeCommand.getImage()).thenReturn(image);
 
         // When
-        MockHttpServletResponse response = this.mockMvc
-                .perform(get(imageUrl))
-                .andExpect(status().isOk())
-                .andReturn().getResponse();
+        MockHttpServletResponse response = this.mockMvc.perform(get(imageUrl)).andExpect(status().isOk()).andReturn().getResponse();
 
         // Then
-//        assertThat(response.getContentType(), is("image/jpeg"));
-//        assertThat(response.getContentAsByteArray(), is(bytes));
+        //        assertThat(response.getContentType(), is("image/jpeg"));
+        //        assertThat(response.getContentAsByteArray(), is(bytes));
     }
 
 }///:~

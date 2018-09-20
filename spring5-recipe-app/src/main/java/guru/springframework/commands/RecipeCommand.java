@@ -63,12 +63,7 @@ public class RecipeCommand {
     private List<CategoryCommand> categories = new ArrayList<>();
     private Byte[] image;
 
-    private RecipeCommand(String id, String description, Integer prepTime,
-                          Integer cookTime, Integer servings, String source,
-                          String url, String directions, Difficulty difficulty,
-                          Set<IngredientCommand> ingredients,
-                          NotesCommand notes, Set<CategoryCommand> categories,
-                          Byte[] image) {
+    private RecipeCommand(String id, String description, Integer prepTime, Integer cookTime, Integer servings, String source, String url, String directions, Difficulty difficulty, Set<IngredientCommand> ingredients, NotesCommand notes, Set<CategoryCommand> categories, Byte[] image) {
         this.id = id;
         this.description = description;
         this.prepTime = prepTime;
@@ -166,9 +161,7 @@ public class RecipeCommand {
         }
 
         public RecipeCommand createRecipeCommand() {
-            return new RecipeCommand(id, description, prepTime, cookTime,
-                    servings, source, url, directions, difficulty, ingredients,
-                    notes, categories, image);
+            return new RecipeCommand(id, description, prepTime, cookTime, servings, source, url, directions, difficulty, ingredients, notes, categories, image);
         }
 
     }//: End of class Builder

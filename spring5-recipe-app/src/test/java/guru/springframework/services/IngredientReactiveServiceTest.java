@@ -56,10 +56,7 @@ public class IngredientReactiveServiceTest {
         this.ingredient = new Ingredient();
         this.ingredient.setId(this.ingredientId);
 
-        this.ingredientService = new IngredientReactiveService(
-                this.ingredientToIngredientCommand,
-                this.ingredientCommandToIngredient,
-                this.recipeRepository, this.uomRepository);
+        this.ingredientService = new IngredientReactiveService(this.ingredientToIngredientCommand, this.ingredientCommandToIngredient, this.recipeRepository, this.uomRepository);
     }
 
     @Test
@@ -68,18 +65,14 @@ public class IngredientReactiveServiceTest {
         // Given
         this.recipe.addIngredient(ingredient);
 
-        when(this.recipeRepository.findById(this.recipeId))
-                .thenReturn(Mono.just(this.recipe));
+        when(this.recipeRepository.findById(this.recipeId)).thenReturn(Mono.just(this.recipe));
 
         IngredientCommand command = new IngredientCommand();
 
-        when(this.ingredientToIngredientCommand.convert(ingredient))
-                .thenReturn(command);
+        when(this.ingredientToIngredientCommand.convert(ingredient)).thenReturn(command);
 
         // When
-        IngredientCommand ic = this.ingredientService
-                .findByRecipeIdAndIngredientId(this.recipeId, this.ingredientId)
-                .block();
+        IngredientCommand ic = this.ingredientService.findByRecipeIdAndIngredientId(this.recipeId, this.ingredientId).block();
 
         // Then
         assertThat(ic, is(command));
@@ -97,26 +90,19 @@ public class IngredientReactiveServiceTest {
 
         this.ingredient.setDescription(desc);
 
-        when(this.recipeRepository.findById(this.recipeId))
-                .thenReturn(Mono.just(this.recipe));
+        when(this.recipeRepository.findById(this.recipeId)).thenReturn(Mono.just(this.recipe));
 
-        when(this.ingredientCommandToIngredient.convert(command))
-                .thenReturn(this.ingredient);
+        when(this.ingredientCommandToIngredient.convert(command)).thenReturn(this.ingredient);
 
-        when(this.recipeRepository.save(this.recipe))
-                .thenReturn(Mono.just(this.recipe));
+        when(this.recipeRepository.save(this.recipe)).thenReturn(Mono.just(this.recipe));
 
-        when(this.ingredientToIngredientCommand.convert(this.ingredient))
-                .thenReturn(command);
+        when(this.ingredientToIngredientCommand.convert(this.ingredient)).thenReturn(command);
 
         // When
-        IngredientCommand ic = this.ingredientService
-                .saveIngredientCommand(command)
-                .block();
+        IngredientCommand ic = this.ingredientService.saveIngredientCommand(command).block();
 
         // Then
-        verify(this.recipeRepository, times(1))
-                .save(this.recipe);
+        verify(this.recipeRepository, times(1)).save(this.recipe);
 
         assertThat(ic, is(command));
     }
@@ -127,18 +113,14 @@ public class IngredientReactiveServiceTest {
         // Given
         this.recipe.addIngredient(this.ingredient);
 
-        boolean previouslyHas = this.recipe.getIngredients().contains(
-                this.ingredient);
+        boolean previouslyHas = this.recipe.getIngredients().contains(this.ingredient);
 
-        when(this.recipeRepository.findById(this.recipeId))
-                .thenReturn(Mono.just(this.recipe));
+        when(this.recipeRepository.findById(this.recipeId)).thenReturn(Mono.just(this.recipe));
 
-        when(this.recipeRepository.save(this.recipe))
-                .thenReturn(Mono.just(this.recipe));
+        when(this.recipeRepository.save(this.recipe)).thenReturn(Mono.just(this.recipe));
 
         // When
-        this.ingredientService.deleteIngredientCommand(this.recipeId,
-                this.ingredientId);
+        this.ingredientService.deleteIngredientCommand(this.recipeId, this.ingredientId);
 
         // Then
         assertThat(previouslyHas, is(true));

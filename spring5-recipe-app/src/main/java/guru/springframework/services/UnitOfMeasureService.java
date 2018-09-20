@@ -24,9 +24,7 @@ public class UnitOfMeasureService implements IUnitOfMeasureService {
     private final UnitOfMeasureToUnitOfMeasureCommand uomcConverter;
 
     @Autowired
-    public UnitOfMeasureService(
-            IUnitOfMeasureReactiveRepository unitOfMeasureRepository,
-            UnitOfMeasureToUnitOfMeasureCommand uomcConverter) {
+    public UnitOfMeasureService(IUnitOfMeasureReactiveRepository unitOfMeasureRepository, UnitOfMeasureToUnitOfMeasureCommand uomcConverter) {
 
         this.unitOfMeasureRepository = unitOfMeasureRepository;
         this.uomcConverter = uomcConverter;
@@ -34,9 +32,7 @@ public class UnitOfMeasureService implements IUnitOfMeasureService {
 
     @Override
     public Flux<UnitOfMeasureCommand> findAllUnitOfMeasureCommands() {
-        return this.unitOfMeasureRepository
-                .findAll()
-                .map(this.uomcConverter::convert);
+        return this.unitOfMeasureRepository.findAll().map(this.uomcConverter::convert);
     }
 
 }///~

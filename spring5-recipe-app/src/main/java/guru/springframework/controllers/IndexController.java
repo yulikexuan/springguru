@@ -26,8 +26,7 @@ public class IndexController {
     @RequestMapping({"", "/", "/home"})
     public String getIndexPage(Model model) {
 
-        model.addAttribute("allRecipes",
-                this.recipeReactiveService.getAllRecipes());
+        model.addAttribute("allRecipes", this.recipeReactiveService.getAllRecipes());
         this.log.info(">>>>>>> Adding recipes to Model of index page ... ...");
 
         return "index";

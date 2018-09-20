@@ -1,7 +1,6 @@
 //: guru.springframework.restclientapp.api.domain.model.Job.java
 
 
-
 package guru.springframework.restclientapp.api.domain.model;
 
 

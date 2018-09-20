@@ -38,18 +38,14 @@ public class UnitOfMeasureCommandToUnitOfMeasureTest {
 
     @Test
     public void result_Can_Be_Empty() throws Exception {
-        assertNotNull(this.converter.convert(
-                new UnitOfMeasureCommand.Builder().createUnitOfMeasureCommand()));
+        assertNotNull(this.converter.convert(new UnitOfMeasureCommand.Builder().createUnitOfMeasureCommand()));
     }
 
     @Test
     public void able_To_Convert_UnitOfMeasureCommand_To_UnitOfMeasure() {
 
         // Given
-        UnitOfMeasureCommand command = new UnitOfMeasureCommand.Builder()
-                .setId(this.id)
-                .setDescription(this.description)
-                .createUnitOfMeasureCommand();
+        UnitOfMeasureCommand command = new UnitOfMeasureCommand.Builder().setId(this.id).setDescription(this.description).createUnitOfMeasureCommand();
 
         // When
         UnitOfMeasure uom = this.converter.convert(command);

@@ -26,10 +26,7 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
     private final CategoryCommandToCategory categoryConverter;
     private final IngredientCommandToIngredient ingredientConverter;
 
-    public RecipeCommandToRecipe(
-            NotesCommandToNotes notesConverter,
-            CategoryCommandToCategory categoryConverter,
-            IngredientCommandToIngredient ingredientConverter) {
+    public RecipeCommandToRecipe(NotesCommandToNotes notesConverter, CategoryCommandToCategory categoryConverter, IngredientCommandToIngredient ingredientConverter) {
 
         this.notesConverter = notesConverter;
         this.categoryConverter = categoryConverter;
@@ -62,14 +59,12 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
         List<CategoryCommand> categorieCommands = command.getCategories();
         Set<Category> categories = recipe.getCategories();
         if (categorieCommands != null) {
-            categorieCommands.iterator().forEachRemaining(
-                    c -> categories.add(this.categoryConverter.convert(c)));
+            categorieCommands.iterator().forEachRemaining(c -> categories.add(this.categoryConverter.convert(c)));
         }
 
         List<IngredientCommand> ingredientCommands = command.getIngredients();
         if (ingredientCommands != null) {
-            ingredientCommands.iterator().forEachRemaining(
-                    i -> recipe.addIngredient(this.ingredientConverter.convert(i)));
+            ingredientCommands.iterator().forEachRemaining(i -> recipe.addIngredient(this.ingredientConverter.convert(i)));
         }
 
         return recipe;

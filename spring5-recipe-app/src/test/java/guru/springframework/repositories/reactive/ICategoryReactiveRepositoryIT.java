@@ -56,9 +56,7 @@ public class ICategoryReactiveRepositoryIT {
         this.categoryReactiveRepository.save(category).then().block();
 
         // When
-        Category result = this.categoryReactiveRepository
-                .findByDescription(CHINESE)
-                .block();
+        Category result = this.categoryReactiveRepository.findByDescription(CHINESE).block();
 
         // Then
         assertThat(result.getDescription(), is(CHINESE));

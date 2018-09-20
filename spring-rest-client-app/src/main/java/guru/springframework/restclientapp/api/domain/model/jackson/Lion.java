@@ -6,17 +6,15 @@ package guru.springframework.restclientapp.api.domain.model.jackson;
 
 public class Lion extends Animal {
 
-	public Lion(String name) {
-		super(name);
-	}
+    public Lion(String name) {
+        super(name);
+    }
 
-	@Override
-	public String toString() {
-		final StringBuilder sb = new StringBuilder("Lion{");
-		sb.append("name: ")
-				.append(this.name)
-				.append('}');
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Lion{");
+        sb.append("name: ").append(this.name).append('}');
 
-		return sb.toString();
-	}
+        return sb.toString();
+    }
 }///~

@@ -29,7 +29,8 @@ public class RecipeBuilder implements IModelBuilder<Recipe> {
     private Set<Category> categories;
     private Byte[] image;
 
-    public RecipeBuilder() {}
+    public RecipeBuilder() {
+    }
 
     public RecipeBuilder setId(String id) {
         this.id = id;

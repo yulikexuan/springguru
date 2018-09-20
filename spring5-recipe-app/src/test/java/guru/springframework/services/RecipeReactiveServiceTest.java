@@ -50,9 +50,7 @@ public class RecipeReactiveServiceTest {
     public void setUp() {
         this.random = new Random(System.currentTimeMillis());
         MockitoAnnotations.initMocks(this);
-        this.recipeReactiveService = new RecipeReactiveService(
-                this.recipeReactiveRepository, this.recipeCommandToRecipe,
-                this.recipeToRecipeCommand);
+        this.recipeReactiveService = new RecipeReactiveService(this.recipeReactiveRepository, this.recipeCommandToRecipe, this.recipeToRecipeCommand);
     }
 
     @Test
@@ -63,8 +61,7 @@ public class RecipeReactiveServiceTest {
         Recipe recipe = new Recipe();
         recipe.setId(id);
 
-        when(this.recipeReactiveRepository.findById(id))
-                .thenReturn(Mono.just(recipe));
+        when(this.recipeReactiveRepository.findById(id)).thenReturn(Mono.just(recipe));
 
         // When
         Recipe recipeReturned = this.recipeReactiveService.findById(id).block();
@@ -72,8 +69,7 @@ public class RecipeReactiveServiceTest {
         // Then
         assertNotNull("Null recipe returned!", recipeReturned);
 
-        verify(this.recipeReactiveRepository, times(1))
-                .findById(id);
+        verify(this.recipeReactiveRepository, times(1)).findById(id);
         verify(this.recipeReactiveRepository, never()).findAll();
     }
 
@@ -85,14 +81,10 @@ public class RecipeReactiveServiceTest {
         List<Recipe> expectedRecipes = new ArrayList<>();
         expectedRecipes.add(recipe);
 
-        when(this.recipeReactiveRepository.findAll())
-                .thenReturn(Flux.just(recipe));
+        when(this.recipeReactiveRepository.findAll()).thenReturn(Flux.just(recipe));
 
         // Action
-        List<Recipe> recipes = this.recipeReactiveService
-                .getAllRecipes()
-                .collectList()
-                .block();
+        List<Recipe> recipes = this.recipeReactiveService.getAllRecipes().collectList().block();
 
         // Assert
         assertThat(recipes.get(0), is(recipe));
@@ -108,18 +100,14 @@ public class RecipeReactiveServiceTest {
         RecipeCommand originalCommand = mock(RecipeCommand.class);
         RecipeCommand returnedCommand = mock(RecipeCommand.class);
 
-        when(this.recipeCommandToRecipe.convert(originalCommand))
-                .thenReturn(recipe);
+        when(this.recipeCommandToRecipe.convert(originalCommand)).thenReturn(recipe);
 
-        when(this.recipeReactiveRepository.save(recipe))
-                .thenReturn(Mono.just(savedRecipe));
+        when(this.recipeReactiveRepository.save(recipe)).thenReturn(Mono.just(savedRecipe));
 
-        when(this.recipeToRecipeCommand.convert(savedRecipe))
-                .thenReturn(returnedCommand);
+        when(this.recipeToRecipeCommand.convert(savedRecipe)).thenReturn(returnedCommand);
 
         // When
-        RecipeCommand result = this.recipeReactiveService.saveRecipeCommand(
-                originalCommand).block();
+        RecipeCommand result = this.recipeReactiveService.saveRecipeCommand(originalCommand).block();
 
         // Then
         assertThat(result, is(returnedCommand));
@@ -137,8 +125,7 @@ public class RecipeReactiveServiceTest {
         String recipeId = UUID.randomUUID().toString();
         when(command.getId()).thenReturn(recipeId);
 
-        when(this.recipeReactiveRepository.findById(id))
-                .thenReturn(Mono.just(recipe));
+        when(this.recipeReactiveRepository.findById(id)).thenReturn(Mono.just(recipe));
 
         when(this.recipeToRecipeCommand.convert(recipe)).thenReturn(command);
 
@@ -148,8 +135,7 @@ public class RecipeReactiveServiceTest {
         when(command.getIngredients()).thenReturn(ics);
 
         // When
-        RecipeCommand result = this.recipeReactiveService.findCommandById(id)
-                .block();
+        RecipeCommand result = this.recipeReactiveService.findCommandById(id).block();
 
         // Then
         assertThat(result, is(command));
@@ -162,33 +148,30 @@ public class RecipeReactiveServiceTest {
         // Given
         String id = this.random.nextLong() + "";
 
-        when(this.recipeReactiveRepository.deleteById(id))
-                .thenReturn(Mono.empty());
+        when(this.recipeReactiveRepository.deleteById(id)).thenReturn(Mono.empty());
 
         // When
         this.recipeReactiveService.deleteById(id);
 
         // Then
-        verify(this.recipeReactiveRepository, times(1))
-                .deleteById(id);
+        verify(this.recipeReactiveRepository, times(1)).deleteById(id);
     }
 
     @DataPoint
     public static boolean positive = true;
-    @DataPoint public static boolean negative = false;
+    @DataPoint
+    public static boolean negative = false;
+
     @Theory
-    public void able_To_Know_If_A_Recipe_Id_Exists(boolean exists) throws
-            Exception {
+    public void able_To_Know_If_A_Recipe_Id_Exists(boolean exists) throws Exception {
 
         // Give
-        String recipeId = this.random.nextLong()  + "";
+        String recipeId = this.random.nextLong() + "";
 
-        when(this.recipeReactiveRepository.existsById(recipeId))
-                .thenReturn(Mono.just(exists));
+        when(this.recipeReactiveRepository.existsById(recipeId)).thenReturn(Mono.just(exists));
 
         // When
-        boolean actuallyExists = this.recipeReactiveService.existById(recipeId)
-                .block();
+        boolean actuallyExists = this.recipeReactiveService.existById(recipeId).block();
 
         // Then
         assertThat(actuallyExists, is(exists));

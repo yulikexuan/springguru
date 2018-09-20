@@ -18,9 +18,8 @@ public class GreetingServiceConfig {
 
     @Bean
     @Primary
-    @Profile({"default","en"})
-    IGreetingService primaryGreeingService(
-            IGreetingServiceFactory greetingServiceFactory) {
+    @Profile({"default", "en"})
+    IGreetingService primaryGreeingService(IGreetingServiceFactory greetingServiceFactory) {
 
         return greetingServiceFactory.createGreetingService("en");
     }
@@ -28,8 +27,7 @@ public class GreetingServiceConfig {
     @Bean
     @Primary
     @Profile("fr")
-    IGreetingService primaryFrenchService(
-            IGreetingServiceFactory greetingServiceFactory) {
+    IGreetingService primaryFrenchService(IGreetingServiceFactory greetingServiceFactory) {
 
         return greetingServiceFactory.createGreetingService("fr");
     }
@@ -37,8 +35,7 @@ public class GreetingServiceConfig {
     @Bean
     @Primary
     @Profile("de")
-    IGreetingService primaryGermanGreetingService(
-            IGreetingServiceFactory greetingServiceFactory) {
+    IGreetingService primaryGermanGreetingService(IGreetingServiceFactory greetingServiceFactory) {
 
         return greetingServiceFactory.createGreetingService("de");
     }
@@ -46,8 +43,7 @@ public class GreetingServiceConfig {
     @Bean
     @Primary
     @Profile("zh")
-    IGreetingService primaryChineseGreetingService(
-            IGreetingServiceFactory greetingServiceFactory) {
+    IGreetingService primaryChineseGreetingService(IGreetingServiceFactory greetingServiceFactory) {
 
         return greetingServiceFactory.createGreetingService("zh");
     }

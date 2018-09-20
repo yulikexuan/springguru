@@ -71,13 +71,7 @@ public class IngredientToIngredientCommandTest {
         String recipeId = this.random.nextLong() + "";
         Recipe recipe = new Recipe();
         recipe.setId(recipeId);
-        return new IngredientBuilder()
-                .setId(this.id)
-                .setRecipe(recipe)
-                .setDescription(this.description)
-                .setAmount(this.amount)
-                .setUom(this.uom)
-                .build();
+        return new IngredientBuilder().setId(this.id).setRecipe(recipe).setDescription(this.description).setAmount(this.amount).setUom(this.uom).build();
     }
 
     @Test

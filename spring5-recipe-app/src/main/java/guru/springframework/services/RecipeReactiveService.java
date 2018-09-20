@@ -33,10 +33,7 @@ public class RecipeReactiveService implements IRecipeReactiveService {
     private final RecipeToRecipeCommand recipeToRecipeCommand;
 
     @Autowired
-    public RecipeReactiveService(
-            IRecipeReactiveRepository recipeReactiveRepository,
-            RecipeCommandToRecipe recipeCommandToRecipe,
-            RecipeToRecipeCommand recipeToRecipeCommand) {
+    public RecipeReactiveService(IRecipeReactiveRepository recipeReactiveRepository, RecipeCommandToRecipe recipeCommandToRecipe, RecipeToRecipeCommand recipeToRecipeCommand) {
 
         this.recipeReactiveRepository = recipeReactiveRepository;
         this.recipeCommandToRecipe = recipeCommandToRecipe;
@@ -58,20 +55,17 @@ public class RecipeReactiveService implements IRecipeReactiveService {
     @Override
     public Mono<RecipeCommand> findCommandById(String id) {
 
-        return this.recipeReactiveRepository.findById(id)
-                .map(r -> {
-                    RecipeCommand rc = this.recipeToRecipeCommand.convert(r);
-                    rc.getIngredients().forEach(i -> i.setRecipeId(rc.getId()));
-                    return rc;
-                });
+        return this.recipeReactiveRepository.findById(id).map(r -> {
+            RecipeCommand rc = this.recipeToRecipeCommand.convert(r);
+            rc.getIngredients().forEach(i -> i.setRecipeId(rc.getId()));
+            return rc;
+        });
     }
 
     @Override
     public Mono<RecipeCommand> saveRecipeCommand(RecipeCommand recipeCommand) {
 
-        return this.recipeReactiveRepository
-                .save(this.recipeCommandToRecipe.convert(recipeCommand))
-                .map(this.recipeToRecipeCommand::convert);
+        return this.recipeReactiveRepository.save(this.recipeCommandToRecipe.convert(recipeCommand)).map(this.recipeToRecipeCommand::convert);
     }
 
     @Override

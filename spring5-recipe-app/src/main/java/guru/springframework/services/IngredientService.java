@@ -32,11 +32,7 @@ public class IngredientService implements IIngredientService {
     private final IUnitOfMeasureRepository uomRepository;
 
     @Autowired
-    public IngredientService(
-            IngredientToIngredientCommand ingredientToIngredientCommand,
-            IngredientCommandToIngredient ingredientCommandToIngredient,
-            IRecipeRepository recipeRepository,
-            IUnitOfMeasureRepository uomRepository) {
+    public IngredientService(IngredientToIngredientCommand ingredientToIngredientCommand, IngredientCommandToIngredient ingredientCommandToIngredient, IRecipeRepository recipeRepository, IUnitOfMeasureRepository uomRepository) {
 
         this.ingredientToIngredientCommand = ingredientToIngredientCommand;
         this.ingredientCommandToIngredient = ingredientCommandToIngredient;
@@ -46,11 +42,9 @@ public class IngredientService implements IIngredientService {
 
     @Transactional
     @Override
-    public IngredientCommand findByRecipeIdAndIngredientId(String recipeId,
-                                                           String ingredientId) {
+    public IngredientCommand findByRecipeIdAndIngredientId(String recipeId, String ingredientId) {
 
-        Optional<Recipe> recipeOptional = this.recipeRepository.findById(
-                recipeId);
+        Optional<Recipe> recipeOptional = this.recipeRepository.findById(recipeId);
 
         if (!recipeOptional.isPresent()) {
             String errMsg = ">>>>>>> Recipe not found by id:" + recipeId;
@@ -62,11 +56,7 @@ public class IngredientService implements IIngredientService {
 
         Set<Ingredient> ingredients = recipe.getIngredients();
 
-        Set<IngredientCommand> ingredientCommands = recipe.getIngredients()
-                .stream()
-                .filter(i -> i.getId().equals(ingredientId))
-                .map(i -> ingredientToIngredientCommand.convert(i))
-                .collect(Collectors.toSet());
+        Set<IngredientCommand> ingredientCommands = recipe.getIngredients().stream().filter(i -> i.getId().equals(ingredientId)).map(i -> ingredientToIngredientCommand.convert(i)).collect(Collectors.toSet());
 
 
         if (ingredientCommands.size() == 0) {
@@ -79,8 +69,7 @@ public class IngredientService implements IIngredientService {
     }
 
     @Override
-    public IngredientCommand saveIngredientCommand(
-            final IngredientCommand ingredientCommand) {
+    public IngredientCommand saveIngredientCommand(final IngredientCommand ingredientCommand) {
 
         IngredientCommand savedIngredientCommand = null;
 
@@ -101,10 +90,7 @@ public class IngredientService implements IIngredientService {
 
             Recipe foundRecipe = recipoeOpt.get();
 
-            Optional<Ingredient> ingredientOpt = foundRecipe.getIngredients()
-                    .stream()
-                    .filter(i -> i.getId().equals(ingredientId))
-                    .findFirst();
+            Optional<Ingredient> ingredientOpt = foundRecipe.getIngredients().stream().filter(i -> i.getId().equals(ingredientId)).findFirst();
 
             if (ingredientOpt.isPresent()) {
 
@@ -115,38 +101,25 @@ public class IngredientService implements IIngredientService {
 
                 String uomId = ingredientCommand.getUomc().getId();
 
-                Optional<UnitOfMeasure> foundUom = this.uomRepository.findById(
-                        uomId);
+                Optional<UnitOfMeasure> foundUom = this.uomRepository.findById(uomId);
 
-                foundIngredient.setUom(foundUom.orElseThrow(
-                        () -> new RuntimeException("UOM not found!")));
+                foundIngredient.setUom(foundUom.orElseThrow(() -> new RuntimeException("UOM not found!")));
 
             } else {
                 String newDesc = ingredientCommand.getDescription();
-                if (!foundRecipe.getIngredients().stream()
-                        .filter(i -> i.getDescription().equals(newDesc))
-                        .findFirst()
-                        .isPresent()) {
+                if (!foundRecipe.getIngredients().stream().filter(i -> i.getDescription().equals(newDesc)).findFirst().isPresent()) {
                     foundRecipe.addIngredient(this.ingredientCommandToIngredient.
                             convert(ingredientCommand));
                 } else {
-                    throw new RuntimeException(
-                            "Ingredient already exists in recipe: "
-                                    + foundRecipe.getId());
+                    throw new RuntimeException("Ingredient already exists in recipe: " + foundRecipe.getId());
                 }
             }
 
             Recipe savedRecipe = this.recipeRepository.save(foundRecipe);
 
-            Ingredient savedIngredient = savedRecipe.getIngredients()
-                    .stream()
-                    .filter(i -> i.getDescription().equals(
-                            ingredientCommand.getDescription()))
-                    .findFirst()
-                    .get();
+            Ingredient savedIngredient = savedRecipe.getIngredients().stream().filter(i -> i.getDescription().equals(ingredientCommand.getDescription())).findFirst().get();
 
-            savedIngredientCommand = this.ingredientToIngredientCommand.convert(
-                    savedIngredient);
+            savedIngredientCommand = this.ingredientToIngredientCommand.convert(savedIngredient);
             savedIngredientCommand.setRecipeId(savedRecipe.getId());
 
         }// End of if (!recipoeOpt.isPresent())
@@ -158,14 +131,11 @@ public class IngredientService implements IIngredientService {
     @Override
     public void deleteIngredientCommand(String recipeId, String ingredientId) {
         Optional<Recipe> recipeOpt = this.recipeRepository.findById(recipeId);
-        Recipe foundRecipe = recipeOpt.orElseThrow(
-                () -> new RuntimeException("Recipe not found!:"));
+        Recipe foundRecipe = recipeOpt.orElseThrow(() -> new RuntimeException("Recipe not found!:"));
         foundRecipe.removeIngredient(ingredientId);
         Recipe deleted = this.recipeRepository.save(foundRecipe);
 
-        Set<Ingredient> fi = deleted.getIngredients().stream()
-                .filter(i -> i.getId().equals(ingredientId))
-                .collect(Collectors.toSet());
+        Set<Ingredient> fi = deleted.getIngredients().stream().filter(i -> i.getId().equals(ingredientId)).collect(Collectors.toSet());
         log.info(">>>>>>> Is the ingredient deleted ? " + (fi.size() == 0));
     }
 

@@ -13,8 +13,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class CategoryToCategoryCommand implements
-        Converter<Category, CategoryCommand> {
+public class CategoryToCategoryCommand implements Converter<Category, CategoryCommand> {
 
     @Synchronized
     @Nullable
@@ -25,10 +24,7 @@ public class CategoryToCategoryCommand implements
             return null;
         }
 
-        final CategoryCommand command = new CategoryCommand.Builder()
-                .setId(category.getId())
-                .setDescription(category.getDescription())
-                .createCategoryCommand();
+        final CategoryCommand command = new CategoryCommand.Builder().setId(category.getId()).setDescription(category.getDescription()).createCategoryCommand();
 
         return command;
     }

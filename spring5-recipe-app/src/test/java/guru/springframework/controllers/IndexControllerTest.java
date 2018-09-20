@@ -37,8 +37,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(Theories.class)
 public class IndexControllerTest {
 
-    @Mock private IRecipeReactiveService recipeReactiveService;
-    @Mock private Model model;
+    @Mock
+    private IRecipeReactiveService recipeReactiveService;
+    @Mock
+    private Model model;
 
     private IndexController indexController;
 
@@ -61,27 +63,28 @@ public class IndexControllerTest {
         recipes.add(r1);
         recipes.add(r2);
 
-        when(this.recipeReactiveService.getAllRecipes())
-                .thenReturn(Flux.fromIterable(recipes));
+        when(this.recipeReactiveService.getAllRecipes()).thenReturn(Flux.fromIterable(recipes));
 
-        ArgumentCaptor<List<Recipe>> recipesCaptor = ArgumentCaptor.forClass(
-                List.class);
+        ArgumentCaptor<List<Recipe>> recipesCaptor = ArgumentCaptor.forClass(List.class);
 
         // When
         String pageName = this.indexController.getIndexPage(this.model);
 
         // Then
         assertEquals("index", pageName);
-        verify(this.model, times(1)).addAttribute(
-                eq("allRecipes"), recipesCaptor.capture());
+        verify(this.model, times(1)).addAttribute(eq("allRecipes"), recipesCaptor.capture());
 
         List<Recipe> actualRecipes = recipesCaptor.getValue();
         assertEquals(actualRecipes.size(), 2);
     }
 
-    @DataPoint public static String rootUrl = "/";
-    @DataPoint public static String pageNameUrl = "/home";
-    @DataPoint public static String defaultUrl = "";
+    @DataPoint
+    public static String rootUrl = "/";
+    @DataPoint
+    public static String pageNameUrl = "/home";
+    @DataPoint
+    public static String defaultUrl = "";
+
     @Theory
     public void able_To_Access_Index_Page(String url) throws Exception {
 
@@ -95,16 +98,11 @@ public class IndexControllerTest {
         recipes.add(r1);
         recipes.add(r2);
 
-        when(this.recipeReactiveService.getAllRecipes())
-                .thenReturn(Flux.fromIterable(recipes));
+        when(this.recipeReactiveService.getAllRecipes()).thenReturn(Flux.fromIterable(recipes));
 
-        MockMvc mockMvc = MockMvcBuilders
-                .standaloneSetup(this.indexController)
-                .build();
+        MockMvc mockMvc = MockMvcBuilders.standaloneSetup(this.indexController).build();
 
-        mockMvc.perform(get(url))
-                .andExpect(status().isOk())
-                .andExpect(view().name("index"));
+        mockMvc.perform(get(url)).andExpect(status().isOk()).andExpect(view().name("index"));
     }
 
 }///:~

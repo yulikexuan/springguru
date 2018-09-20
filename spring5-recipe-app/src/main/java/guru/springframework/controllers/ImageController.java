@@ -24,8 +24,7 @@ public class ImageController {
     private final IRecipeReactiveService recipeReactiveService;
 
     @Autowired
-    public ImageController(IImageService imageService,
-                           IRecipeReactiveService recipeReactiveService) {
+    public ImageController(IImageService imageService, IRecipeReactiveService recipeReactiveService) {
         this.imageService = imageService;
         this.recipeReactiveService = recipeReactiveService;
     }
@@ -33,47 +32,44 @@ public class ImageController {
     @GetMapping("/recipe/{recipeId}/image")
     public String getImageForm(@PathVariable String recipeId, Model model) {
 
-    	if (!recipeId.equals("null")) {
-		    RecipeCommand recipe = this.recipeReactiveService
-				    .findCommandById(recipeId).block();
+        if (!recipeId.equals("null")) {
+            RecipeCommand recipe = this.recipeReactiveService.findCommandById(recipeId).block();
 
-		    model.addAttribute("recipe", recipe);
-	    }
+            model.addAttribute("recipe", recipe);
+        }
 
         return "/recipe/imageuploadform";
     }
 
     @PostMapping("/recipe/{recipeId}/image")
-    public String saveImageFileForRecipe(
-            @PathVariable String recipeId,
-            @RequestParam("imagefile") MultipartFile file) {
+    public String saveImageFileForRecipe(@PathVariable String recipeId, @RequestParam("imagefile") MultipartFile file) {
 
         this.imageService.saveImage(recipeId, file).block();
 
         return "redirect:/recipe/" + recipeId + "/update";
     }
 
-//    @GetMapping("/recipe/{recipeId}/recipeimage")
-//    public void renderImageFromDB(@PathVariable String recipeId,
-//            HttpServletResponse response) throws IOException {
-//
-//        if (recipeId.equals("null")) {
-//            return;
-//        }
-//
-//        RecipeCommand recipeCommand = this.recipeReactiveService
-//                .findCommandById(recipeId).block();
-//
-//        Byte[] image = recipeCommand.getImage();
-//        if (image != null) {
-//            byte[] byteArray = new byte[image.length];
-//            for (int i = 0; i < image.length; i++) {
-//                byteArray[i] = image[i];
-//            }
-//            response.setContentType("image/jpeg");
-//            InputStream is = new ByteArrayInputStream(byteArray);
-//            IOUtils.copy(is, response.getOutputStream());
-//        }
-//    }
+    //    @GetMapping("/recipe/{recipeId}/recipeimage")
+    //    public void renderImageFromDB(@PathVariable String recipeId,
+    //            HttpServletResponse response) throws IOException {
+    //
+    //        if (recipeId.equals("null")) {
+    //            return;
+    //        }
+    //
+    //        RecipeCommand recipeCommand = this.recipeReactiveService
+    //                .findCommandById(recipeId).block();
+    //
+    //        Byte[] image = recipeCommand.getImage();
+    //        if (image != null) {
+    //            byte[] byteArray = new byte[image.length];
+    //            for (int i = 0; i < image.length; i++) {
+    //                byteArray[i] = image[i];
+    //            }
+    //            response.setContentType("image/jpeg");
+    //            InputStream is = new ByteArrayInputStream(byteArray);
+    //            IOUtils.copy(is, response.getOutputStream());
+    //        }
+    //    }
 
 }///~

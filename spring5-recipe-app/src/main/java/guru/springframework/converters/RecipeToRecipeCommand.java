@@ -26,10 +26,7 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
     private final CategoryToCategoryCommand categoryConverter;
     private final IngredientToIngredientCommand ingredientConverter;
 
-    public RecipeToRecipeCommand(
-            NotesToNotesCommand notesConverter,
-            CategoryToCategoryCommand categoryConverter,
-            IngredientToIngredientCommand ingredientConverter) {
+    public RecipeToRecipeCommand(NotesToNotesCommand notesConverter, CategoryToCategoryCommand categoryConverter, IngredientToIngredientCommand ingredientConverter) {
 
         this.notesConverter = notesConverter;
         this.categoryConverter = categoryConverter;
@@ -45,31 +42,11 @@ public class RecipeToRecipeCommand implements Converter<Recipe, RecipeCommand> {
             return null;
         }
 
-        Set<CategoryCommand> categorieCommands = recipe.getCategories()
-                .stream()
-                .map(this.categoryConverter::convert)
-                .collect(Collectors.toSet());
+        Set<CategoryCommand> categorieCommands = recipe.getCategories().stream().map(this.categoryConverter::convert).collect(Collectors.toSet());
 
-        Set<IngredientCommand> ingredientCommands = recipe.getIngredients()
-                .stream()
-                .map(this.ingredientConverter::convert)
-                .collect(Collectors.toSet());
+        Set<IngredientCommand> ingredientCommands = recipe.getIngredients().stream().map(this.ingredientConverter::convert).collect(Collectors.toSet());
 
-        return new RecipeCommand.Builder()
-                .setId(recipe.getId())
-                .setCookTime(recipe.getCookTime())
-                .setPrepTime(recipe.getPrepTime())
-                .setDescription(recipe.getDescription())
-                .setDifficulty(recipe.getDifficulty())
-                .setDirections(recipe.getDirections())
-                .setServings(recipe.getServings())
-                .setSource(recipe.getSource())
-                .setUrl(recipe.getUrl())
-                .setNotes(this.notesConverter.convert(recipe.getNotes()))
-                .setCategories(categorieCommands)
-                .setIngredients(ingredientCommands)
-                .setImage(recipe.getImage())
-                .createRecipeCommand();
+        return new RecipeCommand.Builder().setId(recipe.getId()).setCookTime(recipe.getCookTime()).setPrepTime(recipe.getPrepTime()).setDescription(recipe.getDescription()).setDifficulty(recipe.getDifficulty()).setDirections(recipe.getDirections()).setServings(recipe.getServings()).setSource(recipe.getSource()).setUrl(recipe.getUrl()).setNotes(this.notesConverter.convert(recipe.getNotes())).setCategories(categorieCommands).setIngredients(ingredientCommands).setImage(recipe.getImage()).createRecipeCommand();
     }
 
 }///~

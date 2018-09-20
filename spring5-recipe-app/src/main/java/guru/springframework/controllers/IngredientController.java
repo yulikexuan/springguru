@@ -33,9 +33,7 @@ public class IngredientController {
     private WebDataBinder webDataBinder;
 
     @Autowired
-    public IngredientController(RecipeReactiveService recipeReactiveService,
-                                IIngredientReactiveService ingredientService,
-                                IUnitOfMeasureService unitOfMeasureService) {
+    public IngredientController(RecipeReactiveService recipeReactiveService, IIngredientReactiveService ingredientService, IUnitOfMeasureService unitOfMeasureService) {
 
         this.recipeReactiveService = recipeReactiveService;
         this.ingredientService = ingredientService;
@@ -53,42 +51,35 @@ public class IngredientController {
 
         log.debug(">>>>>>> Getting ingredient list for recipoe id: " + id);
 
-        model.addAttribute("recipe",
-                this.recipeReactiveService.findCommandById(id));
+        model.addAttribute("recipe", this.recipeReactiveService.findCommandById(id));
 
         return "/recipe/ingredient/list";
     }
 
     @GetMapping
     @RequestMapping("/recipe/{recipeId}/ingredient/{id}/show")
-    public String showIngredientOfRecipe(@PathVariable String recipeId,
-                                         @PathVariable String id, Model model) {
+    public String showIngredientOfRecipe(@PathVariable String recipeId, @PathVariable String id, Model model) {
 
-        log.debug(">>>>>>> Getting the ingredient of the recipe: " + id + "/"
-                + recipeId);
+        log.debug(">>>>>>> Getting the ingredient of the recipe: " + id + "/" + recipeId);
 
-        model.addAttribute("ingredient",
-                this.ingredientService.findByRecipeIdAndIngredientId(recipeId,
-                        id));
+        model.addAttribute("ingredient", this.ingredientService.findByRecipeIdAndIngredientId(recipeId, id));
 
         return "/recipe/ingredient/show";
     }
 
     @GetMapping
     @RequestMapping("/recipe/{recipeId}/ingredient/new")
-    public String showIngredientFormForCreatingNew(
-            @PathVariable String recipeId, Model model) {
+    public String showIngredientFormForCreatingNew(@PathVariable String recipeId, Model model) {
 
         String viewName = "/";
         if (this.recipeReactiveService.existById(recipeId).block()) {
-            IngredientCommand ingredient = new IngredientCommand.Builder()
-                    .setRecipeId(recipeId).createIngredientCommand();
+            IngredientCommand ingredient = new IngredientCommand.Builder().setRecipeId(recipeId).createIngredientCommand();
             model.addAttribute("ingredient", ingredient);
 
-//            Use the defined @ModelAttribute method instead
-//            Flux<UnitOfMeasureCommand> unitOfMeasures =
-//                    getAllUnitOfMeasureCommands();
-//            model.addAttribute("unitOfMeasures", unitOfMeasures);
+            //            Use the defined @ModelAttribute method instead
+            //            Flux<UnitOfMeasureCommand> unitOfMeasures =
+            //                    getAllUnitOfMeasureCommands();
+            //            model.addAttribute("unitOfMeasures", unitOfMeasures);
 
             viewName = "/recipe/ingredient/ingredientform";
         }
@@ -97,34 +88,28 @@ public class IngredientController {
 
     @GetMapping
     @RequestMapping("/recipe/{recipeId}/ingredient/{ingredientId}/update")
-    public String showUpdateFormForIngredientOfRecipe(
-            @PathVariable String recipeId, @PathVariable String ingredientId,
-            Model model) {
+    public String showUpdateFormForIngredientOfRecipe(@PathVariable String recipeId, @PathVariable String ingredientId, Model model) {
 
-        log.debug(">>>>>>> Getting the ingredient of the recipe: "
-                + ingredientId + "/" + recipeId);
+        log.debug(">>>>>>> Getting the ingredient of the recipe: " + ingredientId + "/" + recipeId);
 
-        IngredientCommand ic = this.ingredientService
-                .findByRecipeIdAndIngredientId(recipeId, ingredientId).block();
+        IngredientCommand ic = this.ingredientService.findByRecipeIdAndIngredientId(recipeId, ingredientId).block();
 
         model.addAttribute("ingredient", ic);
 
-//        Use the defined @ModelAttribute method instead
-//        model.addAttribute("unitOfMeasures",
-//                this.unitOfMeasureService.findAllUnitOfMeasureCommands());
+        //        Use the defined @ModelAttribute method instead
+        //        model.addAttribute("unitOfMeasures",
+        //                this.unitOfMeasureService.findAllUnitOfMeasureCommands());
 
-//        Flux<UnitOfMeasureCommand> unitOfMeasures =
-//                getAllUnitOfMeasureCommands();
-//        model.addAttribute("unitOfMeasures", unitOfMeasures);
+        //        Flux<UnitOfMeasureCommand> unitOfMeasures =
+        //                getAllUnitOfMeasureCommands();
+        //        model.addAttribute("unitOfMeasures", unitOfMeasures);
 
         return "/recipe/ingredient/ingredientform";
     }
 
     @PostMapping
     @RequestMapping("/recipe/{recipeId}/ingredient")
-    public String saveOrUpdateIngredient(@PathVariable String recipeId,
-            @ModelAttribute("ingredient") IngredientCommand ingredientCommand,
-                                         Model model) {
+    public String saveOrUpdateIngredient(@PathVariable String recipeId, @ModelAttribute("ingredient") IngredientCommand ingredientCommand, Model model) {
 
         ingredientCommand.setRecipeId(recipeId);
 
@@ -132,13 +117,12 @@ public class IngredientController {
         BindingResult bindingResult = this.webDataBinder.getBindingResult();
 
         if (bindingResult.hasErrors()) {
-            bindingResult.getAllErrors().forEach(
-                    err -> log.debug(">>>>>>> " + err.toString()));
+            bindingResult.getAllErrors().forEach(err -> log.debug(">>>>>>> " + err.toString()));
 
-//            Use the defined @ModelAttribute method instead
-//            Flux<UnitOfMeasureCommand> unitOfMeasures =
-//                    getAllUnitOfMeasureCommands();
-//            model.addAttribute("unitOfMeasures", unitOfMeasures);
+            //            Use the defined @ModelAttribute method instead
+            //            Flux<UnitOfMeasureCommand> unitOfMeasures =
+            //                    getAllUnitOfMeasureCommands();
+            //            model.addAttribute("unitOfMeasures", unitOfMeasures);
 
             /*
              * Should return full template name here other than an UPDATE
@@ -149,32 +133,23 @@ public class IngredientController {
             return "/recipe/ingredient/ingredientform";
         }
 
-        IngredientCommand savedCommand = this.ingredientService
-                .saveIngredientCommand(ingredientCommand).block();
+        IngredientCommand savedCommand = this.ingredientService.saveIngredientCommand(ingredientCommand).block();
 
-//        String recipeId = savedCommand.getRecipeId();
+        //        String recipeId = savedCommand.getRecipeId();
         String ingredientId = savedCommand.getId();
 
         //"redirect:/recipe/" + savedCommand.getId() + "/show"
 
-        String url = new StringBuilder()
-                .append("redirect:/recipe/")
-                .append(recipeId)
-                .append("/ingredient/")
-                .append(ingredientId)
-                .append("/show")
-                .toString();
+        String url = new StringBuilder().append("redirect:/recipe/").append(recipeId).append("/ingredient/").append(ingredientId).append("/show").toString();
 
         return url;
     }
 
     @GetMapping
     @RequestMapping("/recipe/{recipeId}/ingredient/{ingredientId}/delete")
-    public String deleteIngredientFromRecipe(@PathVariable String recipeId,
-                                             @PathVariable String ingredientId) {
+    public String deleteIngredientFromRecipe(@PathVariable String recipeId, @PathVariable String ingredientId) {
 
-        this.ingredientService.deleteIngredientCommand(recipeId, ingredientId)
-                .block();
+        this.ingredientService.deleteIngredientCommand(recipeId, ingredientId).block();
 
         return "redirect:/recipe/" + recipeId + "/ingredients";
     }

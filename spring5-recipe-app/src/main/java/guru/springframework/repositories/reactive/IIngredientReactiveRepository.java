@@ -9,8 +9,7 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Mono;
 
 
-public interface IIngredientReactiveRepository extends
-        ReactiveMongoRepository<Ingredient, String> {
+public interface IIngredientReactiveRepository extends ReactiveMongoRepository<Ingredient, String> {
 
     Mono<Ingredient> findByDescription(String description);
 

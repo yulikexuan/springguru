@@ -3,15 +3,15 @@
 name: John
 
 names: #Comment
-    - John
-    - Paul
-    - Ringo
+- John
+- Paul
+- Ringo
 
 pound_sign: "#"
 
 book:
-    author: Joe Buck
-    publisher: random house
+  author: Joe Buck
+  publisher: random house
 
 truth: yes
 

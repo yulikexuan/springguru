@@ -8,7 +8,6 @@ import guru.springframework.domain.Recipe;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
 
-public interface IRecipeReactiveRepository
-        extends ReactiveMongoRepository<Recipe, String> {
+public interface IRecipeReactiveRepository extends ReactiveMongoRepository<Recipe, String> {
 
 }///:~

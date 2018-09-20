@@ -24,15 +24,13 @@ public abstract class AbstractControllerTest {
     Random random;
 
     abstract Object initController();
+
     abstract String getInvalidUrl();
 
     public void setUp() throws Exception {
         this.random = new Random(System.currentTimeMillis());
         MockitoAnnotations.initMocks(this);
-        this.mockMvc = MockMvcBuilders
-                .standaloneSetup(initController())
-                .setControllerAdvice(new ControllerExceptionHandlers())
-                .build();
+        this.mockMvc = MockMvcBuilders.standaloneSetup(initController()).setControllerAdvice(new ControllerExceptionHandlers()).build();
     }
 
 }///~

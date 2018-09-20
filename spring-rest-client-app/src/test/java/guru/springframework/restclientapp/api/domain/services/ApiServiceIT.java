@@ -19,7 +19,6 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
 
 
-
 /*
  * We should start this web service before running this test,
  */
@@ -28,23 +27,23 @@ import static org.junit.Assert.assertThat;
 @SpringBootTest
 public class ApiServiceIT {
 
-	@Autowired
-	private IApiService apiService;
+    @Autowired
+    private IApiService apiService;
 
-	@Before
-	public void setUp() {
-	}
+    @Before
+    public void setUp() {
+    }
 
-	@Test
-	public void able_To_Get_Users() {
+    @Test
+    public void able_To_Get_Users() {
 
-		// Given
+        // Given
 
-		// When
-		List<User> users = this.apiService.getUsers(3);
+        // When
+        List<User> users = this.apiService.getUsers(3);
 
-		// Then
-		assertThat(users.size(), greaterThan(0));
-	}
+        // Then
+        assertThat(users.size(), greaterThan(0));
+    }
 
 }///:~

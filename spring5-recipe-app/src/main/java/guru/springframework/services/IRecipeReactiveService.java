@@ -15,7 +15,9 @@ public interface IRecipeReactiveService {
     Flux<Recipe> getAllRecipes();
 
     Mono<Recipe> findById(String id);
+
     Mono<RecipeCommand> findCommandById(String id);
+
     Mono<RecipeCommand> saveRecipeCommand(RecipeCommand recipeCommand);
 
     Mono<Boolean> existById(String id);

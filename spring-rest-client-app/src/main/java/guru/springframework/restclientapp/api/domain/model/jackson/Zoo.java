@@ -15,17 +15,17 @@ import java.util.List;
 @Data
 public class Zoo {
 
-	private String nsme;
-	private String city;
+    private String nsme;
+    private String city;
 
-	private List<Animal> animals = new ArrayList<>();
+    private List<Animal> animals = new ArrayList<>();
 
-	public List<Animal> getAnimals() {
-		return Collections.unmodifiableList(this.animals);
-	}
+    public List<Animal> getAnimals() {
+        return Collections.unmodifiableList(this.animals);
+    }
 
-	public boolean addAnimal(Animal animal) {
-		return this.animals.add(animal);
-	}
+    public boolean addAnimal(Animal animal) {
+        return this.animals.add(animal);
+    }
 
 }///~
